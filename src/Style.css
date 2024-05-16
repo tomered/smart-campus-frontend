@@ -1,0 +1,109 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Set default font and font size */
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background-color: #F0FFFF; /* replace with your desired color */
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+
+ 
+  
+  /* Style the about section */
+  #about {
+    background-color: #ffffff;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  #about h2 {
+    margin-bottom: 20px;
+    font-size: 36px;
+  }
+  
+  #about p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  /* Style the features section */
+  #features {
+    background-color: #f7f7f7;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  #features h2 {
+    margin-bottom: 20px;
+    font-size: 36px;
+  }
+  
+  #features ul {
+    list-style: none;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  #features li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  
+  /* Style the testimonials section */
+  #testimonials {
+    background-color: #ffffff;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  #testimonials h2 {
+    margin-bottom: 20px;
+    font-size: 36px;
+  }
+  
+  blockquote {
+    margin-bottom: 20px;
+    font-style: italic;
+    font-size: 18px;
+  }
+  
+  /* Style the call-to-action section */
+  #call-to-action {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  #call-to-action h2 {
+    margin-bottom: 20px;
+    font-size: 36px;
+  }
+  
+  #call-to-action p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  
+  
