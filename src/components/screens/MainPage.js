@@ -14,7 +14,7 @@ const MainPage = () => {
         title='Mapping of Hit College'
         src={MapSrc}
         width='90%'
-        height='450'
+        height='550vh'
         loading='lazy'
       />
     </MainContainer>
