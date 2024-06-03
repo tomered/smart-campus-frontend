@@ -1,26 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-
+import DashboardHomeBtns from '../DashboardHomeBtns';
 
 const LearnMorePage = () => {
+  useEffect(() => {
+    // Scroll to the top of the page when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container>
       <Content>
-        <Title>Learn More</Title>
+        <Title>Water</Title>
         <Text>
-          Add your text here...
+          Water is a basic and necessary resource for human living conditions.
+          Throughout the campus, at any given moment, water is being used, even
+          if it is obviously above it. In everyday life, it is impossible to
+          have an activity without water around the campus, especially in the
+          hot summer months. It is extremely important to locate leaks, pipeline
+          explosions and unwise use (close to real time). In the first phase we
+          will alert the relevant officials and in a more advanced phase of a
+          project - we will stop the waste.
         </Text>
+        <DashboardHomeBtns></DashboardHomeBtns>
       </Content>
     </Container>
   );
 };
 
-export default LearnMorePage;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
+  position: relative;
 `;
 
 const Content = styled.div`
@@ -31,12 +42,12 @@ const Content = styled.div`
   width: 80%;
   max-width: 800px;
   margin: 0 auto;
+  text-align: center;
 `;
 
 const Title = styled.h1`
   font-size: 36px;
-  margin-bottom: 16px;
-  text-align: center;
+  margin: 22px 0px;
 `;
 
 const Text = styled.p`
@@ -44,3 +55,5 @@ const Text = styled.p`
   line-height: 1.5;
   text-align: justify;
 `;
+
+export default LearnMorePage;
