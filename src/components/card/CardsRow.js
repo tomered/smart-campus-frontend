@@ -100,7 +100,6 @@ const IconContainer = styled.div`
 `
 
 const TextArea = styled.p`
-  margin: 12px;
   font-size: 20px;
   font-weight: bold;
   text-align: center;
@@ -108,7 +107,7 @@ const TextArea = styled.p`
 `
 
 const CardFooterButton = styled.button`
-  margin: 12px;
+  margin: 22px 12px;
   padding: 8px;
   background-color: #007FFF;
   color: #FFFFFF;
