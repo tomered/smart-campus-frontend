@@ -1,41 +1,46 @@
-import React, {useState} from 'react'
-import styled from 'styled-components'
-import { FaBars } from 'react-icons/fa'
-import "../Style.css"
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { FaBars } from 'react-icons/fa';
+import '../Style.css';
 import logoImage from '../hit_logo.svg';
 
-
-
 const MainHeader = () => {
-  const [showMenu, setShowMenu] = useState(false)
+  const [showMenu, setShowMenu] = useState(false);
   const handleMenuClick = () => {
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
   return (
-    <Container> 
+    <Container>
       <CustomNavBar>
-          {/*<img src={logoImage} alt="Smart Campus Logo" />*/}
-          <Title><a href="/">Smart Campus</a></Title>
-      <MenuIcon onClick={handleMenuClick}>
+        {/*<img src={logoImage} alt="Smart Campus Logo" />*/}
+        <Title>
+          <a href='/'>Smart Campus</a>
+        </Title>
+        <MenuIcon onClick={handleMenuClick}>
           <FaBars />
         </MenuIcon>
         <MenuLinks show={showMenu}>
-        <ul>
-          <li><a href="staff">staff</a></li>
-          <li><a href="Students">Students</a></li> 
-          <li><a href="Partners">Partners</a></li>
-          <li><a href="Contact">Contact Us</a></li>
-        </ul>
+          <ul>
+            <li>
+              <a href='Staff'>Staff</a>
+            </li>
+            <li>
+              <a href='Students'>Students</a>
+            </li>
+            <li>
+              <a href='Partners'>Partners</a>
+            </li>
+            <li>
+              <a href='Contact'>Contact Us</a>
+            </li>
+          </ul>
         </MenuLinks>
-        
       </CustomNavBar>
-      
     </Container>
-  )
-}
+  );
+};
 
-export default MainHeader
-
+export default MainHeader;
 
 const Container = styled.header`
   display: flex;
@@ -54,25 +59,24 @@ const Container = styled.header`
     font-size: 32px;
     color: #333333;
   }
-`
+`;
 
 const CustomNavBar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 20px;
 
   /* Media queries */
   @media screen and (max-width: 480px) {
     flex-direction: column;
   }
-`
+`;
 
 const Logo = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const Title = styled.h1`
   font-family: 'Montserrat', sans-serif;
@@ -88,7 +92,7 @@ const Title = styled.h1`
   @media screen and (max-width: 480px) {
     display: none;
   }
-`
+`;
 
 const MenuIcon = styled.div`
   display: none;
@@ -99,7 +103,7 @@ const MenuIcon = styled.div`
     display: block;
     font-size: 24px;
   }
-`
+`;
 
 const MenuLinks = styled.div`
   display: flex;
@@ -136,6 +140,6 @@ const MenuLinks = styled.div`
     left: 0;
     width: 100%;
     background-color: #f5f5f5;
-    padding: 20px
+    padding: 20px;
   }
-`
+`;
