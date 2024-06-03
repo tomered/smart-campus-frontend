@@ -50,6 +50,9 @@ const Container = styled.header`
   background-color: #f5f5f5;
   padding: 20px;
   border-bottom: 1px solid #dddddd;
+  position: sticky;
+  top: 0px;
+  z-index: 1;
 
   h1 {
     font-family: 'Montserrat', sans-serif;
