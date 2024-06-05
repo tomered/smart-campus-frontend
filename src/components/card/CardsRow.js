@@ -32,7 +32,7 @@ const CardsRow = () => {
           <FaTemperatureLow size={64} color="#007FFF" />
         </IconContainer>
         <TextArea>Microclimate and Air Quality Monitoring</TextArea>
-        <CardFooterButton onClick={() => handleLearnMore("MicroClimatic")}>
+        <CardFooterButton onClick={() => handleLearnMore("Air")}>
           Learn More!
         </CardFooterButton>
       </Card>
@@ -50,7 +50,7 @@ const CardsRow = () => {
           <FaRecycle size={64} color="#007FFF" />
         </IconContainer>
         <TextArea>The Recycling and Garbage Efficiency</TextArea>
-        <CardFooterButton onClick={() => handleLearnMore("Water")}>
+        <CardFooterButton onClick={() => handleLearnMore("RecyclingGarbageEfficiency")}>
           Learn More!
         </CardFooterButton>
       </Card>
@@ -59,7 +59,7 @@ const CardsRow = () => {
           <FaTree size={64} color="#007FFF" />
         </IconContainer>
         <TextArea>Micro-climatic Eco-Human Space</TextArea>
-        <CardFooterButton onClick={() => handleLearnMore("Water")}>
+        <CardFooterButton onClick={() => handleLearnMore("MicroClimatic")}>
           Learn More!
         </CardFooterButton>
       </Card>
@@ -68,7 +68,7 @@ const CardsRow = () => {
           <FaTrash size={64} color="#007FFF" />
         </IconContainer>
         <TextArea>Increasing campus cleanliness</TextArea>
-        <CardFooterButton onClick={() => handleLearnMore("Water")}>
+        <CardFooterButton onClick={() => handleLearnMore("Cleanliness")}>
           Learn More!
         </CardFooterButton>
       </Card>
