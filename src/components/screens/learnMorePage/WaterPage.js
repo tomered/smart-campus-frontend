@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import DashboardHomeBtns from '../DashboardHomeBtns';
+import DashboardHomeBtns from '../../DashboardHomeBtns';
 
 const LearnMorePage = () => {
   useEffect(() => {
