@@ -35,6 +35,9 @@ const MainHeader = () => {
             <MenuItem>
               <a href='Contact'>Contact Us</a>
             </MenuItem>
+            <MenuItem>
+              <a href='News'>News</a>
+            </MenuItem>
           </ul>
         </MenuLinks>
       </CustomNavBar>
