@@ -38,6 +38,9 @@ const MainHeader = () => {
             <MenuItem>
               <a href='News'>News</a>
             </MenuItem>
+            <MenuItem>
+              <a href='Login'>Login</a>
+            </MenuItem>
           </ul>
         </MenuLinks>
       </CustomNavBar>
