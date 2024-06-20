@@ -14,6 +14,8 @@ import NewsPage from './components/screens/NewsPage.js';
 import Header from './components/MainHeader.js';
 import Footer from './components/Footer.js';
 import MainPage from './components/screens/MainPage.js';
+import Login from "./components/screens/LoginRegisterPage/LoginPage.js"
+import Register from "./components/screens/LoginRegisterPage/SignUpPage.js"
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const App = () => {
   return (
@@ -35,6 +37,8 @@ const App = () => {
           <Route path='/contact' element={<ContactUs />} />
           <Route path='/staff' element={<Staff />} />
           <Route path='/news' element={<NewsPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<Register />} />
         </Routes>
         <Footer />
       </BrowserRouter>
