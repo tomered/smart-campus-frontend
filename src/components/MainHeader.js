@@ -11,6 +11,12 @@ const MainHeader = () => {
     setShowMenu(!showMenu);
   };
 
+  const handleMapClick = (e, mapDivId) => {
+    e.preventDefault();
+    sessionStorage.setItem('mapDivId', mapDivId);
+    window.location.href = '/';
+  };
+
   return (
     <Container>
       <CustomNavBar>
@@ -37,6 +43,11 @@ const MainHeader = () => {
             </MenuItem>
             <MenuItem>
               <a href='News'>News</a>
+            </MenuItem>
+            <MenuItem>
+              <a href='/' onClick={(e) => handleMapClick(e, 'hitMap')}>
+                HIT 3D Map
+              </a>
             </MenuItem>
             <MenuItem>
               <a href='Login'>Login</a>
@@ -158,8 +169,8 @@ const MenuLinks = styled.div`
   }
 
   li {
-    margin-left: 3em; /* Match the left and right margins */
-    margin-right: 3em;
+    margin-left: 2em; /* Match the left and right margins */
+    margin-right: 2em;
   }
 
   a {
