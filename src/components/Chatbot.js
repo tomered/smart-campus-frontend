@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Chatbot = ({ src, title, width, height, loading, ...props }) => {
   const [isVisible, setIsVisible] = useState(false);
   const botSrc =
-    'https://copilotstudio.microsoft.com/environments/Default-3c678821-7750-47a3-937f-2661439abb7a/bots/cr971_smartCampus/webchat?__version__=2';
+    'https://web.powerva.microsoft.com/environments/Default-3c678821-7750-47a3-937f-2661439abb7a/bots/cr971_copilot6JMVBV/webchat?__version__=2';
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
