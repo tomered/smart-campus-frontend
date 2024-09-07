@@ -3,9 +3,12 @@ import styled from 'styled-components';
 
 const SignUpPage = () => {
   const [name, setName] = useState('');
+  const [userName,setUserName]=useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [id,setId]=useState('');
+  const [phone,setPhone]=useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent default form submission
@@ -13,15 +16,31 @@ const SignUpPage = () => {
     // Perform actions with collected data (name, email, password, confirmPassword)
     // For example, send it to a server for registration or display a message
     console.log(
-      `Name: ${name}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}`
+      `Name: ${name}, UserName: ${userName} ,Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}
+        ,Id:${id},Phone:${phone}`
     );
 
     // Reset form or display success message (optional)
     setName('');
+    setUserName('');
     setEmail('');
     setPassword('');
     setConfirmPassword('');
+    setId('');
+    setPhone('');
+
   };
+
+  const handleClear=()=>
+  {
+    setName('');
+    setUserName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setId('');
+    setPhone('');
+  }
   return (
     <Container>
       <SignUpForm onSubmit={handleSubmit}>
@@ -32,6 +51,14 @@ const SignUpPage = () => {
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <label htmlFor="userName">UserName:</label>
+        <input
+          type="text"
+          id="userName"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
           required
         />
         <label htmlFor="email">Email:</label>
@@ -59,8 +86,25 @@ const SignUpPage = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
+        <label htmlFor="id">Id:</label>
+        <input
+          type="text"
+          id="id"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          required
+        />
+        <label htmlFor="phone">Phone:</label>
+        <input
+          type="text"
+          id="phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+        />
 
         <button type="submit">Create Account</button>
+        <button type="clear" onClick={handleClear}>Clear</button>
 
         <SignInLink href="/login">Already have an account? Sign In</SignInLink>
       </SignUpForm>
