@@ -6,8 +6,6 @@ const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [userRole, setUserRole] = useState('student'); // Default role
-
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent default form submission
@@ -15,7 +13,7 @@ const SignUpPage = () => {
     // Perform actions with collected data (name, email, password, confirmPassword)
     // For example, send it to a server for registration or display a message
     console.log(
-      `Name: ${name}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Role: ${userRole}`
+      `Name: ${name}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}`
     );
 
     // Reset form or display success message (optional)
@@ -24,10 +22,6 @@ const SignUpPage = () => {
     setPassword('');
     setConfirmPassword('');
   };
-  const handleRoleChange = (event) => {
-    setUserRole(event.target.value);
-  };
-
   return (
     <Container>
       <SignUpForm onSubmit={handleSubmit}>
@@ -65,12 +59,6 @@ const SignUpPage = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        <label htmlFor="userRole">Choose Role:</label>
-        <UserRoleDropdown id="userRole" value={userRole} onChange={handleRoleChange}>
-          <option value="student">Student</option>
-          <option value="lecturer">Lecturer</option>
-          {/* Add more options if needed */}
-        </UserRoleDropdown>
 
         <button type="submit">Create Account</button>
 
@@ -151,20 +139,5 @@ const SignInLink = styled.a`
     text-decoration: underline; /* Underline on hover for interactivity */
   }
 `;
-
-const UserRoleDropdown = styled.select`
-  background: #F3F4F6;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 1.2rem;
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-    border-color: #2F80ED;
-    box-shadow: 0 0 2px 2px #9AE6B4;
-  }
-    `;
 
 export default SignUpPage;
