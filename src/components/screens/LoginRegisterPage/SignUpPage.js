@@ -3,44 +3,38 @@ import styled from 'styled-components';
 
 const SignUpPage = () => {
   const [name, setName] = useState('');
-  const [userName,setUserName]=useState('');
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [emailUsername, setEmailUsername] = useState('');
+  const [emailDomain, setEmailDomain] = useState('@gmail.com');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [id,setId]=useState('');
-  const [phone,setPhone]=useState('');
+  const [id, setId] = useState('');
+  const [phonePrefix, setPhonePrefix] = useState('050');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission
-
-    // Perform actions with collected data (name, email, password, confirmPassword)
-    // For example, send it to a server for registration or display a message
+    event.preventDefault();
+    const email = emailUsername + emailDomain;
+    const phone = phonePrefix + phoneNumber;
     console.log(
-      `Name: ${name}, UserName: ${userName} ,Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}
-        ,Id:${id},Phone:${phone}`
+      `Name: ${name}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
     );
 
-    // Reset form or display success message (optional)
-    setName('');
-    setUserName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-    setId('');
-    setPhone('');
-
+    handleClear();
   };
 
-  const handleClear=()=>
-  {
+  const handleClear = () => {
     setName('');
     setUserName('');
-    setEmail('');
+    setEmailUsername('');
+    setEmailDomain('@gmail.com');
     setPassword('');
     setConfirmPassword('');
     setId('');
-    setPhone('');
+    setPhonePrefix('050');
+    setPhoneNumber('');
   }
+
   return (
     <Container>
       <SignUpForm onSubmit={handleSubmit}>
@@ -62,13 +56,26 @@ const SignUpPage = () => {
           required
         />
         <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <EmailInputContainer>
+          <EmailUsernameInput
+            type="text"
+            id="emailUsername"
+            value={emailUsername}
+            onChange={(e) => setEmailUsername(e.target.value)}
+            required
+            placeholder="mail"
+          />
+          <EmailDomainSelect
+            id="emailDomain"
+            value={emailDomain}
+            onChange={(e) => setEmailDomain(e.target.value)}
+          >
+            <option value="@gmail.com">@gmail.com</option>
+            <option value="@walla.co.il">@walla.co.il</option>
+            <option value="@outlook.com">@outlook.com</option>
+            <option value="@yahoo.com">@yahoo.com</option>
+          </EmailDomainSelect>
+        </EmailInputContainer>
         <label htmlFor="password">Password:</label>
         <input
           type="password"
@@ -76,7 +83,7 @@ const SignUpPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          minLength={8} // Enforce minimum password length
+          minLength={8}
         />
         <label htmlFor="confirmPassword">Confirm Password:</label>
         <input
@@ -95,17 +102,32 @@ const SignUpPage = () => {
           required
         />
         <label htmlFor="phone">Phone:</label>
-        <input
-          type="text"
-          id="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-        />
-
-        <button type="submit">Create Account</button>
-        <button type="clear" onClick={handleClear}>Clear</button>
-
+        <PhoneInputContainer>
+          <PhonePrefixSelect
+            id="phonePrefix"
+            value={phonePrefix}
+            onChange={(e) => setPhonePrefix(e.target.value)}
+          >
+            <option value="050">050</option>
+            <option value="052">052</option>
+            <option value="053">053</option>
+            <option value="054">054</option>
+            <option value="055">055</option>
+            <option value="058">058</option>
+          </PhonePrefixSelect>
+          <PhoneNumberInput
+            type="tel"
+            id="phoneNumber"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+            placeholder="phone number"
+          />
+        </PhoneInputContainer>
+        <ButtonContainer>
+          <SubmitButton type="submit">Create Account</SubmitButton>
+          <ClearButton type="button" onClick={handleClear}>Clear</ClearButton>
+        </ButtonContainer>
         <SignInLink href="/login">Already have an account? Sign In</SignInLink>
       </SignUpForm>
     </Container>
@@ -120,67 +142,120 @@ const Container = styled.div`
   background: #fff;
   border-radius: 8px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-
-    label {
-      color: #1f2937;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-    }
-
-    input,
-    textarea {
-      background: #f3f4f6;
-      border: none;
-      padding: 10px;
-      border-radius: 4px;
-      margin-bottom: 20px;
-
-      &:focus {
-        outline: none;
-        border-color: #2f80ed;
-        box-shadow: 0 0 2px 2px #9ae6b4;
-      }
-    }
-
-    button {
-      background: #2f80ed;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      transition: all 0.2s ease-in-out;
-
-      &:hover {
-        background: #1e3a8a;
-      }
-    }
-  }
 `;
 
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
+  gap: 15px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1f2937;
+  }
+
+  label {
+    color: #1f2937;
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  input,
+  select {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: #2f80ed;
+      box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.2);
+    }
+  }
+`;
+
+const EmailInputContainer = styled.div`
+  display: flex;
+  margin-bottom: 15px;
+`;
+
+const EmailUsernameInput = styled.input`
+  flex: 1;
+  border-radius: 4px 0 0 4px;
+  border-right: none;
+`;
+
+const EmailDomainSelect = styled.select`
+  width: 140px;
+  border-radius: 0 4px 4px 0;
+  border-left: none;
+  background-color: #e5e7eb;
+`;
+
+const PhoneInputContainer = styled.div`
+  display: flex;
+  margin-bottom: 15px;
+`;
+
+const PhonePrefixSelect = styled.select`
+  width: 80px;
+  border-radius: 4px 0 0 4px;
+  border-right: none;
+  background-color: #e5e7eb;
+`;
+
+const PhoneNumberInput = styled.input`
+  flex: 1;
+  border-radius: 0 4px 4px 0;
+  border-left: none;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
   gap: 10px;
+  margin-top: 10px;
+`;
+
+const Button = styled.button`
+  flex: 1;
+  background: #2f80ed;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: #1e3a8a;
+  }
+`;
+
+const SubmitButton = styled(Button)`
+  background: #2f80ed;
+`;
+
+const ClearButton = styled(Button)`
+  background: #9ca3af;
+
+  &:hover {
+    background: #6b7280;
+  }
 `;
 
 const SignInLink = styled.a`
-  color: #2f80ed; /* Match the button color for consistency */
-  font-size: 0.9rem; /* Slightly smaller font for subtle distinction */
-  text-decoration: none; /* Remove underline */
+  color: #2f80ed;
+  font-size: 0.9rem;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 15px;
 
   &:hover {
-    text-decoration: underline; /* Underline on hover for interactivity */
+    text-decoration: underline;
   }
 `;
 
