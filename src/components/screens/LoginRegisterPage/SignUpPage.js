@@ -15,6 +15,8 @@ import {
 } from './SignUpPageStyles';
 
 const SignUpPage = () => {
+  const emailDomains = ['@gmail.com', '@walla.co.il', '@outlook.com', '@yahoo.com'];
+  const phonePrefixes = ['050', '052', '053', '054', '055', '058'];
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
@@ -88,16 +90,15 @@ const SignUpPage = () => {
             required
             placeholder="mail"
           />
-          <EmailDomainSelect
-            id="emailDomain"
-            value={emailDomain}
-            onChange={(e) => setEmailDomain(e.target.value)}
-          >
-            <option value="@gmail.com">@gmail.com</option>
-            <option value="@walla.co.il">@walla.co.il</option>
-            <option value="@outlook.com">@outlook.com</option>
-            <option value="@yahoo.com">@yahoo.com</option>
-          </EmailDomainSelect>
+        <EmailDomainSelect
+          id="emailDomain"
+          value={emailDomain}
+          onChange={(e) => setEmailDomain(e.target.value)}
+          >   
+          {emailDomains.map((domain) => (
+          <option key={domain} value={domain}>{domain}</option>
+          ))}
+        </EmailDomainSelect>  
         </EmailInputContainer>
         <label htmlFor="password">Password:</label>
         <input
@@ -126,18 +127,15 @@ const SignUpPage = () => {
         />
         <label htmlFor="phone">Phone:</label>
         <PhoneInputContainer>
-          <PhonePrefixSelect
-            id="phonePrefix"
-            value={phonePrefix}
-            onChange={(e) => setPhonePrefix(e.target.value)}
+        <PhonePrefixSelect
+          id="phonePrefix"
+          value={phonePrefix}
+          onChange={(e) => setPhonePrefix(e.target.value)}
           >
-            <option value="050">050</option>
-            <option value="052">052</option>
-            <option value="053">053</option>
-            <option value="054">054</option>
-            <option value="055">055</option>
-            <option value="058">058</option>
-          </PhonePrefixSelect>
+          {phonePrefixes.map((prefix) => (
+          <option key={prefix} value={prefix}>{prefix}</option>
+          ))}
+        </PhonePrefixSelect>
           <PhoneNumberInput
             type="tel"
             id="phoneNumber"
