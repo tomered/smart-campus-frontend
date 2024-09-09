@@ -1,14 +1,17 @@
+// screens/AdminPage/AdminDashboard.js
 import React from 'react';
-import { Typography, Container, Box, Grid, Paper, Card, CardContent } from '@mui/material';
-import Sidebar from './Sidebar'; // ייבוא הקומפוננטה החדשה
+import { Typography, Container, Box, Grid, Paper } from '@mui/material';
+import Sidebar from './Sidebar'; // ייבוא Sidebar
 import { Bar, Line, Pie, Radar, Doughnut } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale } from 'chart.js';
+import InfoCard from '../../card/InfoCard';
+
 
 // Register Chart.js components
 Chart.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale);
 
 const AdminDashboard = () => {
-  // Data for Bar Chart - User Overview
+  // נתוני הגרפים (הנתונים נשארים זהים)
   const barData = {
     labels: ['Admins', 'Moderators', 'Users', 'Guests'],
     datasets: [
@@ -16,12 +19,11 @@ const AdminDashboard = () => {
         label: 'Number of Users',
         data: [5, 10, 60, 5],
         backgroundColor: ['#3f51b5', '#ff4081', '#4caf50', '#f44336'],
-        borderRadius: 10, // Adding modern rounded bars
+        borderRadius: 10,
       },
     ],
   };
 
-  // Data for Line Chart - User Activity
   const lineData = {
     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
     datasets: [
@@ -36,7 +38,6 @@ const AdminDashboard = () => {
     ],
   };
 
-  // Data for Bar Chart - Device Usage
   const deviceData = {
     labels: ['Mobile', 'Desktop', 'Tablet'],
     datasets: [
@@ -44,12 +45,11 @@ const AdminDashboard = () => {
         label: 'Device Usage',
         data: [65, 25, 10],
         backgroundColor: ['#3f51b5', '#4caf50', '#ff4081'],
-        borderRadius: 10, // Adding rounded bars
+        borderRadius: 10,
       },
     ],
   };
 
-  // Data for Pie Chart - User Roles Distribution
   const pieData = {
     labels: ['Admin', 'Moderator', 'User', 'Guest'],
     datasets: [
@@ -61,7 +61,6 @@ const AdminDashboard = () => {
     ],
   };
 
-  // Data for Radar Chart - Feature Usage by Users
   const radarData = {
     labels: ['Login', 'Signups', 'Profile Updates', 'Posts', 'Comments'],
     datasets: [
@@ -76,7 +75,6 @@ const AdminDashboard = () => {
     ],
   };
 
-  // Data for Doughnut Chart - Tasks Completion
   const doughnutData = {
     labels: ['Completed', 'In Progress', 'Not Started'],
     datasets: [
@@ -88,7 +86,6 @@ const AdminDashboard = () => {
     ],
   };
 
-  // Chart options to prevent infinite resizing and ensure responsiveness
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -133,130 +130,22 @@ const AdminDashboard = () => {
         {/* כרטיסי מידע מהירים */}
         <Grid container spacing={4} sx={{ width: '100%', mb: 4 }}>
           <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                backgroundColor: '#3f51b5',
-                color: 'white',
-                p: 2,
-                borderRadius: 3,
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                transition: 'transform 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
-                  boxShadow: '0 6px 30px rgba(0, 0, 0, 0.2)',
-                },
-              }}
-            >
-              <CardContent>
-                <Typography variant="h5">Total Users</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>89</Typography>
-              </CardContent>
-            </Card>
+            <InfoCard title="Total Users" value="89" bgColor="#3f51b5" />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                backgroundColor: '#4caf50',
-                color: 'white',
-                p: 2,
-                borderRadius: 3,
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                transition: 'transform 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
-                  boxShadow: '0 6px 30px rgba(0, 0, 0, 0.2)',
-                },
-              }}
-            >
-              <CardContent>
-                <Typography variant="h5">Active Users</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>56</Typography>
-              </CardContent>
-            </Card>
+            <InfoCard title="Active Users" value="56" bgColor="#4caf50" />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                backgroundColor: '#ff4081',
-                color: 'white',
-                p: 2,
-                borderRadius: 3,
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                transition: 'transform 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
-                  boxShadow: '0 6px 30px rgba(0, 0, 0, 0.2)',
-                },
-              }}
-            >
-              <CardContent>
-                <Typography variant="h5">New Signups</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>15</Typography>
-              </CardContent>
-            </Card>
+            <InfoCard title="New Signups" value="15" bgColor="#ff4081" />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                backgroundColor: '#ff9800',
-                color: 'white',
-                p: 2,
-                borderRadius: 3,
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                transition: 'transform 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
-                  boxShadow: '0 6px 30px rgba(0, 0, 0, 0.2)',
-                },
-              }}
-            >
-              <CardContent>
-                <Typography variant="h5">Logins Today</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>34</Typography>
-              </CardContent>
-            </Card>
+            <InfoCard title="Logins Today" value="34" bgColor="#ff9800" />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                backgroundColor: '#e91e63',
-                color: 'white',
-                p: 2,
-                borderRadius: 3,
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                transition: 'transform 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
-                  boxShadow: '0 6px 30px rgba(0, 0, 0, 0.2)',
-                },
-              }}
-            >
-              <CardContent>
-                <Typography variant="h5">Banned Users</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>2</Typography>
-              </CardContent>
-            </Card>
+            <InfoCard title="Banned Users" value="2" bgColor="#e91e63" />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card
-              sx={{
-                backgroundColor: '#673ab7',
-                color: 'white',
-                p: 2,
-                borderRadius: 3,
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                transition: 'transform 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-10px)',
-                  boxShadow: '0 6px 30px rgba(0, 0, 0, 0.2)',
-                },
-              }}
-            >
-              <CardContent>
-                <Typography variant="h5">Daily Visits</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>124</Typography>
-              </CardContent>
-            </Card>
+            <InfoCard title="Daily Visits" value="124" bgColor="#673ab7" />
           </Grid>
         </Grid>
 
