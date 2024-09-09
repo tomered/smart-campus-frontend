@@ -1,53 +1,105 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { 
+  Container, 
+  SignUpForm, 
+  EmailInputContainer, 
+  EmailUsernameInput, 
+  EmailDomainSelect,
+  PhoneInputContainer,
+  PhonePrefixSelect,
+  PhoneNumberInput,
+  ButtonContainer,
+  SubmitButton,
+  ClearButton,
+  SignInLink
+} from './SignUpPageStyles';
 
 const SignUpPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const emailDomains = ['@gmail.com', '@walla.co.il', '@outlook.com', '@yahoo.com'];
+  const phonePrefixes = ['050', '052', '053', '054', '055', '058'];
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [userName, setUserName] = useState('');
+  const [emailUsername, setEmailUsername] = useState('');
+  const [emailDomain, setEmailDomain] = useState('@gmail.com');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [userRole, setUserRole] = useState('student'); // Default role
-
+  const [id, setId] = useState('');
+  const [phonePrefix, setPhonePrefix] = useState('050');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission
-
-    // Perform actions with collected data (name, email, password, confirmPassword)
-    // For example, send it to a server for registration or display a message
+    event.preventDefault();
+    const email = emailUsername + emailDomain;
+    const phone = phonePrefix + phoneNumber;
     console.log(
-      `Name: ${name}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Role: ${userRole}`
+      `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
     );
 
-    // Reset form or display success message (optional)
-    setName('');
-    setEmail('');
+    handleClear();
+  };
+
+  const handleClear = () => {
+    setFirstName('');
+    setLastName('');
+    setUserName('');
+    setEmailUsername('');
+    setEmailDomain('@gmail.com');
     setPassword('');
     setConfirmPassword('');
-  };
-  const handleRoleChange = (event) => {
-    setUserRole(event.target.value);
-  };
+    setId('');
+    setPhonePrefix('050');
+    setPhoneNumber('');
+  }
 
   return (
     <Container>
       <SignUpForm onSubmit={handleSubmit}>
         <h1>Sign Up</h1>
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="firstName">First Name:</label>
         <input
           type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          id="firstName"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+        />
+        <label htmlFor="lastName">Last Name:</label>
+        <input
+          type="text"
+          id="lastName"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
+        />
+        <label htmlFor="userName">UserName:</label>
+        <input
+          type="text"
+          id="userName"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
           required
         />
         <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <EmailInputContainer>
+          <EmailUsernameInput
+            type="text"
+            id="emailUsername"
+            value={emailUsername}
+            onChange={(e) => setEmailUsername(e.target.value)}
+            required
+            placeholder="mail"
+          />
+        <EmailDomainSelect
+          id="emailDomain"
+          value={emailDomain}
+          onChange={(e) => setEmailDomain(e.target.value)}
+          >   
+          {emailDomains.map((domain) => (
+          <option key={domain} value={domain}>{domain}</option>
+          ))}
+        </EmailDomainSelect>  
+        </EmailInputContainer>
         <label htmlFor="password">Password:</label>
         <input
           type="password"
@@ -55,7 +107,7 @@ const SignUpPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          minLength={8} // Enforce minimum password length
+          minLength={8}
         />
         <label htmlFor="confirmPassword">Confirm Password:</label>
         <input
@@ -65,106 +117,42 @@ const SignUpPage = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        <label htmlFor="userRole">Choose Role:</label>
-        <UserRoleDropdown id="userRole" value={userRole} onChange={handleRoleChange}>
-          <option value="student">Student</option>
-          <option value="lecturer">Lecturer</option>
-          {/* Add more options if needed */}
-        </UserRoleDropdown>
-
-        <button type="submit">Create Account</button>
-
+        <label htmlFor="id">Id:</label>
+        <input
+          type="text"
+          id="id"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          required
+        />
+        <label htmlFor="phone">Phone:</label>
+        <PhoneInputContainer>
+        <PhonePrefixSelect
+          id="phonePrefix"
+          value={phonePrefix}
+          onChange={(e) => setPhonePrefix(e.target.value)}
+          >
+          {phonePrefixes.map((prefix) => (
+          <option key={prefix} value={prefix}>{prefix}</option>
+          ))}
+        </PhonePrefixSelect>
+          <PhoneNumberInput
+            type="tel"
+            id="phoneNumber"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+            placeholder="phone number"
+          />
+        </PhoneInputContainer>
+        <ButtonContainer>
+          <SubmitButton type="submit">Create Account</SubmitButton>
+          <ClearButton type="button" onClick={handleClear}>Clear</ClearButton>
+        </ButtonContainer>
         <SignInLink href="/login">Already have an account? Sign In</SignInLink>
       </SignUpForm>
     </Container>
   );
 };
-
-const Container = styled.div`
-  max-width: 500px;
-  margin: 0 auto;
-  margin-top: 40px;
-  padding: 40px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-
-    label {
-      color: #1f2937;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-    }
-
-    input,
-    textarea {
-      background: #f3f4f6;
-      border: none;
-      padding: 10px;
-      border-radius: 4px;
-      margin-bottom: 20px;
-
-      &:focus {
-        outline: none;
-        border-color: #2f80ed;
-        box-shadow: 0 0 2px 2px #9ae6b4;
-      }
-    }
-
-    button {
-      background: #2f80ed;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      transition: all 0.2s ease-in-out;
-
-      &:hover {
-        background: #1e3a8a;
-      }
-    }
-  }
-`;
-
-const SignUpForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const SignInLink = styled.a`
-  color: #2f80ed; /* Match the button color for consistency */
-  font-size: 0.9rem; /* Slightly smaller font for subtle distinction */
-  text-decoration: none; /* Remove underline */
-
-  &:hover {
-    text-decoration: underline; /* Underline on hover for interactivity */
-  }
-`;
-
-const UserRoleDropdown = styled.select`
-  background: #F3F4F6;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 1.2rem;
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-    border-color: #2F80ED;
-    box-shadow: 0 0 2px 2px #9AE6B4;
-  }
-    `;
 
 export default SignUpPage;
