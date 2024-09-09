@@ -113,6 +113,12 @@ export const ClearButton = styled(Button)`
   }
 `;
 
+export const ErrorMessage = styled.span`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+`;
+
 export const SignInLink = styled.a`
   color: #2f80ed;
   font-size: 0.9rem;
