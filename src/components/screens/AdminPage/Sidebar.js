@@ -3,7 +3,8 @@ import { Box, Drawer, List, ListItem, ListItemText, Divider, ListItemIcon, Typog
 import { useNavigate } from 'react-router-dom'; // נשתמש ב-useNavigate לניווט
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GroupIcon from '@mui/icons-material/Group';
-
+import BarChartIcon from '@mui/icons-material/BarChart';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -19,7 +20,20 @@ const Sidebar = () => {
       }}
     >
       <Box sx={{ overflow: 'auto', p: 2 }}>
-        <Typography variant="h6" sx={{ textAlign: 'center', mb: 2, color: '#3f51b5' }}>
+        {/* כותרת מעוצבת עם גרדיאנט */}
+        <Typography 
+          variant="h5" 
+          sx={{ 
+            textAlign: 'center', 
+            mb: 2, 
+            fontWeight: 'bold', 
+            background: 'linear-gradient(45deg, #3f51b5, #21CBF3)', 
+            WebkitBackgroundClip: 'text', 
+            WebkitTextFillColor: 'transparent', 
+            textTransform: 'uppercase', 
+            letterSpacing: '2px' 
+          }}
+        >
           Admin Panel
         </Typography>
         <List>
@@ -35,6 +49,20 @@ const Sidebar = () => {
               <GroupIcon sx={{ color: '#3f51b5' }} />
             </ListItemIcon>
             <ListItemText primary="ניהול משתמשים" />
+          </ListItem>
+          <Divider />
+          <ListItem button onClick={() => navigate('/reports')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
+            <ListItemIcon>
+              <BarChartIcon sx={{ color: '#3f51b5' }} />
+            </ListItemIcon>
+            <ListItemText primary="דוחות וסטטיסטיקות" />
+          </ListItem>
+          <Divider />
+          <ListItem button onClick={() => navigate('/settings')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
+            <ListItemIcon>
+              <SettingsIcon sx={{ color: '#3f51b5' }} />
+            </ListItemIcon>
+            <ListItemText primary="הגדרות מערכת" />
           </ListItem>
         </List>
       </Box>
