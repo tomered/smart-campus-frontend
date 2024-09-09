@@ -15,7 +15,8 @@ import Footer from './components/Footer.js';
 import MainPage from './components/screens/MainPage.js';
 import Login from './components/screens/LoginRegisterPage/LoginPage.js';
 import Register from './components/screens/LoginRegisterPage/SignUpPage.js';
-import AdminDashboard from './components/screens/AdminDashboard'; // הוספת קומפוננטת האדמין
+import AdminDashboard from './components/screens/AdminPage/AdminDashboard'; 
+import AdminUsersTable from './components/screens/AdminPage/AdminUsersTable'; 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -48,6 +49,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/sign-up' element={<Register />} />
           <Route path='/admin' element={<AdminDashboard />} /> {/* נתיב למסך האדמין */}
+          <Route path='/UsersTable' element={<AdminUsersTable />} />
         </Routes>
         <Footer />
       </BrowserRouter>
