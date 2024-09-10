@@ -42,9 +42,35 @@ const SignUpPage = () => {
       newErrors.lastName = 'Last name must include letters only';
     }
 
-    // Validate password (at least 8 characters)
+    // Validate password 
+    const passwordErrors = [];
+
+    if (password.length === 0) {
+      passwordErrors.push('Password is required');
+    }
+  
     if (password.length < 8) {
-      newErrors.password = 'Password should be at least 8 characters';
+      passwordErrors.push('Password must be at least 8 characters long');
+    }
+  
+    if (password.length > 20) {
+      passwordErrors.push('Password must be at most 20 characters long');
+    }
+  
+    if (!/[a-z]/.test(password)) {
+      passwordErrors.push('Password must contain at least one lowercase letter');
+    }
+  
+    if (!/[A-Z]/.test(password)) {
+      passwordErrors.push('Password must contain at least one uppercase letter');
+    }
+  
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      passwordErrors.push('Password must contain at least one symbol');
+    }
+  
+    if (passwordErrors.length > 0) {
+      newErrors.password = passwordErrors.join('. ');
     }
 
     // Validate ID
