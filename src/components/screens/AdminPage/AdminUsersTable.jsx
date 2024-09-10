@@ -25,9 +25,9 @@ const AdminUsersTable = () => {
   // רשימת משתמשים פיקטיבית
   const initialUsers = [
     { id: 1, name: "John Doe", email: "john.doe@example.com", role: "Admin" },
-    { id: 2, name: "Jane Smith", email: "jane.smith@example.com", role: "User" },
-    { id: 3, name: "Michael Johnson", email: "michael.johnson@example.com", role: "Moderator" },
-    { id: 4, name: "Emily Brown", email: "emily.brown@example.com", role: "User" },
+    { id: 2, name: "Jane Smith", email: "jane.smith@example.com", role: "Student" },
+    { id: 3, name: "Michael Johnson", email: "michael.johnson@example.com", role: "Student" },
+    { id: 4, name: "Emily Brown", email: "emily.brown@example.com", role: "Lecturer" },
   ];
 
   const [users, setUsers] = useState(initialUsers);

@@ -11,13 +11,25 @@ import InfoCard from '../../card/InfoCard';
 Chart.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale);
 
 const AdminDashboard = () => {
+
+
+  const initialUsers = [
+    { id: 1, name: "John Doe", email: "john.doe@example.com", role: "Admin" },
+    { id: 2, name: "Jane Smith", email: "jane.smith@example.com", role: "Student" },
+    { id: 3, name: "Michael Johnson", email: "michael.johnson@example.com", role: "Student" },
+    { id: 4, name: "Emily Brown", email: "emily.brown@example.com", role: "Lecturer" },
+  ];
+  const totalUsers = initialUsers.length;
+  const totalStudents = initialUsers.filter(user => user.role === "Student").length;
+  const totalLecturers = initialUsers.filter(user => user.role === "Lecturer").length;
+  const totalAdmins = initialUsers.filter(user => user.role === "Admin").length;
   // נתוני הגרפים (הנתונים נשארים זהים)
   const barData = {
-    labels: ['Admins', 'Moderators', 'Users', 'Guests'],
+    labels: ['Students', 'Lecturers', 'Admins'],
     datasets: [
       {
         label: 'Number of Users',
-        data: [5, 10, 60, 5],
+        data: [totalStudents,totalLecturers, totalAdmins],
         backgroundColor: ['#3f51b5', '#ff4081', '#4caf50', '#f44336'],
         borderRadius: 10,
       },
@@ -51,11 +63,11 @@ const AdminDashboard = () => {
   };
 
   const pieData = {
-    labels: ['Admin', 'Moderator', 'User', 'Guest'],
+    labels: ['Students', 'Lecturers', 'Admins'],
     datasets: [
       {
         label: 'User Roles Distribution',
-        data: [10, 15, 55, 20],
+        dadata: [totalStudents,totalLecturers, totalAdmins],
         backgroundColor: ['#3f51b5', '#ff4081', '#4caf50', '#f44336'],
       },
     ],
@@ -130,7 +142,7 @@ const AdminDashboard = () => {
         {/* כרטיסי מידע מהירים */}
         <Grid container spacing={4} sx={{ width: '100%', mb: 4 }}>
           <Grid item xs={12} md={4}>
-            <InfoCard title="Total Users" value="89" bgColor="#3f51b5" />
+            <InfoCard title="Total Users" value={totalUsers} bgColor="#3f51b5" />
           </Grid>
           <Grid item xs={12} md={4}>
             <InfoCard title="Active Users" value="56" bgColor="#4caf50" />
