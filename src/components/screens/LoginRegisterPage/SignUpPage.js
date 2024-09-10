@@ -11,7 +11,8 @@ import {
   ButtonContainer,
   SubmitButton,
   ClearButton,
-  SignInLink
+  SignInLink,
+  ErrorMessage
 } from './SignUpPageStyles';
 
 const SignUpPage = () => {
@@ -27,17 +28,83 @@ const SignUpPage = () => {
   const [id, setId] = useState('');
   const [phonePrefix, setPhonePrefix] = useState('050');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [errors, setErrors] = useState({});
+
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate first name and last name (letters only)
+    if (!/^[a-zA-Z\s]*$/.test(firstName)) {
+      newErrors.firstName = 'First name must include letters only';
+    }
+    if (!/^[a-zA-Z\s]*$/.test(lastName)) {
+      newErrors.lastName = 'Last name must include letters only';
+    }
+
+    // Validate password 
+    const passwordErrors = [];
+
+    if (password.length === 0) {
+      passwordErrors.push('Password is required');
+    }
+  
+    if (password.length < 8) {
+      passwordErrors.push('Password must be at least 8 characters long');
+    }
+  
+    if (password.length > 20) {
+      passwordErrors.push('Password must be at most 20 characters long');
+    }
+  
+    if (!/[a-z]/.test(password)) {
+      passwordErrors.push('Password must contain at least one lowercase letter');
+    }
+  
+    if (!/[A-Z]/.test(password)) {
+      passwordErrors.push('Password must contain at least one uppercase letter');
+    }
+  
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      passwordErrors.push('Password must contain at least one symbol');
+    }
+  
+    if (passwordErrors.length > 0) {
+      newErrors.password = passwordErrors.join('. ');
+    }
+
+    // Validate ID
+    if (!/^\d{9}$/.test(id)) {
+      newErrors.id = 'Invalid id';
+    }
+
+    // Validate phone number (exactly 7 digits)
+    if (!/^\d{7}$/.test(phoneNumber)) {
+      newErrors.phoneNumber = 'Invalid phone number';
+    }
+
+    // Validate password confirmation
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = 'Passwords should be equals';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const email = emailUsername + emailDomain;
-    const phone = phonePrefix + phoneNumber;
-    console.log(
-      `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
-    );
+    if (validateForm()) {
+      const email = emailUsername + emailDomain;
+      const phone = phonePrefix + phoneNumber;
+      console.log(
+        `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
+      );
 
-    handleClear();
+      handleClear();
+    }
   };
+
 
   const handleClear = () => {
     setFirstName('');
@@ -50,6 +117,7 @@ const SignUpPage = () => {
     setId('');
     setPhonePrefix('050');
     setPhoneNumber('');
+    setErrors({});
   }
 
   return (
@@ -64,6 +132,8 @@ const SignUpPage = () => {
           onChange={(e) => setFirstName(e.target.value)}
           required
         />
+        {errors.firstName && <ErrorMessage>{errors.firstName}</ErrorMessage>}
+        
         <label htmlFor="lastName">Last Name:</label>
         <input
           type="text"
@@ -72,7 +142,9 @@ const SignUpPage = () => {
           onChange={(e) => setLastName(e.target.value)}
           required
         />
-        <label htmlFor="userName">UserName:</label>
+        {errors.lastName && <ErrorMessage>{errors.lastName}</ErrorMessage>}
+        
+        <label htmlFor="userName">Username:</label>
         <input
           type="text"
           id="userName"
@@ -80,6 +152,7 @@ const SignUpPage = () => {
           onChange={(e) => setUserName(e.target.value)}
           required
         />
+        
         <label htmlFor="email">Email:</label>
         <EmailInputContainer>
           <EmailUsernameInput
@@ -90,16 +163,17 @@ const SignUpPage = () => {
             required
             placeholder="mail"
           />
-        <EmailDomainSelect
-          id="emailDomain"
-          value={emailDomain}
-          onChange={(e) => setEmailDomain(e.target.value)}
+          <EmailDomainSelect
+            id="emailDomain"
+            value={emailDomain}
+            onChange={(e) => setEmailDomain(e.target.value)}
           >   
-          {emailDomains.map((domain) => (
-          <option key={domain} value={domain}>{domain}</option>
-          ))}
-        </EmailDomainSelect>  
+            {emailDomains.map((domain) => (
+              <option key={domain} value={domain}>{domain}</option>
+            ))}
+          </EmailDomainSelect>  
         </EmailInputContainer>
+        
         <label htmlFor="password">Password:</label>
         <input
           type="password"
@@ -107,8 +181,9 @@ const SignUpPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          minLength={8}
         />
+        {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+        
         <label htmlFor="confirmPassword">Confirm Password:</label>
         <input
           type="password"
@@ -117,7 +192,9 @@ const SignUpPage = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        <label htmlFor="id">Id:</label>
+        {errors.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage>}
+        
+        <label htmlFor="id">ID:</label>
         <input
           type="text"
           id="id"
@@ -125,17 +202,19 @@ const SignUpPage = () => {
           onChange={(e) => setId(e.target.value)}
           required
         />
+        {errors.id && <ErrorMessage>{errors.id}</ErrorMessage>}
+        
         <label htmlFor="phone">Phone:</label>
         <PhoneInputContainer>
-        <PhonePrefixSelect
-          id="phonePrefix"
-          value={phonePrefix}
-          onChange={(e) => setPhonePrefix(e.target.value)}
+          <PhonePrefixSelect
+            id="phonePrefix"
+            value={phonePrefix}
+            onChange={(e) => setPhonePrefix(e.target.value)}
           >
-          {phonePrefixes.map((prefix) => (
-          <option key={prefix} value={prefix}>{prefix}</option>
-          ))}
-        </PhonePrefixSelect>
+            {phonePrefixes.map((prefix) => (
+              <option key={prefix} value={prefix}>{prefix}</option>
+            ))}
+          </PhonePrefixSelect>
           <PhoneNumberInput
             type="tel"
             id="phoneNumber"
@@ -145,6 +224,8 @@ const SignUpPage = () => {
             placeholder="phone number"
           />
         </PhoneInputContainer>
+        {errors.phoneNumber && <ErrorMessage>{errors.phoneNumber}</ErrorMessage>}
+        
         <ButtonContainer>
           <SubmitButton type="submit">Create Account</SubmitButton>
           <ClearButton type="button" onClick={handleClear}>Clear</ClearButton>
