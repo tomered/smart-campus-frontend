@@ -41,30 +41,31 @@ const Sidebar = () => {
             <ListItemIcon>
               <AccountCircleIcon sx={{ color: '#3f51b5' }} />
             </ListItemIcon>
-            <ListItemText primary="מסך ראשי" />
+            <ListItemText primary="Admin dashboard" />
           </ListItem>
           <Divider />
           <ListItem button onClick={() => navigate('/UsersTable')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
             <ListItemIcon>
               <GroupIcon sx={{ color: '#3f51b5' }} />
             </ListItemIcon>
-            <ListItemText primary="ניהול משתמשים" />
+            <ListItemText primary="Users management" />
           </ListItem>
           <Divider />
           <ListItem button onClick={() => navigate('/reports')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
             <ListItemIcon>
               <BarChartIcon sx={{ color: '#3f51b5' }} />
             </ListItemIcon>
-            <ListItemText primary="דוחות וסטטיסטיקות" />
+            <ListItemText primary="Statistics" />
           </ListItem>
           <Divider />
           <ListItem button onClick={() => navigate('/settings')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
             <ListItemIcon>
               <SettingsIcon sx={{ color: '#3f51b5' }} />
             </ListItemIcon>
-            <ListItemText primary="הגדרות מערכת" />
+            <ListItemText primary="Setting" />
           </ListItem>
         </List>
+
       </Box>
     </Drawer>
   );

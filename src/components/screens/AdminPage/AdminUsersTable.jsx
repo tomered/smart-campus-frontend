@@ -66,7 +66,7 @@ const AdminUsersTable = () => {
             fontWeight: 'bold'
           }}
         >
-          User Management
+          Users Management
         </Typography>
 
         {/* עיצוב מודרני לטבלה */}
