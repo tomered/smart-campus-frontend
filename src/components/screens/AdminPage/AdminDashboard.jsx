@@ -14,10 +14,10 @@ const AdminDashboard = () => {
 
 
   const initialUsers = [
-    { id: 1, name: "John Doe", email: "john.doe@example.com", role: "Admin" },
-    { id: 2, name: "Jane Smith", email: "jane.smith@example.com", role: "Student" },
-    { id: 3, name: "Michael Johnson", email: "michael.johnson@example.com", role: "Student" },
-    { id: 4, name: "Emily Brown", email: "emily.brown@example.com", role: "Lecturer" },
+    { id: 1, name: "David Azran", email: "david@gmail.com", role: "Student" },
+    { id: 2, name: "Ofir Harar", email: "ofir@gmail.com", role: "Student" },
+    { id: 3, name: "Gal Touti", email: "gal@gmail.com", role: "Lecturer" },
+    { id: 4, name: "Itamar Mizrahi", email: "itamar@gmail.com", role: "Admin" },
   ];
   const totalUsers = initialUsers.length;
   const totalStudents = initialUsers.filter(user => user.role === "Student").length;
