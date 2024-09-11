@@ -85,22 +85,10 @@ const AdminUsersTable = () => {
           Users Management
         </Typography>
 
-        <Box sx={{ 
-          flexGrow: 1,
-          display: 'flex', 
-          flexDirection: 'column',
-          overflow: 'hidden' // Prevent scrolling on the Box
-        }}>
+        <Box sx={{ flexGrow: 1,display: 'flex', flexDirection: 'column',overflow: 'hidden'}}>
           <TableContainer 
             component={Paper} 
-            sx={{ 
-              borderRadius: 2, 
-              flexGrow: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'hidden' // Changed from 'auto' to 'hidden'
-            }}
-          >
+            sx={{borderRadius: 2,flexGrow: 1,display: 'flex',flexDirection: 'column',overflow: 'hidden'}}>
             <Table>
               <TableHead>
                 <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
