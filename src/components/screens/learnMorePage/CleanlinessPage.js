@@ -15,7 +15,7 @@ const LearnMorePage = () => {
           Text about Cleanliness .....
         </Text>
         <DashboardHomeBtns
-          source="Cleanliness"
+          source="cleanliness"
         />
       </Content>
     </Container>

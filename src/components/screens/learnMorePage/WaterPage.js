@@ -22,7 +22,7 @@ const LearnMorePage = () => {
           project - we will stop the waste.
         </Text>
         <DashboardHomeBtns
-          source="Water"
+          source="water"
         />
       </Content>
     </Container>
