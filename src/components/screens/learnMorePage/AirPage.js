@@ -18,7 +18,7 @@ const LearnMorePage = () => {
           Text About Air Text About Air Text About Air Text About Air Text About Air
         </Text>
         <DashboardHomeBtns 
-          source="Air"
+          source="air"
         />
       </Content>
     </Container>

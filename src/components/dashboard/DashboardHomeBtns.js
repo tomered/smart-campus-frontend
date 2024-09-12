@@ -6,9 +6,7 @@ import { TypeDashboard } from './TypeDashboard';
 const DashboardClassification = ({ source }) => {
   const handleUnknownSourceClick = () => {
     console.log(`Clicked from an unknown source: ${source}`);
-    // Add any additional logic to handle unknown sources here
   };
-
   return <TypeDashboard type={source} />
 };
 

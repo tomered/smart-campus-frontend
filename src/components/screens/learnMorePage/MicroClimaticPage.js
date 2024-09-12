@@ -15,7 +15,7 @@ const LearnMorePage = () => {
           MicroClimatic MicroClimatic MicroClimaticMicroClimatic
         </Text>
         <DashboardHomeBtns
-          source="MicroClimatic"
+          source="microClimatic"
         />
       </Content>
     </Container>
