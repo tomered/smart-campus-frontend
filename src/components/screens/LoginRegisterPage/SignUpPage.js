@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { 
-  Container, 
-  SignUpForm, 
-  EmailInputContainer, 
-  EmailUsernameInput, 
+import { useRegisterUserMutation } from '../../../redux/rtk/userData';
+import {
+  Container,
+  SignUpForm,
+  EmailInputContainer,
+  EmailUsernameInput,
   EmailDomainSelect,
   PhoneInputContainer,
   PhonePrefixSelect,
@@ -30,6 +31,7 @@ const SignUpPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [errors, setErrors] = useState({});
 
+  const [registerUser] = useRegisterUserMutation();
 
   const validateForm = () => {
     const newErrors = {};
@@ -48,27 +50,27 @@ const SignUpPage = () => {
     if (password.length === 0) {
       passwordErrors.push('Password is required');
     }
-  
+
     if (password.length < 8) {
       passwordErrors.push('Password must be at least 8 characters long');
     }
-  
+
     if (password.length > 20) {
       passwordErrors.push('Password must be at most 20 characters long');
     }
-  
+
     if (!/[a-z]/.test(password)) {
       passwordErrors.push('Password must contain at least one lowercase letter');
     }
-  
+
     if (!/[A-Z]/.test(password)) {
       passwordErrors.push('Password must contain at least one uppercase letter');
     }
-  
+
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
       passwordErrors.push('Password must contain at least one symbol');
     }
-  
+
     if (passwordErrors.length > 0) {
       newErrors.password = passwordErrors.join('. ');
     }
@@ -92,7 +94,7 @@ const SignUpPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (validateForm()) {
       const email = emailUsername + emailDomain;
@@ -100,6 +102,18 @@ const SignUpPage = () => {
       console.log(
         `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
       );
+      try {
+        const newUser = {
+          userName, password, firstName, lastName, phone, userId:id, email
+        }
+        // Registering new user to database
+        const result = await registerUser(newUser);
+
+        console.log(result)
+
+      } catch (error) {
+        console.error(`error registering user ${id}: ${error.message}`);
+      }
 
       handleClear();
     }
@@ -133,7 +147,7 @@ const SignUpPage = () => {
           required
         />
         {errors.firstName && <ErrorMessage>{errors.firstName}</ErrorMessage>}
-        
+
         <label htmlFor="lastName">Last Name:</label>
         <input
           type="text"
@@ -143,7 +157,7 @@ const SignUpPage = () => {
           required
         />
         {errors.lastName && <ErrorMessage>{errors.lastName}</ErrorMessage>}
-        
+
         <label htmlFor="userName">Username:</label>
         <input
           type="text"
@@ -152,7 +166,7 @@ const SignUpPage = () => {
           onChange={(e) => setUserName(e.target.value)}
           required
         />
-        
+
         <label htmlFor="email">Email:</label>
         <EmailInputContainer>
           <EmailUsernameInput
@@ -167,13 +181,13 @@ const SignUpPage = () => {
             id="emailDomain"
             value={emailDomain}
             onChange={(e) => setEmailDomain(e.target.value)}
-          >   
+          >
             {emailDomains.map((domain) => (
               <option key={domain} value={domain}>{domain}</option>
             ))}
-          </EmailDomainSelect>  
+          </EmailDomainSelect>
         </EmailInputContainer>
-        
+
         <label htmlFor="password">Password:</label>
         <input
           type="password"
@@ -183,7 +197,7 @@ const SignUpPage = () => {
           required
         />
         {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
-        
+
         <label htmlFor="confirmPassword">Confirm Password:</label>
         <input
           type="password"
@@ -193,7 +207,7 @@ const SignUpPage = () => {
           required
         />
         {errors.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage>}
-        
+
         <label htmlFor="id">ID:</label>
         <input
           type="text"
@@ -203,7 +217,7 @@ const SignUpPage = () => {
           required
         />
         {errors.id && <ErrorMessage>{errors.id}</ErrorMessage>}
-        
+
         <label htmlFor="phone">Phone:</label>
         <PhoneInputContainer>
           <PhonePrefixSelect
@@ -225,7 +239,7 @@ const SignUpPage = () => {
           />
         </PhoneInputContainer>
         {errors.phoneNumber && <ErrorMessage>{errors.phoneNumber}</ErrorMessage>}
-        
+
         <ButtonContainer>
           <SubmitButton type="submit">Create Account</SubmitButton>
           <ClearButton type="button" onClick={handleClear}>Clear</ClearButton>
