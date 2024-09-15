@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Box, Typography, Grid, Card, CardContent, Button, Menu, MenuItem } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button, Menu, MenuItem, Tooltip } from '@mui/material';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { Scatter } from 'react-chartjs-2';
-import { Chart as ChartJS, LinearScale, PointElement, CategoryScale, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, LinearScale, PointElement, CategoryScale, Tooltip as ChartTooltip, Legend } from 'chart.js';
 
-// Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, PointElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, ChartTooltip, Legend);
 
 const PowerDashboard = () => {
   useEffect(() => {
@@ -15,7 +13,6 @@ const PowerDashboard = () => {
 
   const isMobile = window.innerWidth < 700;
 
-  // State for controlling the dropdown menus and storing selected values
   const [menuState, setMenuState] = useState({
     anchorEl: null,
     classAnchorEl: null,
@@ -23,7 +20,6 @@ const PowerDashboard = () => {
     selectedClass: ''
   });
 
-  // Unified handler for opening menus
   const handleMenuOpen = (event, menuType) => {
     setMenuState((prevState) => ({
       ...prevState,
@@ -42,11 +38,11 @@ const PowerDashboard = () => {
   };
 
   const cardData = [
-    { title: "Number of light bulbs in the room", value: "2/4", bgColor: "#e0f7fa" },
-    { title: "The lights that are on", value: "the front ones", bgColor: "#e8f5e9" },
-    { title: "Projector on/off", value: "off", bgColor: "#e3f2fd" },
-    { title: "Computer on/off", value: "on", bgColor: "#f1f8e9" },
-    { title: "Air condition on/off", value: "on", bgColor: "#f1f8e9" }
+    { title: "Number of light bulbs in the room", value: "2/4", bgColor: "#3f51b5" },
+    { title: "The lights that are on", value: "the front ones", bgColor: "#ffb74d" },
+    { title: "Projector on/off", value: "off", bgColor: "#ff8a65" },
+    { title: "Computer on/off", value: "on", bgColor: "#4caf50" },
+    { title: "Air condition on/off", value: "on", bgColor: "#42a5f5" }
   ];
 
   const scatterData = {
@@ -82,23 +78,39 @@ const PowerDashboard = () => {
         max: 24,
       },
     },
+    plugins: {
+      legend: {
+        labels: {
+          color: 'black', // Change legend text color to black for readability on white
+        },
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0,0,0,0.7)', // Darker background for tooltips
+      },
+    },
+    layout: {
+      padding: 20, // Add padding around the chart
+    },
+    backgroundColor: 'white', // Set the background color of the chart area to white
   };
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box sx={{ padding: 4, backgroundColor: '#f5f5f5' }}>
       {/* Header Section with Title and Buttons */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-        <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'black' }}>Power Dashboard</Typography>
+        <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#37474f' }}>Power Dashboard</Typography>
 
         <Box>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ marginRight: 2 }}
-            onClick={(e) => handleMenuOpen(e, 'anchorEl')}
-          >
-            Building
-          </Button>
+          <Tooltip title="Select a building" arrow sx={{ fontWeight: 'bold'}}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ marginRight: 2, backgroundColor: '#0288d1', '&:hover': { backgroundColor: '#01579b' } }}
+              onClick={(e) => handleMenuOpen(e, 'anchorEl')}
+            >
+              Building
+            </Button>
+          </Tooltip>
           <Menu
             anchorEl={menuState.anchorEl}
             open={Boolean(menuState.anchorEl)}
@@ -111,14 +123,16 @@ const PowerDashboard = () => {
             ))}
           </Menu>
 
-          <Button
-            variant="contained"
-            color="secondary"
-            sx={{ marginRight: 2 }}
-            onClick={(e) => handleMenuOpen(e, 'classAnchorEl')}
-          >
-            Class
-          </Button>
+          <Tooltip title="Select a class" arrow>
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ marginRight: 2, backgroundColor: '#7b1fa2', '&:hover': { backgroundColor: '#4a148c' } }}
+              onClick={(e) => handleMenuOpen(e, 'classAnchorEl')}
+            >
+              Class
+            </Button>
+          </Tooltip>
           <Menu
             anchorEl={menuState.classAnchorEl}
             open={Boolean(menuState.classAnchorEl)}
@@ -131,9 +145,11 @@ const PowerDashboard = () => {
             ))}
           </Menu>
 
-          <Button variant="outlined" color="info">
-            {`Selected: ${menuState.selectedBuilding || 'None'}, ${menuState.selectedClass || 'None'}`}
-          </Button>
+          <Tooltip title="Click to display data" arrow>
+            <Button variant="outlined" color="info">
+              {`Selected: ${menuState.selectedBuilding || 'None'}, ${menuState.selectedClass || 'None'}`}
+            </Button>
+          </Tooltip>
         </Box>
       </Box>
 
@@ -141,9 +157,9 @@ const PowerDashboard = () => {
       <Grid container spacing={4}>
         {cardData.map((card, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card sx={{ backgroundColor: card.bgColor }}>
+            <Card sx={{ backgroundColor: card.bgColor, borderRadius: '12px', boxShadow: 3 }}>
               <CardContent>
-                <LightbulbIcon sx={{ color: '#ffd700' }} />
+                <LightbulbIcon sx={{ color: '#ffd700', fontSize: 36 }} />
                 <Typography variant="h6" gutterBottom>{card.title}</Typography>
                 <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{card.value}</Typography>
               </CardContent>
@@ -153,61 +169,24 @@ const PowerDashboard = () => {
       </Grid>
 
       {/* Scatter Plot Graph */}
-      <Box sx={{ marginTop: 4, height: 400 }}>
+      <Box sx={{ marginTop: 4, height: 400, backgroundColor: 'white', padding: 3, borderRadius: 2, boxShadow: 2 }}>
         <Typography variant="h5" gutterBottom>Light On Times Throughout the Day</Typography>
         <Scatter data={scatterData} options={scatterOptions} />
       </Box>
 
-      {/* Home Button */}
-      <BtnContainer>
-        <HomeBtn onClick={() => (window.location.href = '/')}>
+      {/* Material Design Back to Main Page Button */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ padding: '10px 20px', borderRadius: 2 }}
+          onClick={() => (window.location.href = '/')}
+        >
           {isMobile ? 'Main' : 'Back to Main Page'}
-        </HomeBtn>
-      </BtnContainer>
+        </Button>
+      </Box>
     </Box>
   );
 };
 
 export default PowerDashboard;
-
-const BtnContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-
-const HomeBtn = styled.button`
-  background-color: rgb(24, 153, 214);
-  border: none;
-  border-radius: 16px;
-  color: white;
-  cursor: pointer;
-  font-family: din-round, sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  line-height: 20px;
-  padding: 13px 16px;
-  text-transform: uppercase;
-  width: 13rem;
-  transition: filter 0.2s ease;
-
-  &:hover:not(:disabled) {
-    filter: brightness(1.1);
-  }
-
-  &:disabled {
-    cursor: auto;
-  }
-
-  &:active {
-    background: none;
-    border-top-width: 4px;
-  }
-
-  @media (max-width: 700px) {
-    width: 150px;
-  }
-`;
