@@ -175,7 +175,7 @@ const PowerDashboard = () => {
       </Box>
 
       {/* Material Design Back to Main Page Button */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'right', marginTop: 4 }}>
         <Button
           variant="contained"
           color="primary"
