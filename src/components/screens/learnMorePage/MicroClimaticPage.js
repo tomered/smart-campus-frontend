@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import DashboardHomeBtns from "../../dashboard/DashboardHomeBtns";
+import DashboardHomeBtns from "../../DashboardHomeBtns";
 
 const LearnMorePage = () => {
   useEffect(() => {
@@ -12,11 +12,9 @@ const LearnMorePage = () => {
       <Content>
         <Title>MicroClimatic</Title>
         <Text>
-          MicroClimatic MicroClimatic MicroClimaticMicroClimatic
+            MicroClimatic MicroClimatic MicroClimaticMicroClimatic
         </Text>
-        <DashboardHomeBtns
-          source="microClimatic"
-        />
+        <DashboardHomeBtns></DashboardHomeBtns>
       </Content>
     </Container>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import DashboardHomeBtns from '../../dashboard/DashboardHomeBtns';
+import DashboardHomeBtns from '../../DashboardHomeBtns';
 
 const LearnMorePage = () => {
   useEffect(() => {
@@ -14,9 +14,7 @@ const LearnMorePage = () => {
         <Text>
           Text should be here.....about Recycling
         </Text>
-        <DashboardHomeBtns
-          source="RecyclingGarbageEfficiency"
-        />
+        <DashboardHomeBtns></DashboardHomeBtns>
       </Content>
     </Container>
   );
