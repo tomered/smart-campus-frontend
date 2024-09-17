@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { TypeDashboard } from './TypeDashboard';
 
-const DashboardHomeBtns = () => {
+
+
+// New Component for Dashboard Classification
+const DashboardClassification = ({ source }) => {
+  const handleUnknownSourceClick = () => {
+    console.log(`Clicked from an unknown source: ${source}`);
+  };
+  return <TypeDashboard type={source} />
+};
+
+const DashboardHomeBtns = ({ source }) => {
+  const [showDashboard, setShowDashboard] = useState(false);
   const isMobile = window.innerWidth < 700; // Check if viewport width is less than 700px
+
+  const handleDashboardClick = () => {
+    setShowDashboard(true); // Show the Dashboard Classification component
+  };
+
+  if (showDashboard) {
+    return <DashboardClassification source={source} />;
+  }
+
   return (
     <>
       <BtnContainer>
-        <DashBtn onClick={() => (window.location.href = '/')}>
+        <DashBtn onClick={() => handleDashboardClick()}>
           {isMobile ? 'Dashboard' : 'Show Dashboard'}
         </DashBtn>
         <HomeBtn onClick={() => (window.location.href = '/')}>

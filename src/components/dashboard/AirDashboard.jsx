@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import DashboardHomeBtns from "../../dashboard/DashboardHomeBtns";
 
-const LearnMorePage = () => {
+
+const AirDashboard = () => {
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
     window.scrollTo(0, 0);
@@ -10,17 +10,10 @@ const LearnMorePage = () => {
   return (
     <Container>
       <Content>
-        <Title>Power</Title>
+        <Title>Air - dashboard</Title>
         <Text>
-          Text About Power Text About PowerText About PowerText About PowerText
-          About PowerText About PowerText About Power Text About PowerText About
-          PowerText About PowerText About PowerText About PowerText About
-          PowerText About Power Text About PowerText About PowerText About
-          PowerText About PowerText About PowerText About PowerText About Power
+          Text - dashboard
         </Text>
-        <DashboardHomeBtns
-          source="power"
-        />
       </Content>
     </Container>
   );
@@ -55,4 +48,4 @@ const Text = styled.p`
   text-align: justify;
 `;
 
-export default LearnMorePage;
+export default AirDashboard;
