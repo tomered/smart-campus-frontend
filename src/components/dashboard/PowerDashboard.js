@@ -98,7 +98,22 @@ const PowerDashboard = () => {
     <Box sx={{ padding: 4, backgroundColor: '#f5f5f5' }}>
       {/* Header Section with Title and Buttons */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-        <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#37474f' }}>Power Dashboard</Typography>
+      <Typography
+          variant="h3"
+          gutterBottom
+          sx={{
+            mb: 4,
+            padding : '25px 1px',
+            fontWeight: 'bold',
+            background: 'linear-gradient(90deg, #3f51b5, #21CBF3)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            animation: 'fadeIn 2s ease-in-out',
+          }}
+        >
+          Power Dashboard
+        </Typography>
+        
 
         <Box>
           <Tooltip title="Select a building" arrow sx={{ fontWeight: 'bold'}}>
