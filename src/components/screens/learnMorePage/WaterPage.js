@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import DashboardHomeBtns from '../../dashboard/DashboardHomeBtns';
+import DashboardHomeBtns from '../../DashboardHomeBtns';
 
 const LearnMorePage = () => {
   useEffect(() => {
@@ -21,9 +21,7 @@ const LearnMorePage = () => {
           will alert the relevant officials and in a more advanced phase of a
           project - we will stop the waste.
         </Text>
-        <DashboardHomeBtns
-          source="water"
-        />
+        <DashboardHomeBtns></DashboardHomeBtns>
       </Content>
     </Container>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import DashboardHomeBtns from "../../dashboard/DashboardHomeBtns";
+import DashboardHomeBtns from "../../DashboardHomeBtns";
 
 const LearnMorePage = () => {
   useEffect(() => {
@@ -12,11 +12,9 @@ const LearnMorePage = () => {
       <Content>
         <Title>Cleanliness</Title>
         <Text>
-          Text about Cleanliness .....
+           Text about Cleanliness .....
         </Text>
-        <DashboardHomeBtns
-          source="cleanliness"
-        />
+        <DashboardHomeBtns></DashboardHomeBtns>
       </Content>
     </Container>
   );

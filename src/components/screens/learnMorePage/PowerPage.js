@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import DashboardHomeBtns from "../../dashboard/DashboardHomeBtns";
+import DashboardHomeBtns from "../../DashboardHomeBtns";
 
 const LearnMorePage = () => {
   useEffect(() => {
@@ -18,9 +18,7 @@ const LearnMorePage = () => {
           PowerText About Power Text About PowerText About PowerText About
           PowerText About PowerText About PowerText About PowerText About Power
         </Text>
-        <DashboardHomeBtns
-          source="power"
-        />
+        <DashboardHomeBtns></DashboardHomeBtns>
       </Content>
     </Container>
   );

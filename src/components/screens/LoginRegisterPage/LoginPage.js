@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import { useLoginUserMutation } from '../../../redux/rtk/userData';
-import { useDispatch } from 'react-redux';
-import { setToken, setUserName } from '../../../redux/slices/userDataSlice';
 
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const [loginUser] = useLoginUserMutation()
-  const dispatch = useDispatch();
-
-  const handleSubmit = async(event) => {
+  const handleSubmit = (event) => {
     event.preventDefault(); // Prevent default form submission
 
     // Perform actions with collected data (username, password, userRole)
@@ -20,19 +14,6 @@ const LoginPage = () => {
     console.log(
       `Username: ${username}, Password: ${password}`
     );
-
-    try {
-      // Getting user from database
-      const result = await loginUser({userName:username, password});
-
-      // Save user token and userName
-      dispatch(setToken(result.data.token));
-      dispatch(setUserName(username));
-
-
-    } catch (error) {
-      console.error('error longing in: ' + error.message);
-    }
 
     // Reset form after submission (optional)
     setUsername("");
