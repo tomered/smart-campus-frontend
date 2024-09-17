@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, Card, CardContent, Button, Menu, MenuItem, Tooltip } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button, Menu, MenuItem, Tooltip} from '@mui/material';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { Scatter } from 'react-chartjs-2';
 import { Chart as ChartJS, LinearScale, PointElement, CategoryScale, Tooltip as ChartTooltip, Legend } from 'chart.js';
@@ -37,14 +37,24 @@ const PowerDashboard = () => {
     }));
   };
 
+  const  cardValue = [['2/4', "the front ones", 'off', 'on', 'on'],['3/4', "the front ones", 'off', 'off', 'on']];
+ 
+
   const cardData = [
-    { title: "Number of light bulbs in the room", value: "2/4", bgColor: "#3f51b5" },
-    { title: "The lights that are on", value: "the front ones", bgColor: "#ffb74d" },
-    { title: "Projector on/off", value: "off", bgColor: "#ff8a65" },
-    { title: "Computer on/off", value: "on", bgColor: "#4caf50" },
-    { title: "Air condition on/off", value: "on", bgColor: "#42a5f5" }
+    { title: "Number of light bulbs in the room", value: cardValue[0][0], bgColor: "#3f51b5" },
+    { title: "The lights that are on", value: cardValue[0][1], bgColor: "#4caf50" },
+    { title: "Projector on/off", value: cardValue[0][2], bgColor: "#ff9800" },
+    { title: "Computer on/off", value: cardValue[0][3], bgColor: "#e91e63" },
+    { title: "Air condition on/off", value: cardValue[0][4], bgColor: "#673ab7" }
   ];
 
+  const cardData2 = [
+    { title: "Number of light bulbs in the room", value: cardValue[1][0], bgColor: "#3f51b5" },
+    { title: "The lights that are on", value: cardValue[1][1], bgColor: "#4caf50" },
+    { title: "Projector on/off", value: cardValue[1][2], bgColor: "#ff9800" },
+    { title: "Computer on/off", value: cardValue[1][3], bgColor: "#e91e63" },
+    { title: "Air condition on/off", value: cardValue[1][4], bgColor: "#673ab7" }
+  ];
   const scatterData = {
     datasets: [
       {
@@ -95,7 +105,7 @@ const PowerDashboard = () => {
   };
 
   return (
-    <Box sx={{ padding: 4, backgroundColor: '#f5f5f5' }}>
+    <Box sx={{ padding: 4}}>
       {/* Header Section with Title and Buttons */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
       <Typography
@@ -116,7 +126,7 @@ const PowerDashboard = () => {
         
 
         <Box>
-          <Tooltip title="Select a building" arrow sx={{ fontWeight: 'bold'}}>
+          <Tooltip title="Select a building" arrow>
             <Button
               variant="contained"
               color="primary"
@@ -169,14 +179,25 @@ const PowerDashboard = () => {
       </Box>
 
       {/* Grid with Cards */}
-      <Grid container spacing={4}>
+      
+      <Grid container spacing={4} sx={{ width: '100%', mb: 4 }}>
         {cardData.map((card, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card sx={{ backgroundColor: card.bgColor, borderRadius: '12px', boxShadow: 3 }}>
+          <Grid item xs={12} md={4} key={index}>
+            <Card sx={{ 
+              backgroundColor: card.bgColor, 
+              borderRadius: '12px', 
+              boxShadow: 3, 
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                '&:hover': {
+              transform: 'translateY(-10px)',
+              boxShadow: '0px 12px 24px rgba(0, 0, 0, 0.2)',
+                }
+              }}>
               <CardContent>
                 <LightbulbIcon sx={{ color: '#ffd700', fontSize: 36 }} />
                 <Typography variant="h6" gutterBottom>{card.title}</Typography>
-                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{card.value}</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{card.value}</Typography>
               </CardContent>
             </Card>
           </Grid>
