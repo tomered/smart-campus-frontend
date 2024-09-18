@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -37,9 +37,6 @@ const AdminUsersTable = () => {
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");//ofir-לצורך שמירת הטקסט שהמשתמש ירצה לחפש לפיו
   const [searchBy, setSearchBy] = useState("name");//ofir- לצורך שמירת הקרטריון שלפיו המשתמש ירצה לחפש 
- {/*
-   const [filteredUsers, setFilteredUsers] = useState(initialUsers); // ofir- רשימה מסוננת של משתמשים
- */}
 
   const handleEditClick = (user) => {
     setEditUser(user);
@@ -63,20 +60,17 @@ const AdminUsersTable = () => {
     setDeleteConfirmation(user);
   };
 
- 
- {/*ofir- פונקציה שאחראית על סינון קריטריונים לפי הערך שהמשתמש בחר להזין בחיפוש */} 
- const searchUsers = () => {
-   return users.filter((user) => {
-     const searchValue = searchQuery.toLowerCase();
-     if (searchBy === "name") {
-       return user.name.toLowerCase().includes(searchValue);
-     } else if (searchBy === "email") {
-       return user.email.toLowerCase().includes(searchValue);
-     }
-     return false;
-   });
- };
-{/*ofir*/}
+ const filteredUsers = useMemo(() => {
+  return users.filter((user) => {
+    const searchValue = searchQuery.toLowerCase();
+    if (searchBy === "name") {
+      return user.name.toLowerCase().includes(searchValue);
+    } else if (searchBy === "email") {
+      return user.email.toLowerCase().includes(searchValue);
+    }
+    return false;
+  });
+}, [users, searchQuery, searchBy]);
 
  
   return (
@@ -112,29 +106,22 @@ const AdminUsersTable = () => {
 
 {/* ofir- יצירת איזור חיפוש שבו המשתמש יוכל לבחור אופציה שלפיה הוא יחפש ולהקליד את המילה הספציפית שלפיה יחפש */}
    <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-   <TextField
-     label="Search"
-     variant="outlined"
-     fullWidth
-     value={searchQuery}
-     onChange={(e) => setSearchQuery(e.target.value)}
+    <TextField
+      label="Search"
+      variant="outlined"
+      fullWidth
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
    />
-   <Select
-     value={searchBy}
-     onChange={(e) => setSearchBy(e.target.value)}
-   >
+    <Select
+      value={searchBy}
+      onChange={(e) => setSearchBy(e.target.value)}
+    >
      <MenuItem value="name">Name</MenuItem>
      <MenuItem value="email">Email</MenuItem>
      {/*<MenuItem value="lastName">Last Name</MenuItem>*/}
-   </Select>
-   {/*<Button
-     variant="contained"
-     color="primary"
-    // onClick={() => setFilteredUsers(searchUsers())} // ביצוע החיפוש
-   >
-     Search
-   </Button>*/}
- </Box>
+    </Select>
+    </Box>
  {/*ofir*/}
 
 
@@ -158,7 +145,7 @@ const AdminUsersTable = () => {
             <Box sx={{ overflow: 'auto', flexGrow: 1 }}>
               <Table>
                 <TableBody>
-                  {searchUsers().map((user) => (//החלפתי במקום היוזר לפילטר יוזר ofir
+                  {filteredUsers.map((user) => (//החלפתי במקום היוזר לפילטר יוזר ofir
                     <TableRow key={user.id} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' }, '&:hover': { backgroundColor: '#f1f1f1' } }}>
                       <TableCell>{user.id}</TableCell>
                       <TableCell>{user.name}</TableCell>
