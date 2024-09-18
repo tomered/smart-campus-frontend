@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Drawer, List, ListItem, ListItemText, Divider, ListItemIcon, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // נשתמש ב-useNavigate לניווט
+import { useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GroupIcon from '@mui/icons-material/Group';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -16,11 +16,10 @@ const Sidebar = () => {
       sx={{
         width: 240,
         flexShrink: 0,
-        '& .MuiDrawer-paper': { width: 240, boxSizing: 'border-box', backgroundColor: '#f4f6f8', top: '64px' }, // גובה ה-Navbar
+        '& .MuiDrawer-paper': { width: 240, boxSizing: 'border-box', backgroundColor: '#f4f6f8', top: '64px' },
       }}
     >
       <Box sx={{ overflow: 'auto', p: 2 }}>
-        {/* כותרת מעוצבת עם גרדיאנט */}
         <Typography 
           variant="h5" 
           sx={{ 

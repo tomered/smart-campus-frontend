@@ -25,14 +25,21 @@ const AdminUsersTable = () => {
   //Mock users
   const initialUsers = [
     { id: 1, name: "David Azran", email: "david@gmail.com", role: "Student" },
+    { id: 5, name: "David Azran", email: "david@gmail.com", role: "Student" },
     { id: 2, name: "Ofir Harar", email: "ofir@gmail.com", role: "Student" },
     { id: 3, name: "Gal Touti", email: "gal@gmail.com", role: "Lecturer" },
     { id: 4, name: "Itamar Mizrahi", email: "itamar@gmail.com", role: "Admin" },
+    { id: 6, name: "David Azran", email: "david@gmail.com", role: "Student" },
   ];
 
   const [users, setUsers] = useState(initialUsers);
   const [editUser, setEditUser] = useState(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");//ofir-לצורך שמירת הטקסט שהמשתמש ירצה לחפש לפיו
+  const [searchBy, setSearchBy] = useState("name");//ofir- לצורך שמירת הקרטריון שלפיו המשתמש ירצה לחפש 
+ {/*
+   const [filteredUsers, setFilteredUsers] = useState(initialUsers); // ofir- רשימה מסוננת של משתמשים
+ */}
 
   const handleEditClick = (user) => {
     setEditUser(user);
@@ -55,6 +62,23 @@ const AdminUsersTable = () => {
   const handleDeleteClick = (user) => {
     setDeleteConfirmation(user);
   };
+
+ 
+ {/*ofir- פונקציה שאחראית על סינון קריטריונים לפי הערך שהמשתמש בחר להזין בחיפוש */} 
+ const searchUsers = () => {
+   return users.filter((user) => {
+     const searchValue = searchQuery.toLowerCase();
+     if (searchBy === "name") {
+       return user.name.toLowerCase().includes(searchValue);
+     } else if (searchBy === "email") {
+       return user.email.toLowerCase().includes(searchValue);
+     }
+     return false;
+   });
+ };
+{/*ofir*/}
+
+ 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
       {/* Sidebar */}
@@ -84,6 +108,36 @@ const AdminUsersTable = () => {
         >
           Users Management
         </Typography>
+      
+
+{/* ofir- יצירת איזור חיפוש שבו המשתמש יוכל לבחור אופציה שלפיה הוא יחפש ולהקליד את המילה הספציפית שלפיה יחפש */}
+   <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+   <TextField
+     label="Search"
+     variant="outlined"
+     fullWidth
+     value={searchQuery}
+     onChange={(e) => setSearchQuery(e.target.value)}
+   />
+   <Select
+     value={searchBy}
+     onChange={(e) => setSearchBy(e.target.value)}
+   >
+     <MenuItem value="name">Name</MenuItem>
+     <MenuItem value="email">Email</MenuItem>
+     {/*<MenuItem value="lastName">Last Name</MenuItem>*/}
+   </Select>
+   {/*<Button
+     variant="contained"
+     color="primary"
+    // onClick={() => setFilteredUsers(searchUsers())} // ביצוע החיפוש
+   >
+     Search
+   </Button>*/}
+ </Box>
+ {/*ofir*/}
+
+
 
         <Box sx={{ flexGrow: 1,display: 'flex', flexDirection: 'column',overflow: 'hidden'}}>
           <TableContainer 
@@ -104,7 +158,7 @@ const AdminUsersTable = () => {
             <Box sx={{ overflow: 'auto', flexGrow: 1 }}>
               <Table>
                 <TableBody>
-                  {users.map((user) => (
+                  {searchUsers().map((user) => (//החלפתי במקום היוזר לפילטר יוזר ofir
                     <TableRow key={user.id} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' }, '&:hover': { backgroundColor: '#f1f1f1' } }}>
                       <TableCell>{user.id}</TableCell>
                       <TableCell>{user.name}</TableCell>
