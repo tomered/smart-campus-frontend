@@ -9,10 +9,6 @@ import {
   Paper,
   Button,
   TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Box,
   Container,
   Select,
@@ -20,6 +16,8 @@ import {
   Typography
 } from "@mui/material";
 import Sidebar from './Sidebar'; // ייבוא של ה-Sidebar
+import EditUserDialog from "./Dialogs/EditUserDialog";
+import DeleteUserDialog from "./Dialogs/DeleteUserDialog";
 
 const AdminUsersTable = () => {
   //Mock users
@@ -44,20 +42,26 @@ const AdminUsersTable = () => {
 
   const handleClose = () => {
     setEditUser(null);
-    setDeleteConfirmation(null);
   };
 
-  const handleSave = () => {
-    // שמירת המשתמש המעודכן ברשימה
-    setUsers(users.map((user) => (user.id === editUser.id ? editUser : user)));
+  const handleSave = (updatedUser) => {
+    setUsers(users.map((user) => (user.id === updatedUser.id ? updatedUser : user)));
     handleClose();
   };
-  const handleDelete = () => {
-    setUsers(users.filter(user => user.id !== deleteConfirmation.id));
-    handleClose();
-  };
+
   const handleDeleteClick = (user) => {
     setDeleteConfirmation(user);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteConfirmation) {
+      setUsers(users.filter(user => user.id !== deleteConfirmation.id));
+      setDeleteConfirmation(null);
+    }
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteConfirmation(null);
   };
 
  const filteredUsers = useMemo(() => {
@@ -123,9 +127,6 @@ const AdminUsersTable = () => {
     </Select>
     </Box>
  {/*ofir*/}
-
-
-
         <Box sx={{ flexGrow: 1,display: 'flex', flexDirection: 'column',overflow: 'hidden'}}>
           <TableContainer 
             component={Paper} 
@@ -187,74 +188,8 @@ const AdminUsersTable = () => {
               </Table>
             </Box>
           </TableContainer>
-
-          {editUser && (
-            <Dialog open={Boolean(editUser)} onClose={handleClose} maxWidth="sm" fullWidth>
-              <DialogTitle>Edit User</DialogTitle>
-              <DialogContent>
-                <TextField
-                  margin="dense"
-                  label="Name"
-                  fullWidth
-                  value={editUser.name}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, name: e.target.value })
-                  }
-                  variant="outlined"
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  margin="dense"
-                  label="Email"
-                  fullWidth
-                  value={editUser.email}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, email: e.target.value })
-                  }
-                  variant="outlined"
-                  sx={{ mb: 2 }}
-                />
-                <Select
-                  margin="dense"
-                  fullWidth
-                  value={editUser.role}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, role: e.target.value })
-                  }
-                  sx={{ mb: 2 }}
-                >
-                  <MenuItem value="Admin">Admin</MenuItem>
-                  <MenuItem value="User">Student</MenuItem>
-                  <MenuItem value="Moderator">Lecturer</MenuItem>
-                </Select>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color="secondary">
-                  Cancel
-                </Button>
-                <Button onClick={handleSave} variant="contained" sx={{ backgroundColor: '#21CBF3' }}>
-                  Save
-                </Button>
-              </DialogActions>
-            </Dialog>
-          )}
-
-          {deleteConfirmation && (
-            <Dialog open={Boolean(deleteConfirmation)} onClose={handleClose} maxWidth="sm" fullWidth>
-              <DialogTitle>Delete User</DialogTitle>
-              <DialogContent>
-                Are you sure you want to delete this user?
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color="secondary">
-                  Cancel
-                </Button>
-                <Button onClick={handleDelete} variant="contained" color="error">
-                  Delete
-                </Button>
-              </DialogActions>
-            </Dialog>
-          )}
+          <EditUserDialog open={Boolean(editUser)} user={editUser} onClose={handleClose} onSave={handleSave} />
+          <DeleteUserDialog open={Boolean(deleteConfirmation)} onClose={handleDeleteClose} onDelete={handleDeleteConfirm} />
         </Box>
       </Container>
     </div>
