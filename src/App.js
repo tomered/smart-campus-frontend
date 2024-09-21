@@ -28,8 +28,8 @@ const App = () => {
         <Chatbot
           title='Mapping of Hit College'
           src={'temp'}
-          width='90%'
-          height='550vh'
+          width='100%'
+          height='100%'
           loading='lazy'
         />
         <Routes>
