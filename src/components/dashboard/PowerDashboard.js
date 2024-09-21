@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, Card, CardContent, Button, Menu, MenuItem, Tooltip} from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button, Menu, MenuItem, Tooltip } from '@mui/material';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { Scatter } from 'react-chartjs-2';
 import { Chart as ChartJS, LinearScale, PointElement, CategoryScale, Tooltip as ChartTooltip, Legend } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, ChartTooltip, Legend);
 
-const PowerDashboard = () => {
+const PowerDashboard = ({ goHome }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -27,7 +27,6 @@ const PowerDashboard = () => {
     }));
   };
 
-  // Unified handler for closing menus and selecting values
   const handleMenuClose = (menuType, value) => {
     setMenuState((prevState) => ({
       ...prevState,
@@ -37,8 +36,15 @@ const PowerDashboard = () => {
     }));
   };
 
-  const  cardValue = [['2/4', "the front ones", 'off', 'on', 'on'],['3/4', "the front ones", 'off', 'off', 'on']];
- 
+  const cardValue = [['2/4', "the front ones", 'off', 'on', 'on'],['3/4', "the front ones", 'off', 'off', 'on']];
+
+  const defaultCardData = [
+    { title: 'Number of light bulbs in the room', value: "", bgColor: '#3f51b5' },
+    { title: 'The lights that are on', value: "", bgColor: '#4caf50' },
+    { title: 'Projector on/off', value: "", bgColor: '#ff9800' },
+    { title: 'Computer on/off', value: "", bgColor: '#e91e63' },
+    { title: 'Air condition on/off', value: "", bgColor: '#673ab7' },
+  ];
 
   const cardData = [
     { title: "Number of light bulbs in the room", value: cardValue[0][0], bgColor: "#3f51b5" },
@@ -55,6 +61,17 @@ const PowerDashboard = () => {
     { title: "Computer on/off", value: cardValue[1][3], bgColor: "#e91e63" },
     { title: "Air condition on/off", value: cardValue[1][4], bgColor: "#673ab7" }
   ];
+
+  const [currentCardData, setCurrentCardData] = useState(defaultCardData);
+
+  const handleDisplayDataClick = () => {
+    if (menuState.selectedBuilding === 'Building 1' && menuState.selectedClass === 'Class 1') {
+      setCurrentCardData(cardData);
+    } else if (menuState.selectedBuilding === 'Building 1' && menuState.selectedClass === 'Class 2') {
+      setCurrentCardData(cardData2);
+    }
+  };
+
   const scatterData = {
     datasets: [
       {
@@ -91,29 +108,28 @@ const PowerDashboard = () => {
     plugins: {
       legend: {
         labels: {
-          color: 'black', // Change legend text color to black for readability on white
+          color: 'black',
         },
       },
       tooltip: {
-        backgroundColor: 'rgba(0,0,0,0.7)', // Darker background for tooltips
+        backgroundColor: 'rgba(0,0,0,0.7)',
       },
     },
     layout: {
-      padding: 20, // Add padding around the chart
+      padding: 20,
     },
-    backgroundColor: 'white', // Set the background color of the chart area to white
+    backgroundColor: 'white',
   };
 
   return (
     <Box sx={{ padding: 4}}>
-      {/* Header Section with Title and Buttons */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-      <Typography
+        <Typography
           variant="h3"
           gutterBottom
           sx={{
             mb: 4,
-            padding : '25px 1px',
+            padding: '25px 1px',
             fontWeight: 'bold',
             background: 'linear-gradient(90deg, #3f51b5, #21CBF3)',
             WebkitBackgroundClip: 'text',
@@ -123,7 +139,6 @@ const PowerDashboard = () => {
         >
           Power Dashboard
         </Typography>
-        
 
         <Box>
           <Tooltip title="Select a building" arrow>
@@ -171,7 +186,14 @@ const PowerDashboard = () => {
           </Menu>
 
           <Tooltip title="Click to display data" arrow>
-            <Button variant="outlined" color="info">
+              <Button 
+                variant="outlined" 
+                color="info" 
+                onClick={() => {
+                  alert(`Data updated to ${menuState.selectedBuilding || 'None'}, ${menuState.selectedClass || 'None'}`);
+                  handleDisplayDataClick(); // Call the function to update the card data
+                }}
+              >
               {`Selected: ${menuState.selectedBuilding || 'None'}, ${menuState.selectedClass || 'None'}`}
             </Button>
           </Tooltip>
@@ -179,9 +201,8 @@ const PowerDashboard = () => {
       </Box>
 
       {/* Grid with Cards */}
-      
       <Grid container spacing={4} sx={{ width: '100%', mb: 4 }}>
-        {cardData.map((card, index) => (
+        {currentCardData.map((card, index) => (
           <Grid item xs={12} md={4} key={index}>
             <Card sx={{ 
               backgroundColor: card.bgColor, 
@@ -194,10 +215,16 @@ const PowerDashboard = () => {
               boxShadow: '0px 12px 24px rgba(0, 0, 0, 0.2)',
                 }
               }}>
-              <CardContent>
-                <LightbulbIcon sx={{ color: '#ffd700', fontSize: 36 }} />
-                <Typography variant="h6" gutterBottom>{card.title}</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{card.value}</Typography>
+              <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
+                <LightbulbIcon sx={{ fontSize: 40, color: 'white', marginRight: 2 }} />
+                <Typography variant="h5" sx={{ color: 'white' }}>
+                  {card.title}
+                </Typography>
+              </CardContent>
+              <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography variant="h6" sx={{ color: 'white' }}>
+                  {card.value}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -221,7 +248,7 @@ const PowerDashboard = () => {
           {isMobile ? 'Main' : 'Back to Main Page'}
         </Button>
       </Box>
-    </Box>
+    </Box>
   );
 };
 
