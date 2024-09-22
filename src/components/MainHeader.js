@@ -33,10 +33,14 @@ const MainHeader = () => {
     window.location.href = "/";
   };
 
+  const handleLogoAndTitleClick = () => {
+    navigate('/');
+  };
+
   return (
     <Container>
       <CustomNavBar>
-        <LogoAndTitle href="/">
+        <LogoAndTitle  onClick={handleLogoAndTitleClick}>
           <Logo src={logoImage} alt="Smart Campus Logo" />
           <Title>Smart Campus</Title>
         </LogoAndTitle>
@@ -127,6 +131,7 @@ const LogoAndTitle = styled.a`
   display: flex;
   align-items: center;
   text-decoration: none; /* Ensure the link has no underline */
+  cursor: pointer;
 
   @media screen and (max-width: 1130px) {
     display: none;
