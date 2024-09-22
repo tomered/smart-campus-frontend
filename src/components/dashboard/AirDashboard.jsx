@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 
 
-const DashboardPage = () => {
+const AirDashboard = () => {
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
     window.scrollTo(0, 0);
@@ -48,4 +48,4 @@ const Text = styled.p`
   text-align: justify;
 `;
 
-export default DashboardPage;
+export default AirDashboard;
