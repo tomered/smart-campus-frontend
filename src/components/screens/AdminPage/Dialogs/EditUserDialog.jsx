@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 
 const EditUserDialog = ({ open, user, onClose, onSave }) => {
-  const [editUser, setEditUser] = useState(user || { name: '', email: '', role: '' });
+  const [editUser, setEditUser] = useState(user || { firstName: '', lastName: '', email: '', role: '' });
 
   useEffect(() => {
     if (user) {
@@ -32,11 +32,22 @@ const EditUserDialog = ({ open, user, onClose, onSave }) => {
       <DialogContent>
         <TextField
           margin="dense"
-          label="Name"
+          label="First name"
           fullWidth
-          value={editUser.name}
+          value={editUser.firstName}
           onChange={(e) =>
-            setEditUser({ ...editUser, name: e.target.value })
+            setEditUser({ ...editUser, firstName: e.target.value })
+          }
+          variant="outlined"
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          margin="dense"
+          label="Last name"
+          fullWidth
+          value={editUser.lastName}
+          onChange={(e) =>
+            setEditUser({ ...editUser, lastName: e.target.value })
           }
           variant="outlined"
           sx={{ mb: 2 }}
@@ -62,8 +73,8 @@ const EditUserDialog = ({ open, user, onClose, onSave }) => {
           sx={{ mb: 2 }}
         >
           <MenuItem value="Admin">Admin</MenuItem>
-          <MenuItem value="User">Student</MenuItem>
-          <MenuItem value="Moderator">Lecturer</MenuItem>
+          <MenuItem value="Student">Student</MenuItem>
+          <MenuItem value="Lecturer">Lecturer</MenuItem>
         </Select>
       </DialogContent>
       <DialogActions>
