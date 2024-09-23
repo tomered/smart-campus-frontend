@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -7,11 +7,13 @@ import {
   TextField,
   Select,
   MenuItem,
-  Button
-} from '@mui/material';
+  Button,
+} from "@mui/material";
 
 const EditUserDialog = ({ open, user, onClose, onSave }) => {
-  const [editUser, setEditUser] = useState(user || { firstName: '', lastName: '', email: '', role: '' });
+  const [editUser, setEditUser] = useState(
+    user || { firstName: "", lastName: "", email: "", role: "" }
+  );
 
   useEffect(() => {
     if (user) {
@@ -57,9 +59,7 @@ const EditUserDialog = ({ open, user, onClose, onSave }) => {
           label="Email"
           fullWidth
           value={editUser.email}
-          onChange={(e) =>
-            setEditUser({ ...editUser, email: e.target.value })
-          }
+          onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
           variant="outlined"
           sx={{ mb: 2 }}
         />
@@ -67,21 +67,24 @@ const EditUserDialog = ({ open, user, onClose, onSave }) => {
           margin="dense"
           fullWidth
           value={editUser.role}
-          onChange={(e) =>
-            setEditUser({ ...editUser, role: e.target.value })
-          }
+          onChange={(e) => setEditUser({ ...editUser, role: e.target.value })}
           sx={{ mb: 2 }}
         >
           <MenuItem value="Admin">Admin</MenuItem>
           <MenuItem value="Student">Student</MenuItem>
           <MenuItem value="Lecturer">Lecturer</MenuItem>
+          <MenuItem value="Administration">Administration</MenuItem>
         </Select>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="secondary">
           Cancel
         </Button>
-        <Button onClick={handleSave} variant="contained" sx={{ backgroundColor: '#21CBF3' }}>
+        <Button
+          onClick={handleSave}
+          variant="contained"
+          sx={{ backgroundColor: "#21CBF3" }}
+        >
           Save
         </Button>
       </DialogActions>
