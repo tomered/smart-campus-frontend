@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
-import styled, { keyframes, css } from 'styled-components';
-import { FaBars } from 'react-icons/fa';
-import '../Style.css'; // Ensure this file doesn't conflict with the styled-components
-import logoImage from '../HIT.png';
+import React, { useState } from "react";
+import styled, { keyframes, css } from "styled-components";
+import { FaBars } from "react-icons/fa";
+import "../Style.css"; // Ensure this file doesn't conflict with the styled-components
+import logoImage from "../HIT.png";
+import { useNavigate } from "react-router-dom";
 
 const MainHeader = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
+
+  const menuItems = [
+    { name: "Staff", path: "/staff" },
+    { name: "Students", path: "/students" },
+    { name: "Partners", path: "/partners" },
+    { name: "Contact Us", path: "/contact" },
+    { name: "News", path: "/news" },
+    {
+      name: "HIT 3D Map",
+      path: "/",
+      onClick: (e) => handleMapClick(e, "hitMap"),
+    },
+    { name: "Login", path: "/login" },
+  ];
 
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
@@ -13,15 +29,19 @@ const MainHeader = () => {
 
   const handleMapClick = (e, mapDivId) => {
     e.preventDefault();
-    sessionStorage.setItem('mapDivId', mapDivId);
-    window.location.href = '/';
+    sessionStorage.setItem("mapDivId", mapDivId);
+    window.location.href = "/";
+  };
+
+  const handleLogoAndTitleClick = () => {
+    navigate('/');
   };
 
   return (
     <Container>
       <CustomNavBar>
-        <LogoAndTitle href='/'>
-          <Logo src={logoImage} alt='Smart Campus Logo' />
+        <LogoAndTitle  onClick={handleLogoAndTitleClick}>
+          <Logo src={logoImage} alt="Smart Campus Logo" />
           <Title>Smart Campus</Title>
         </LogoAndTitle>
         <MenuIcon onClick={handleMenuClick}>
@@ -29,29 +49,21 @@ const MainHeader = () => {
         </MenuIcon>
         <MenuLinks show={showMenu}>
           <ul>
-            <MenuItem>
-              <a href='Staff'>Staff</a>
-            </MenuItem>
-            <MenuItem>
-              <a href='Students'>Students</a>
-            </MenuItem>
-            <MenuItem>
-              <a href='Partners'>Partners</a>
-            </MenuItem>
-            <MenuItem>
-              <a href='Contact'>Contact Us</a>
-            </MenuItem>
-            <MenuItem>
-              <a href='News'>News</a>
-            </MenuItem>
-            <MenuItem>
-              <a href='/' onClick={(e) => handleMapClick(e, 'hitMap')}>
-                HIT 3D Map
-              </a>
-            </MenuItem>
-            <MenuItem>
-              <a href='Login'>Login</a>
-            </MenuItem>
+            {menuItems.map((item) => (
+              <MenuItem key={item.name}>
+                <a
+                  onClick={(e) => {
+                    if (item.onClick) {
+                      item.onClick(e);
+                    } else {
+                      navigate(item.path);
+                    }
+                  }}
+                >
+                  {item.name}
+                </a>
+              </MenuItem>
+            ))}
           </ul>
         </MenuLinks>
       </CustomNavBar>
@@ -97,7 +109,7 @@ const Container = styled.header`
   color: white;
 
   h1 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 24px;
     color: white; /* White text color */
   }
@@ -110,7 +122,7 @@ const CustomNavBar = styled.nav`
   width: 100%;
   text-transform: uppercase;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 1130px) {
     flex-direction: column;
   }
 `;
@@ -119,8 +131,9 @@ const LogoAndTitle = styled.a`
   display: flex;
   align-items: center;
   text-decoration: none; /* Ensure the link has no underline */
+  cursor: pointer;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 1130px) {
     display: none;
   }
 `;
@@ -133,13 +146,13 @@ const Logo = styled.img`
 `;
 
 const Title = styled.h1`
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 24px;
   color: white; /* White text color */
   margin-left: 10px;
   margin: 0; /* Reset margin to ensure alignment with Logo */
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 1130px) {
     display: none;
   }
 `;
@@ -148,7 +161,7 @@ const MenuIcon = styled.div`
   display: none;
   cursor: pointer;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 1130px) {
     display: block;
     font-size: 24px;
   }
@@ -161,7 +174,7 @@ const MenuLinks = styled.div`
 
   ul {
     list-style: none;
-    display: flex;
+    display: flex; /* Default to flex for desktop */
     justify-content: center;
     align-items: center;
     margin: 0;
@@ -181,18 +194,21 @@ const MenuLinks = styled.div`
     transition: color 0.5s ease-in-out;
   }
 
-  @media screen and (max-width: 480px) {
-    display: ${({ show }) => (show ? 'flex' : 'none')};
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: rgb(48, 48, 48);
-    padding: 20px;
+  @media screen and (max-width: 1130px) {
+    ul {
+      display: ${({ show }) =>
+        show ? "flex" : "none"}; /* Show menu items when show is true */
+      flex-direction: column; /* Stack items vertically */
+      width: 100%; /* Full width for mobile */
+      padding: 20px 0; /* Add padding for spacing */
+      background-color: rgb(48, 48, 48); /* Background color */
+    }
+
+    li {
+      margin: 10px 0; /* Margin for spacing between items */
+    }
   }
 `;
-
 const hoverableStyles = css`
   display: inline-block;
   backface-visibility: hidden;
@@ -202,12 +218,13 @@ const hoverableStyles = css`
   transform: translateZ(0);
   transition-duration: 0.3s;
   transition-property: transform;
+  cursor: pointer;
 
   &:before {
     position: absolute;
     pointer-events: none;
     z-index: -1;
-    content: '';
+    content: "";
     top: 100%;
     left: 5%;
     height: 10px;

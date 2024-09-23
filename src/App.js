@@ -17,6 +17,8 @@ import Footer from './components/Footer.js';
 import MainPage from './components/screens/MainPage.js';
 import Login from './components/screens/LoginRegisterPage/LoginPage.js';
 import Register from './components/screens/LoginRegisterPage/SignUpPage.js';
+import AirDashboard from './components/dashboard/AirDashboard.jsx';
+import PowerDashboard from './components/dashboard/PowerDashboard.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const App = () => {
   return (
@@ -26,8 +28,8 @@ const App = () => {
         <Chatbot
           title='Mapping of Hit College'
           src={'temp'}
-          width='90%'
-          height='550vh'
+          width='100%'
+          height='100%'
           loading='lazy'
         />
         <Routes>
@@ -47,6 +49,8 @@ const App = () => {
           <Route path='/news' element={<NewsPage />} />
           <Route path='/login' element={<Login />} />
           <Route path='/sign-up' element={<Register />} />
+          <Route path='/airDashboard' element={<AirDashboard />} />
+          <Route path='/powerDashboard' element={<PowerDashboard />} />
         </Routes>
         <Footer />
       </BrowserRouter>
