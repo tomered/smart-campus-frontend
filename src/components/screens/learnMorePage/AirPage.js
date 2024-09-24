@@ -10,16 +10,28 @@ const LearnMorePage = () => {
   return (
     <Container>
       <Content>
-        <Title>Air</Title>
+        <h1
+          style={{
+            marginBottom: "32px", // Equivalent to mb: 4 in Material-UI
+            padding: "25px 1px",
+            fontWeight: "bold",
+            fontSize: "48px",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
+          Air
+        </h1>
         <Text>
-          Text About Air Text About Air Text About Air Text About Air Text About Air
-          Text About Air Text About Air Text About Air Text About Air Text About Air
-          Text About Air Text About Air Text About Air Text About Air Text About Air
-          Text About Air Text About Air Text About Air Text About Air Text About Air
+          Text About Air Text About Air Text About Air Text About Air Text About
+          Air Text About Air Text About Air Text About Air Text About Air Text
+          About Air Text About Air Text About Air Text About Air Text About Air
+          Text About Air Text About Air Text About Air Text About Air Text About
+          Air Text About Air
         </Text>
-        <DashboardHomeBtns 
-          source="air"
-        />
+        <DashboardHomeBtns source="air" />
       </Content>
     </Container>
   );

@@ -10,7 +10,20 @@ const LearnMorePage = () => {
   return (
     <Container>
       <Content>
-        <Title>Power</Title>
+        <h1
+          style={{
+            marginBottom: "32px", // Equivalent to mb: 4 in Material-UI
+            padding: "25px 1px",
+            fontWeight: "bold",
+            fontSize: "48px",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
+          Power
+        </h1>
         <Text>
           Text About Power Text About PowerText About PowerText About PowerText
           About PowerText About PowerText About Power Text About PowerText About
@@ -18,9 +31,7 @@ const LearnMorePage = () => {
           PowerText About Power Text About PowerText About PowerText About
           PowerText About PowerText About PowerText About PowerText About Power
         </Text>
-        <DashboardHomeBtns
-          source="power"
-        />
+        <DashboardHomeBtns source="power" />
       </Content>
     </Container>
   );

@@ -10,13 +10,22 @@ const LearnMorePage = () => {
   return (
     <Container>
       <Content>
-        <Title>MicroClimatic</Title>
-        <Text>
-          MicroClimatic MicroClimatic MicroClimaticMicroClimatic
-        </Text>
-        <DashboardHomeBtns
-          source="microClimatic"
-        />
+        <h1
+          style={{
+            marginBottom: "32px", // Equivalent to mb: 4 in Material-UI
+            padding: "25px 1px",
+            fontWeight: "bold",
+            fontSize: "48px",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
+          MicroClimatic
+        </h1>
+        <Text>MicroClimatic MicroClimatic MicroClimaticMicroClimatic</Text>
+        <DashboardHomeBtns source="microClimatic" />
       </Content>
     </Container>
   );

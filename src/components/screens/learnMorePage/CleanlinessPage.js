@@ -10,13 +10,22 @@ const LearnMorePage = () => {
   return (
     <Container>
       <Content>
-        <Title>Cleanliness</Title>
-        <Text>
-          Text about Cleanliness .....
-        </Text>
-        <DashboardHomeBtns
-          source="cleanliness"
-        />
+        <h1
+          style={{
+            marginBottom: "32px", // Equivalent to mb: 4 in Material-UI
+            padding: "25px 1px",
+            fontWeight: "bold",
+            fontSize: "48px",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
+          Cleanliness
+        </h1>
+        <Text>Text about Cleanliness .....</Text>
+        <DashboardHomeBtns source="cleanliness" />
       </Content>
     </Container>
   );

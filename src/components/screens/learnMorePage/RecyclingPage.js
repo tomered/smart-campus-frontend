@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import DashboardHomeBtns from '../../dashboard/DashboardHomeBtns';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import DashboardHomeBtns from "../../dashboard/DashboardHomeBtns";
 
 const LearnMorePage = () => {
   useEffect(() => {
@@ -10,13 +10,22 @@ const LearnMorePage = () => {
   return (
     <Container>
       <Content>
-        <Title>RecyclingGarbageEfficiency</Title>
-        <Text>
-          Text should be here.....about Recycling
-        </Text>
-        <DashboardHomeBtns
-          source="RecyclingGarbageEfficiency"
-        />
+        <h1
+          style={{
+            marginBottom: "32px", // Equivalent to mb: 4 in Material-UI
+            padding: "25px 1px",
+            fontWeight: "bold",
+            fontSize: "48px",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
+          Recycling and Garbage Efficiency
+        </h1>
+        <Text>Text should be here.....about Recycling</Text>
+        <DashboardHomeBtns source="RecyclingGarbageEfficiency" />
       </Content>
     </Container>
   );

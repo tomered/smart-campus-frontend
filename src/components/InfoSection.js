@@ -1,15 +1,28 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import '../Style.css';
-import campus from '../assets/campus.jpg';
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import "../Style.css";
+import campus from "../assets/campus.jpg";
 
 const InfoSection = () => {
   return (
     <MainContainer>
       <CustomImg src={campus} alt="Smart Campus scenery" />
       <TextArea>
-        <h2>Smart Campus</h2>
-        <p>
+        <h2
+          style={{
+            marginBottom: "32px", // Equivalent to mb: 4 in Material-UI
+            padding: "25px 1px",
+            fontWeight: "bold",
+            fontSize: "48px",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
+          Smart Campus
+        </h2>
+        <p style={{ fontSize: "26px" }}>
           is an innovative approach to a common place based on optimal use of
           resources while maximizing the comfort of living. At the base of the
           smart campus is a detection, information processing and
@@ -48,14 +61,12 @@ const slideInFromRight = keyframes`
   }
 `;
 
-
 const CustomImg = styled.img`
   width: 50%;
   height: auto;
   float: left;
   margin-right: 20px;
-  animation: ${slideInFromLeft} 1s ease-out;  /* Applying the animation */
-  
+  animation: ${slideInFromLeft} 1s ease-out; /* Applying the animation */
 
   @media (max-width: 1200px) {
     width: 90%;
