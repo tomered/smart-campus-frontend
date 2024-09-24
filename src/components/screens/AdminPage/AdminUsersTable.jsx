@@ -172,63 +172,55 @@ const AdminUsersTable = () => {
                   <TableCell sx={{ fontWeight: "bold" }}>Delete</TableCell>
                 </TableRow>
               </TableHead>
-            </Table>
-            <Box sx={{ overflow: "auto", flexGrow: 1 }}>
-              <Table>
-                <TableBody>
-                  {filteredUsers.map(
-                    (
-                      user //החלפתי במקום היוזר לפילטר יוזר ofir
-                    ) => (
-                      <TableRow
-                        key={user.id}
+              <TableBody>
+                {filteredUsers.map((user) => (
+                  <TableRow
+                    key={user.id}
+                    sx={{
+                      "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" },
+                      "&:hover": { backgroundColor: "#f1f1f1" },
+                    }}
+                  >
+                    <TableCell>{user.id}</TableCell>
+                    <TableCell>
+                      {user.firstName} {user.lastName}
+                    </TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.role}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
                         sx={{
-                          "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" },
-                          "&:hover": { backgroundColor: "#f1f1f1" },
+                          backgroundColor: "#21CBF3",
+                          "&:hover": { backgroundColor: "#1e88e5" },
+                          borderRadius: "20px",
+                          textTransform: "none",
                         }}
+                        size="small"
+                        onClick={() => handleEditClick(user)}
                       >
-                        <TableCell>{user.id}</TableCell>
-                        <TableCell>
-                          {user.firstName} {user.lastName}
-                        </TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>{user.role}</TableCell>
-                        <TableCell>
-                          <Button
-                            variant="contained"
-                            sx={{
-                              backgroundColor: "#21CBF3",
-                              "&:hover": { backgroundColor: "#1e88e5" },
-                              borderRadius: "20px",
-                              textTransform: "none",
-                            }}
-                            size="small"
-                            onClick={() => handleEditClick(user)}
-                          >
-                            Edit
-                          </Button>
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            variant="contained"
-                            sx={{
-                              backgroundColor: "#ff4444",
-                              "&:hover": { backgroundColor: "#cc0000" },
-                              borderRadius: "20px",
-                              textTransform: "none",
-                            }}
-                            size="small"
-                            onClick={() => handleDeleteClick(user)}
-                          >
-                            Delete
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )}
-                </TableBody>
-              </Table>
-            </Box>
+                        Edit
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: "#ff4444",
+                          "&:hover": { backgroundColor: "#cc0000" },
+                          borderRadius: "20px",
+                          textTransform: "none",
+                        }}
+                        size="small"
+                        onClick={() => handleDeleteClick(user)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </TableContainer>
           <EditUserDialog
             open={Boolean(editUser)}
