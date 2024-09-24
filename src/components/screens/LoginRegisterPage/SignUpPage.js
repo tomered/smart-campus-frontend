@@ -15,6 +15,8 @@ import {
   SignInLink,
   ErrorMessage
 } from './SignUpPageStyles';
+import { useNavigate } from 'react-router-dom';
+import LoadingSuccessScreen from './LoadingSuccessScreen';
 
 const SignUpPage = () => {
   const emailDomains = ['@gmail.com', '@walla.co.il', '@outlook.com', '@yahoo.com'];
@@ -30,6 +32,10 @@ const SignUpPage = () => {
   const [phonePrefix, setPhonePrefix] = useState('050');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [errors, setErrors] = useState({});
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const [registerUser] = useRegisterUserMutation();
 
@@ -99,6 +105,7 @@ const SignUpPage = () => {
     if (validateForm()) {
       const email = emailUsername + emailDomain;
       const phone = phonePrefix + phoneNumber;
+      setIsLoading(true);
       console.log(
         `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
       );
@@ -109,14 +116,18 @@ const SignUpPage = () => {
         // Registering new user to database
         const result = await registerUser(newUser);
 
-        console.log(result)
+        console.log(result);
+        setIsSuccess(true);
 
       } catch (error) {
         console.error(`error registering user ${id}: ${error.message}`);
+        setIsLoading(false);
       }
-
-      handleClear();
     }
+  };
+
+  const handleComplete = () => {
+    navigate('/login');
   };
 
 
@@ -241,11 +252,16 @@ const SignUpPage = () => {
         {errors.phoneNumber && <ErrorMessage>{errors.phoneNumber}</ErrorMessage>}
 
         <ButtonContainer>
-          <SubmitButton type="submit">Create Account</SubmitButton>
-          <ClearButton type="button" onClick={handleClear}>Clear</ClearButton>
+          <SubmitButton type="submit" disabled={isLoading}>Create Account</SubmitButton>
+          <ClearButton type="button" onClick={handleClear} disabled={isLoading}>Clear</ClearButton>
         </ButtonContainer>
         <SignInLink href="/login">Already have an account? Sign In</SignInLink>
       </SignUpForm>
+      <LoadingSuccessScreen
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+        onComplete={handleComplete}
+      />
     </Container>
   );
 };
