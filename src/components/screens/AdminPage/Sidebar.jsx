@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GroupIcon from '@mui/icons-material/Group';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
@@ -66,17 +65,11 @@ const Sidebar = () => {
           </ListItemIcon>
           {isExpanded && <ListItemText primary="Users management" />}
         </ListItem>
-        <ListItem button onClick={() => navigate('/reports')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
+        <ListItem button onClick={() => navigate('/SensorStatistics')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
           <ListItemIcon>
             <BarChartIcon sx={{ color: '#3f51b5' }} />
           </ListItemIcon>
-          {isExpanded && <ListItemText primary="Statistics" />}
-        </ListItem>
-        <ListItem button onClick={() => navigate('/settings')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
-          <ListItemIcon>
-            <SettingsIcon sx={{ color: '#3f51b5' }} />
-          </ListItemIcon>
-          {isExpanded && <ListItemText primary="Setting" />}
+          {isExpanded && <ListItemText primary="Sensor" />}
         </ListItem>
       </List>
     </Drawer>

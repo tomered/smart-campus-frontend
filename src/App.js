@@ -19,6 +19,7 @@ import AirDashboard from './components/dashboard/AirDashboard.jsx';
 import PowerDashboard from './components/dashboard/PowerDashboard.jsx';
 import AdminDashboard from './components/screens/AdminPage/AdminDashboard'; 
 import AdminUsersTable from './components/screens/AdminPage/AdminUsersTable'; 
+import SensorStatistics from './components/screens/AdminPage/SensorStatistics';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -54,6 +55,7 @@ const App = () => {
           <Route path='/powerDashboard' element={<PowerDashboard />} />
           <Route path='/admin' element={<AdminDashboard />} /> {/* נתיב למסך האדמין */}
           <Route path='/UsersTable' element={<AdminUsersTable />} />
+          <Route path='/SensorStatistics' element={<SensorStatistics/>} />
         </Routes>
         <Footer />
       </BrowserRouter>
