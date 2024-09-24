@@ -36,7 +36,7 @@ const PowerDashboard = ({ goHome }) => {
     }));
   };
 
-  const cardValue = [['2/4', "the front ones", 'off', 'on', 'on'],['3/4', "the front ones", 'off', 'off', 'on']];
+  const cardValue = [['2/4', "the front ones", 'off', 'on', 'on'],['3/4', "the back ones", 'off', 'off', 'on']];
 
   const defaultCardData = [
     { title: 'Number of light bulbs in the room', value: "", bgColor: '#3f51b5' },

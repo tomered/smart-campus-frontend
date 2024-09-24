@@ -1,12 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import '../Style.css';
 import campus from '../assets/campus.jpg';
 
 const InfoSection = () => {
   return (
     <MainContainer>
-      <CustomImg src={campus} alt='Smart Campus screnery' />
+      <CustomImg src={campus} alt="Smart Campus scenery" />
       <TextArea>
         <h2>Smart Campus</h2>
         <p>
@@ -24,11 +24,39 @@ const InfoSection = () => {
 };
 
 export default InfoSection;
+
+// Animation for sliding the image from the left
+const slideInFromLeft = keyframes`
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+const slideInFromRight = keyframes`
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+
 const CustomImg = styled.img`
   width: 50%;
   height: auto;
   float: left;
   margin-right: 20px;
+  animation: ${slideInFromLeft} 1s ease-out;  /* Applying the animation */
+  
+
   @media (max-width: 1200px) {
     width: 90%;
     margin-top: 20px;
@@ -42,6 +70,8 @@ const TextArea = styled.div`
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
+  animation: ${slideInFromRight} 1s ease-out;
+
   p {
     margin: 0;
     font-size: 1.5em;
@@ -66,7 +96,6 @@ const TextArea = styled.div`
       margin-bottom: 10px;
     }
 
-    /* Adjust margins */
     body {
       margin: 0;
     }
