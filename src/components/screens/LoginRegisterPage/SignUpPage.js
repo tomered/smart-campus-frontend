@@ -261,6 +261,7 @@ const SignUpPage = () => {
         isLoading={isLoading}
         isSuccess={isSuccess}
         onComplete={handleComplete}
+        message={"Registering"}
       />
     </Container>
   );
