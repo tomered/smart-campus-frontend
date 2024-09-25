@@ -9,7 +9,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleDrawer = () => {
     setIsExpanded(!isExpanded);
@@ -53,19 +53,19 @@ const Sidebar = () => {
       </Box>
       <Divider />
       <List>
-        <ListItem button onClick={() => navigate('/admin')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
+        <ListItem button onClick={() => navigate('/admin')} sx={{ '&:hover': { backgroundColor: '#e0f7fa', cursor: 'pointer' } }}>
           <ListItemIcon>
             <HomeIcon sx={{ color: '#3f51b5' }} />
           </ListItemIcon>
           {isExpanded && <ListItemText primary="Admin dashboard" />}
         </ListItem>
-        <ListItem button onClick={() => navigate('/UsersTable')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
+        <ListItem button onClick={() => navigate('/UsersTable')} sx={{ '&:hover': { backgroundColor: '#e0f7fa', cursor: 'pointer' } }}>
           <ListItemIcon>
             <GroupIcon sx={{ color: '#3f51b5' }} />
           </ListItemIcon>
           {isExpanded && <ListItemText primary="Users management" />}
         </ListItem>
-        <ListItem button onClick={() => navigate('/SensorStatistics')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
+        <ListItem button onClick={() => navigate('/SensorStatistics')} sx={{ '&:hover': { backgroundColor: '#e0f7fa',  cursor: 'pointer' } }}>
           <ListItemIcon>
             <BarChartIcon sx={{ color: '#3f51b5' }} />
           </ListItemIcon>
