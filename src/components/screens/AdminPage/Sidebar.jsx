@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Drawer, List, ListItem, ListItemText, Divider, ListItemIcon, Typography, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -55,7 +55,7 @@ const Sidebar = () => {
       <List>
         <ListItem button onClick={() => navigate('/admin')} sx={{ '&:hover': { backgroundColor: '#e0f7fa' } }}>
           <ListItemIcon>
-            <AccountCircleIcon sx={{ color: '#3f51b5' }} />
+            <HomeIcon sx={{ color: '#3f51b5' }} />
           </ListItemIcon>
           {isExpanded && <ListItemText primary="Admin dashboard" />}
         </ListItem>
