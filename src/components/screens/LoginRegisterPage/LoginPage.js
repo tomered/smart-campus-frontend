@@ -28,7 +28,7 @@ const LoginPage = () => {
       // Save user token and userName
       dispatch(setToken(result.data.token));
       dispatch(setUserName(username));
-
+      //localStorage.setItem("isLogin", true)
 
     } catch (error) {
       console.error('error longing in: ' + error.message);

@@ -1,8 +1,13 @@
 import React, { useEffect } from "react";
+import { useSelector } from 'react-redux'
 import styled from "styled-components";
 
 
 const AirDashboard = () => {
+
+  //const isLogin = useSelector((state) => state.login.isLogin)
+  //console.log('isLogin',isLogin);
+
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
     window.scrollTo(0, 0);
