@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+  import React, { useState } from "react";
 import styled from "styled-components";
 
 // Import images from the assets folder
@@ -11,7 +11,7 @@ const images = [image1, image2];
 const textContent = [
   "smart campus is the result of combining digital and physical infrastructures. ​Creating an advanced smart environment in line with today's needs using smart technology and minimal interference in the existing infrastructure. Smart campus is based on the process of gathering and processing information and decision making system based on adaptive artificial intelligence.",
   "Text for Image 2: Another message for the second image.",
-  
+
 ];
 
 
@@ -33,12 +33,17 @@ const InfoCompanySection = () => {
   return (
     <InfoCompanySectionContainer>
       <LeftButton onClick={handlePrev}>&#8249;</LeftButton>
-      <InfoCompanySectionImage
-        src={images[currentImageIndex]}
-        alt="company info"
-      />
+      <InfoCompanySectionWrapper index={currentImageIndex}>
+        {images.map((image, index) => (
+          <InfoCompanySectionImage
+            key={index}
+            src={image}
+            alt={`company info ${index + 1}`}
+          />
+        ))}
+      </InfoCompanySectionWrapper>
       <RightButton onClick={handleNext}>&#8250;</RightButton>
-      <OverlayText>{textContent[currentImageIndex]}</OverlayText> 
+      <OverlayText>{textContent[currentImageIndex]}</OverlayText> {/* Display text based on current image */}
     </InfoCompanySectionContainer>
   );
 };
@@ -61,7 +66,7 @@ const InfoCompanySectionImage = styled.img`
   width: 100%;
   height: 110%;
   object-fit: cover;
-  margin-top: 40px;
+  margin-top: 200px;
 `;
 
 const InfoCompanySectionButton = styled.button`
@@ -97,4 +102,11 @@ const OverlayText = styled.div`
   background-color: rgba(0, 0, 0, 0.5); // Optional: add background for readability
   padding: 5px; // Optional: add some padding
   border-radius: 5px; // Optional: round the corners
+`;
+
+const InfoCompanySectionWrapper = styled.div`
+  display: flex;
+  transition: transform 0.5s ease-in-out; // Transition for sliding effect
+  transform: translateX(-${(props) => props.index * 100}%); // Slide effect based on index
+  width: ${(props) => props.imagesLength * 100}%; // Width for all images
 `;
