@@ -3,41 +3,42 @@ import styled, { keyframes } from "styled-components";
 import "../Style.css";
 import campus from "../assets/campus.jpg";
 
-const InfoSection = () => {
+const InfoCompanySection = () => {
   return (
     <MainContainer>
       <CustomImg src={campus} alt="Smart Campus scenery" />
       <TextArea>
+      {/* Adding the new MGM Group section */}
         <h2
           style={{
-            marginBottom: "32px", // Equivalent to mb: 4 in Material-UI
+            marginBottom: "32px",
             padding: "25px 1px",
             fontWeight: "bold",
             fontSize: "48px",
-            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            background: "linear-gradient(90deg, #3f51b5, #FF8E53)", // A different gradient for MGM Group
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             animation: "fadeIn 2s ease-in-out",
           }}
         >
-          Smart Campus
+          MGM Group
         </h2>
-        <p style={{ fontSize: "26px" }}>
-          is an innovative approach to a common place based on optimal use of
-          resources while maximizing the comfort of living. At the base of the
-          smart campus is a detection, information processing and
-          decision-making system based on adaptive AI. The results of system
-          activity are provided to users according to their roles on campus. In
-          more advanced stages, the system will know how to make decisions and
-          perform preventive actions while notifying the relevant officials.
+        <p style={{ fontSize: "26px", alignItems: "left"}}>
+          MGM Group produces, deploys, and maintains innovative physical assets
+          management systems that consume minimal energy to make sure we not
+          only improve the processes in your business but also reduce emission.
+          We are developing and integrating smart city projects with sensors
+          that measure physical parameters such as humidity levels or
+          electricity fluctuations and provide top-notch software that ensures
+          you have an easy and intuitive interface to simplify the
+          decision-making process.
         </p>
-
       </TextArea>
     </MainContainer>
   );
 };
 
-export default InfoSection;
+export default InfoCompanySection;
 
 // Animation for sliding the image from the left
 const slideInFromLeft = keyframes`
