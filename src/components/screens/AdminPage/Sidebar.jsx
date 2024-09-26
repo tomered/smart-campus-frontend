@@ -6,6 +6,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import AddAlertIcon from '@mui/icons-material/AddAlert';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -63,13 +64,19 @@ const Sidebar = () => {
           <ListItemIcon>
             <GroupIcon sx={{ color: '#3f51b5' }} />
           </ListItemIcon>
-          {isExpanded && <ListItemText primary="Users management" />}
+          {isExpanded && <ListItemText primary="User management" />}
         </ListItem>
         <ListItem button onClick={() => navigate('/SensorStatistics')} sx={{ '&:hover': { backgroundColor: '#e0f7fa',  cursor: 'pointer' } }}>
           <ListItemIcon>
             <BarChartIcon sx={{ color: '#3f51b5' }} />
           </ListItemIcon>
-          {isExpanded && <ListItemText primary="Sensor" />}
+          {isExpanded && <ListItemText primary="Sensors" />}
+        </ListItem>
+        <ListItem button onClick={() => navigate('/AlertCenter')} sx={{ '&:hover': { backgroundColor: '#e0f7fa', cursor: 'pointer' } }}>
+          <ListItemIcon>
+            <AddAlertIcon sx={{ color: '#3f51b5' }} />
+          </ListItemIcon>
+          {isExpanded && <ListItemText primary="Alert center" />}
         </ListItem>
       </List>
     </Drawer>
