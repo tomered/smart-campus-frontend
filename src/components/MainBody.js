@@ -11,6 +11,8 @@ const MainBody = () => {
        <br/>
        <InfoCompanySection/>
        <br/>
+       <br/>
+       <br/>
        <CardsRow/>
        <br/>
     </>
