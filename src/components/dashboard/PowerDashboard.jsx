@@ -3,10 +3,13 @@ import { Box, Typography, Grid, Card, CardContent, Button, Menu, MenuItem, Toolt
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { Scatter } from 'react-chartjs-2';
 import { Chart as ChartJS, LinearScale, PointElement, CategoryScale, Tooltip as ChartTooltip, Legend } from 'chart.js';
+import { useSelector } from 'react-redux';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, ChartTooltip, Legend);
 
 const PowerDashboard = ({ goHome }) => {
+  const token = useSelector((state) => state.userData.token); //storing the token of the user
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -121,6 +124,14 @@ const PowerDashboard = ({ goHome }) => {
     backgroundColor: 'white',
   };
 
+  //if there is no token - that means no user is connected so he cannot view that page
+  if (!token) {
+    return (
+      <div>
+        Error loading page! Please log in to view this page.
+      </div>
+    );
+  }
   return (
     <Box sx={{ padding: 4}}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
