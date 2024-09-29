@@ -3,11 +3,14 @@ import { TextField, Container, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import LoadingScreen from '../LoadingScreen'; 
 import SuccessScreen from '../SuccessScreen'; 
+import FailureScreen from '../FailureScreen';
 
-const TokenComponent = () => {
+const ValidTokenPage = () => {
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isFailure, setIsFailure] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,14 +21,16 @@ const TokenComponent = () => {
     setToken('');
   };
 
-  const handleSubmit = async () => {
+    const handleSubmit = async () => {
     setIsLoading(true);
     
     setTimeout(() => {
       if (token) {
         setIsSuccess(true);
+        setIsFailure(false);
       } else {
         setIsSuccess(false);
+        setIsFailure(true);
       }
       setIsLoading(false);
     }, 2000); 
@@ -37,6 +42,10 @@ const TokenComponent = () => {
     }, 2000); 
 
     return <SuccessScreen message="Redirecting to Login page..." />;
+  }
+
+  if (isFailure) {
+    return <FailureScreen bodyMessage="Invalid token! Please try again." mainMessage = "Registering failed!"  onClose={() => setIsFailure(false)} />;
   }
 
   return (
@@ -70,4 +79,4 @@ const TokenComponent = () => {
   );
 };
 
-export default TokenComponent;
+export default ValidTokenPage;
