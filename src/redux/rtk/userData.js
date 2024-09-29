@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "https://smart-campus-backend-4hd6.onrender.com/";
+const baseUrl = "http://localhost:10000/";
 
 export const userDataApi = createApi({
   reducerPath: "userDataApi",
@@ -24,19 +24,40 @@ export const userDataApi = createApi({
       }),
     }),
     getAllUsers: builder.query({
-      query: () => "api/admin/users",
+      query: (token) => ({
+        url: "api/admin/users",
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      }),
+    }),
+    getNumberOfUsers: builder.query({
+      query: (token) => ({
+        url: "api/admin/users/count",
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      }),
     }),
     editUser: builder.mutation({
-      query: ({ id, userData }) => ({
+      query: ({ id, userData, token  }) => ({
         url: `api/admin/edit/${id}`,
         method: "PUT",
         body: userData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }),
     }),
     deleteUser: builder.mutation({
-      query: (id) => ({
+      query: ({ id, token } ) => ({
         url: `api/admin/delete/${id}`,
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }),
     }),
   }),
@@ -46,6 +67,7 @@ export const {
   useRegisterUserMutation,
   useLoginUserMutation,
   useGetAllUsersQuery,
+  useGetNumberOfUsersQuery,
   useEditUserMutation,
   useDeleteUserMutation,
 } = userDataApi;

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -23,15 +23,22 @@ import {
   useDeleteUserMutation,
   useEditUserMutation,
 } from "../../../redux/rtk/userData";
+import { useSelector } from "react-redux";
 
 const AdminUsersTable = () => {
-  const { data: users = [], error, refetch } = useGetAllUsersQuery();
-  const [deleteUser] = useDeleteUserMutation();
-  const [editUserMutation] = useEditUserMutation();
-  const [editUser, setEditUser] = useState(null);
+  const token = useSelector((state) => state.userData.token); // storing the token of the users
+  const { data: initialUsers = [], error } = useGetAllUsersQuery(token); // getting all users from the backend
+  const [deleteUser] = useDeleteUserMutation(); // delete users mutation from backend
+  const [editUserMutation] = useEditUserMutation(); // edit users mutation from backend
+  const [users, setUsers] = useState(initialUsers); // state for the users
+  const [editUser, setEditUser] = useState(null); 
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); //ofir-לצורך שמירת הטקסט שהמשתמש ירצה לחפש לפיו
   const [searchBy, setSearchBy] = useState("name"); //ofir- לצורך שמירת הקרטריון שלפיו המשתמש ירצה לחפש
+
+  useEffect(() => {
+    setUsers(initialUsers);
+  }, [initialUsers]);
 
   const handleEditClick = (user) => {
     setEditUser(user);
@@ -51,9 +58,14 @@ const AdminUsersTable = () => {
           email: updatedUser.email,
           role: updatedUser.role,
         },
+        token,
       }).unwrap();
 
-      refetch();
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id ? updatedUser : user
+        )
+      );
     } catch (error) {
       console.error("Failed to edit user:", error);
     }
@@ -66,9 +78,11 @@ const AdminUsersTable = () => {
   const handleDeleteConfirm = async () => {
     if (deleteConfirmation) {
       try {
-        await deleteUser(deleteConfirmation.id).unwrap();
+        await deleteUser({ id: deleteConfirmation.id, token }).unwrap();
         setDeleteConfirmation(null);
-        refetch();
+        setUsers((prevUsers) =>
+          prevUsers.filter((user) => user.id !== deleteConfirmation.id)
+        );
       } catch (error) {
         console.error("Failed to delete user:", error);
       }
@@ -92,7 +106,13 @@ const AdminUsersTable = () => {
     });
   }, [users, searchQuery, searchBy, error]);
 
-  if (error) return <div>Error loading users: {error.message}</div>;
+  if (error)
+    return (
+      <div>
+        Error loading page! either you are not admin or there's an error{" "}
+        {error.message}
+      </div>
+    );
 
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
