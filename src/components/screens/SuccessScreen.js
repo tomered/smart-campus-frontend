@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SuccessScreen = () => {
+const SuccessScreen = ({message}) => {
   return (
     <div style={{
       position: 'fixed',
@@ -28,7 +28,7 @@ const SuccessScreen = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
           <p style={{ fontSize: '1.125rem', fontWeight: 600 }}>Registration Successful!</p>
-          <p style={{ marginTop: '0.5rem' }}>Redirecting to login page...</p>
+          <p style={{ marginTop: '0.5rem' }}>{message}</p>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useRegisterUserMutation } from '../../../redux/rtk/userData';
 import {
   Container,
@@ -16,7 +16,8 @@ import {
   ErrorMessage
 } from './SignUpPageStyles';
 import { useNavigate } from 'react-router-dom';
-import LoadingSuccessScreen from './LoadingSuccessScreen';
+import LoadingScreen from '../LoadingScreen'; 
+import SuccessScreen from '../SuccessScreen';
 
 const SignUpPage = () => {
   const emailDomains = ['@gmail.com', '@walla.co.il', '@outlook.com', '@yahoo.com'];
@@ -126,10 +127,16 @@ const SignUpPage = () => {
     }
   };
 
-  const handleComplete = () => {
-    navigate('/login');
-  };
-
+  useEffect(() => {
+    if (isSuccess) {
+        const timer = setTimeout(() => {
+            navigate('/validateToken');
+        }, 2000); // המתן 2 שניות לפני המעבר
+        return () => clearTimeout(timer); // נקה את הטיימר כאשר הקומפוננטה מתה
+    } else if (!isLoading) { // אם לא טוענים, קבע את isLoading ל-false
+        setIsLoading(false);
+    }
+}, [isSuccess, navigate, isLoading]);
 
   const handleClear = () => {
     setFirstName('');
@@ -257,12 +264,8 @@ const SignUpPage = () => {
         </ButtonContainer>
         <SignInLink href="/login">Already have an account? Sign In</SignInLink>
       </SignUpForm>
-      <LoadingSuccessScreen
-        isLoading={isLoading}
-        isSuccess={isSuccess}
-        onComplete={handleComplete}
-        message={"Registering"}
-      />
+      {isLoading && <LoadingScreen message="Registering..." />}
+      {isSuccess && <SuccessScreen message="Redirecting to token verification..." />}
     </Container>
   );
 };
