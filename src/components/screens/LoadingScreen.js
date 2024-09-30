@@ -1,6 +1,6 @@
 import React from 'react';
 import { CircularProgress, Box, Typography } from '@mui/material';
-import { keyframes } from '@emotion/react'; 
+import { keyframes } from '@emotion/react';
 
 
 const moveUpDown = keyframes`
@@ -43,8 +43,8 @@ const LoadingScreen = ({ message }) => {
       >
         <CircularProgress size={60} thickness={5} />
         <Typography sx={{ marginTop: '1rem', fontSize: '1.125rem', fontWeight: 600 }}>
-        {message}
-        </Typography> 
+          {message}
+        </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
           <Typography
             sx={{
@@ -74,7 +74,7 @@ const LoadingScreen = ({ message }) => {
           </Typography>
         </Box>
       </Box>
-    </Box> 
+    </Box>
   );
 };
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Typography, Button  } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import { SvgIcon } from '@mui/material';
 
-const FailureScreen = ({ mainMessage , bodyMessage, onClose}) => {
+const FailureScreen = ({ mainMessage, bodyMessage, onClose }) => {
   return (
     <Box
       sx={{

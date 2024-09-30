@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SuccessScreen = ({message}) => {
+const SuccessScreen = ({ message }) => {
   return (
     <div style={{
       position: 'fixed',

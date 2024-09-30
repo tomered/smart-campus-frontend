@@ -1,27 +1,20 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRegisterUserMutation } from '../../../redux/rtk/userData';
 import {
-  Container,
-  SignUpForm,
-  EmailInputContainer,
-  EmailUsernameInput,
-  EmailDomainSelect,
-  PhoneInputContainer,
-  PhonePrefixSelect,
-  PhoneNumberInput,
-  ButtonContainer,
-  SubmitButton,
-  ClearButton,
-  SignInLink,
-  ErrorMessage
+  Container, SignUpForm, EmailInputContainer, EmailUsernameInput, EmailDomainSelect,
+  PhoneInputContainer, PhonePrefixSelect, PhoneNumberInput, ButtonContainer, SubmitButton,
+  ClearButton, SignInLink, ErrorMessage
 } from './SignUpPageStyles';
 import { useNavigate } from 'react-router-dom';
-import LoadingScreen from '../LoadingScreen'; 
+import LoadingScreen from '../LoadingScreen';
 import SuccessScreen from '../SuccessScreen';
 
 const SignUpPage = () => {
+
   const emailDomains = ['@gmail.com', '@walla.co.il', '@outlook.com', '@yahoo.com'];
   const phonePrefixes = ['050', '052', '053', '054', '055', '058'];
+
+  //SignUp form states
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
@@ -40,6 +33,7 @@ const SignUpPage = () => {
 
   const [registerUser] = useRegisterUserMutation();
 
+  //Validations
   const validateForm = () => {
     const newErrors = {};
 
@@ -112,7 +106,7 @@ const SignUpPage = () => {
       );
       try {
         const newUser = {
-          userName, password, firstName, lastName, phone, userId:id, email
+          userName, password, firstName, lastName, phone, userId: id, email
         }
         // Registering new user to database
         const result = await registerUser(newUser);
@@ -129,15 +123,16 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-        const timer = setTimeout(() => {
-            navigate('/validateToken');
-        }, 2000); // המתן 2 שניות לפני המעבר
-        return () => clearTimeout(timer); // נקה את הטיימר כאשר הקומפוננטה מתה
-    } else if (!isLoading) { // אם לא טוענים, קבע את isLoading ל-false
-        setIsLoading(false);
+      const timer = setTimeout(() => {
+        navigate('/validateToken');
+      }, 2000);
+      return () => clearTimeout(timer);
+    } else if (!isLoading) {
+      setIsLoading(false);
     }
-}, [isSuccess, navigate, isLoading]);
+  }, [isSuccess, navigate, isLoading]);
 
+  //Clear button
   const handleClear = () => {
     setFirstName('');
     setLastName('');
