@@ -8,6 +8,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import LoadingScreen from '../LoadingScreen';
 import SuccessScreen from '../SuccessScreen';
+import FailureScreen from '../FailureScreen';
 
 const SignUpPage = () => {
 
@@ -29,6 +30,8 @@ const SignUpPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isFailure, setIsFailure] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const [registerUser] = useRegisterUserMutation();
@@ -110,12 +113,16 @@ const SignUpPage = () => {
         }
         // Registering new user to database
         const result = await registerUser(newUser);
-
-        console.log(result);
-        setIsSuccess(true);
-
+        if (result.error) {
+          throw new Error(result.error.data.message);
+        }
+        else {
+          setIsSuccess(true);
+        }
       } catch (error) {
         console.error(`error registering user ${id}: ${error.message}`);
+        setErrorMessage(error.message);
+        setIsFailure(true);
         setIsLoading(false);
       }
     }
@@ -127,10 +134,8 @@ const SignUpPage = () => {
         navigate('/validateToken');
       }, 2000);
       return () => clearTimeout(timer);
-    } else if (!isLoading) {
-      setIsLoading(false);
     }
-  }, [isSuccess, navigate, isLoading]);
+  }, [isSuccess, navigate]);
 
   //Clear button
   const handleClear = () => {
@@ -145,6 +150,10 @@ const SignUpPage = () => {
     setPhonePrefix('050');
     setPhoneNumber('');
     setErrors({});
+  }
+  const onErrorClose=()=>{
+    setIsFailure(false);
+    setErrorMessage('');
   }
 
   return (
@@ -261,6 +270,10 @@ const SignUpPage = () => {
       </SignUpForm>
       {isLoading && <LoadingScreen message="Registering..." />}
       {isSuccess && <SuccessScreen message="Redirecting to token verification..." />}
+      {isFailure && <FailureScreen
+        mainMessage="Registration Failed!"
+        bodyMessage={errorMessage}
+        onClose={onErrorClose} />}
     </Container>
   );
 };
