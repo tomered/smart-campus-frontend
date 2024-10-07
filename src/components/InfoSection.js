@@ -22,7 +22,7 @@ const InfoSection = () => {
         >
           Smart Campus
         </h2>
-        <p style={{ fontSize: "26px" }}>
+        <p style={{ fontSize: "20px" }}>
           is an innovative approach to a common place based on optimal use of
           resources while maximizing the comfort of living. At the base of the
           smart campus is a detection, information processing and
@@ -31,7 +31,6 @@ const InfoSection = () => {
           more advanced stages, the system will know how to make decisions and
           perform preventive actions while notifying the relevant officials.
         </p>
-
       </TextArea>
     </MainContainer>
   );
@@ -63,7 +62,7 @@ const slideInFromRight = keyframes`
 `;
 
 const CustomImg = styled.img`
-  width: 50%;
+  width: 45%;
   height: auto;
   float: left;
   margin-right: 20px;
