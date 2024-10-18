@@ -1,3 +1,4 @@
+import { px } from 'framer-motion';
 import React from 'react';
 
 const StaffPage = () => {
@@ -37,7 +38,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '2rem',
+    padding: '5rem',
   },
   lecturersAndTeamsHeading: {
     fontSize: '3rem',

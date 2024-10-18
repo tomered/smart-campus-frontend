@@ -57,7 +57,7 @@ const ContactUsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
+  height: 100vh;
   padding: 0 20px;
   @media (min-width: 768px) {
     flex-direction: row;
