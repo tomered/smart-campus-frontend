@@ -74,14 +74,23 @@ const Caption = styled.div`
   animation: ${slideInFromRight} 1s ease-out;
 
   h2 {
-    font-size: 48px;
+    font-size: 49px;
     font-weight: bold;
     margin-bottom: 16px;
     background: linear-gradient(90deg, #55a09e, #55a09e);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    @media (max-width: 700px) {
+    width: 80%; /* Caption width adjustment for mobile */
+    bottom: 50px; /* Adjust caption position for smaller screens */
+    left: 10px; /* Adjust padding for small screens */
+    h2 {
+      font-size: 28px; /* Smaller heading on mobile */
+    }
   }
 
+  }
   p {
     font-size: 20px;
   }
