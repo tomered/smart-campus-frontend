@@ -34,13 +34,13 @@ const MainHeader = () => {
   };
 
   const handleLogoAndTitleClick = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <Container>
       <CustomNavBar>
-        <LogoAndTitle  onClick={handleLogoAndTitleClick}>
+        <LogoAndTitle onClick={handleLogoAndTitleClick}>
           <Logo src={logoImage} alt="Smart Campus Logo" />
           <Title>Smart Campus</Title>
         </LogoAndTitle>
