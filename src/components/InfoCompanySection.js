@@ -29,10 +29,16 @@ const InfoCompanySection = () => {
     );
   };
 
+  // Function to handle image click
+  const handleImageClick = () => {
+    handleNext(); // Change to the next image on click
+  };
+
   return (
     <InfoCompanySectionContainer>
       <ImageContainer
         style={{ backgroundImage: `url(${images[currentImageIndex]})` }}
+        onClick={handleImageClick} // Add click handler to the image container
       />
       <LeftButton onClick={handlePrev}>&#8249;</LeftButton>
       <RightButton onClick={handleNext}>&#8250;</RightButton>
@@ -68,6 +74,7 @@ const ImageContainer = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  cursor: pointer; /* Change cursor to pointer on hover */
 `;
 
 const InfoCompanySectionButton = styled.button`
@@ -95,16 +102,18 @@ const RightButton = styled(InfoCompanySectionButton)`
 
 const OverlayText = styled.div`
   position: absolute;
-  top: 10%; 
+  top: 10%;
   left: 10%; /* Position text on the left */
   color: ${(props) =>
-    props.currentImageIndex === 0 ? "black" : "white"}; /* Black text for the first image, white text for the second image */
+    props.currentImageIndex === 0
+      ? "black"
+      : "white"}; /* Black text for the first image, white text for the second image */
   font-size: 20px;
-  font-weight: 500; 
+  font-weight: 500;
   font-family: "Gill Sans", sans-serif;
   text-align: left;
   background-color: rgba(0, 0, 0, 0);
-  padding: 40px; 
+  padding: 40px;
   border-radius: 8px; /* Rounded corners for aesthetics */
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); /* Light text shadow for better readability */
   max-width: 40%; /* Limit the width of the text box */
@@ -115,7 +124,5 @@ const Title = styled.h2`
   font-size: 50px;
   font-weight: bold;
   text-align: left;
-  //bottom: 60px;
   margin-bottom: 20px; /* Space between title and text */
 `;
-
