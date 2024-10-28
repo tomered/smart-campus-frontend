@@ -1,17 +1,54 @@
 // screens/AdminPage/AdminDashboard.js
-import React from 'react';
-import { Typography, Container, Box, Grid, Paper } from '@mui/material';
-import Sidebar from './Sidebar'; // ייבוא Sidebar
-import { Bar, Line, Pie, Radar, Doughnut } from 'react-chartjs-2';
-import { Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale } from 'chart.js';
-import InfoCard from '../../card/InfoCard';
-
+import React, { useEffect, useState } from "react";
+import { Typography, Container, Box, Grid, Paper } from "@mui/material";
+import Sidebar from "./Sidebar"; // ייבוא Sidebar
+import { Bar, Line, Pie, Radar, Doughnut } from "react-chartjs-2";
+import {
+  Chart,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  RadialLinearScale,
+} from "chart.js";
+import InfoCard from "../../card/InfoCard";
+import { useGetNumberOfUsersQuery } from "../../../redux/rtk/userData";
+import { useSelector } from "react-redux";
 
 // Register Chart.js components
-Chart.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale);
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  RadialLinearScale
+);
 
 const AdminDashboard = () => {
+  const token = useSelector((state) => state.userData.token); // storing the token of the user
+  const { data: userCountData, error: apiError } = useGetNumberOfUsersQuery(token); // getting the number of users from Backend
+  const [error, setError] = useState(null); // state for error
+  const [totalUsers, setTotalUsers] = useState(0); // state for total users (how many users in total)
 
+  useEffect(() => {
+    if (userCountData) {
+      setTotalUsers(userCountData.totalUsers); // setting the total users count
+    }
+
+    if (apiError) {
+      setError(apiError.message); // set error message if there's an error
+    }
+  }, [userCountData, apiError]);
 
   const initialUsers = [
     { id: 1, name: "David Azran", email: "david@gmail.com", role: "Student" },
@@ -19,31 +56,37 @@ const AdminDashboard = () => {
     { id: 3, name: "Gal Touti", email: "gal@gmail.com", role: "Lecturer" },
     { id: 4, name: "Itamar Mizrahi", email: "itamar@gmail.com", role: "Admin" },
   ];
-  const totalUsers = initialUsers.length;
-  const totalStudents = initialUsers.filter(user => user.role === "Student").length;
-  const totalLecturers = initialUsers.filter(user => user.role === "Lecturer").length;
-  const totalAdmins = initialUsers.filter(user => user.role === "Admin").length;
+
+  const totalStudents = initialUsers.filter(
+    (user) => user.role === "Student"
+  ).length;
+  const totalLecturers = initialUsers.filter(
+    (user) => user.role === "Lecturer"
+  ).length;
+  const totalAdmins = initialUsers.filter(
+    (user) => user.role === "Admin"
+  ).length;
   // נתוני הגרפים (הנתונים נשארים זהים)
   const barData = {
-    labels: ['Students', 'Lecturers', 'Admins'],
+    labels: ["Students", "Lecturers", "Admins"],
     datasets: [
       {
-        label: 'Number of Users',
-        data: [totalStudents,totalLecturers, totalAdmins],
-        backgroundColor: ['#3f51b5', '#ff4081', '#4caf50', '#f44336'],
+        label: "Number of Users",
+        data: [totalStudents, totalLecturers, totalAdmins],
+        backgroundColor: ["#3f51b5", "#ff4081", "#4caf50", "#f44336"],
         borderRadius: 10,
       },
     ],
   };
 
   const lineData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
     datasets: [
       {
-        label: 'User Activity (Monthly)',
+        label: "User Activity (Monthly)",
         data: [20, 30, 60, 45],
-        borderColor: '#3f51b5',
-        backgroundColor: 'rgba(63, 81, 181, 0.2)',
+        borderColor: "#3f51b5",
+        backgroundColor: "rgba(63, 81, 181, 0.2)",
         fill: true,
         tension: 0.4,
       },
@@ -51,49 +94,49 @@ const AdminDashboard = () => {
   };
 
   const deviceData = {
-    labels: ['Mobile', 'Desktop', 'Tablet'],
+    labels: ["Mobile", "Desktop", "Tablet"],
     datasets: [
       {
-        label: 'Device Usage',
+        label: "Device Usage",
         data: [65, 25, 10],
-        backgroundColor: ['#3f51b5', '#4caf50', '#ff4081'],
+        backgroundColor: ["#3f51b5", "#4caf50", "#ff4081"],
         borderRadius: 10,
       },
     ],
   };
 
   const pieData = {
-    labels: ['Students', 'Lecturers', 'Admins'],
+    labels: ["Students", "Lecturers", "Admins"],
     datasets: [
       {
-        label: 'User Roles Distribution',
-        dadata: [totalStudents,totalLecturers, totalAdmins],
-        backgroundColor: ['#3f51b5', '#ff4081', '#4caf50', '#f44336'],
+        label: "User Roles Distribution",
+        dadata: [totalStudents, totalLecturers, totalAdmins],
+        backgroundColor: ["#3f51b5", "#ff4081", "#4caf50", "#f44336"],
       },
     ],
   };
 
   const radarData = {
-    labels: ['Login', 'Signups', 'Profile Updates', 'Posts', 'Comments'],
+    labels: ["Login", "Signups", "Profile Updates", "Posts", "Comments"],
     datasets: [
       {
-        label: 'Feature Usage',
+        label: "Feature Usage",
         data: [85, 65, 70, 90, 50],
-        backgroundColor: 'rgba(63, 81, 181, 0.2)',
-        borderColor: '#3f51b5',
-        pointBackgroundColor: '#3f51b5',
+        backgroundColor: "rgba(63, 81, 181, 0.2)",
+        borderColor: "#3f51b5",
+        pointBackgroundColor: "#3f51b5",
         fill: true,
       },
     ],
   };
 
   const doughnutData = {
-    labels: ['Completed', 'In Progress', 'Not Started'],
+    labels: ["Completed", "In Progress", "Not Started"],
     datasets: [
       {
-        label: 'Tasks Completion',
+        label: "Tasks Completion",
         data: [40, 30, 30],
-        backgroundColor: ['#4caf50', '#ff9800', '#f44336'],
+        backgroundColor: ["#4caf50", "#ff9800", "#f44336"],
       },
     ],
   };
@@ -105,7 +148,7 @@ const AdminDashboard = () => {
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
+          color: "rgba(0, 0, 0, 0.1)",
         },
       },
       x: {
@@ -116,33 +159,52 @@ const AdminDashboard = () => {
     },
   };
 
+  if (error)
+    return (
+      <div>
+        Error loading page! either you are not admin or there's an error{" "}
+        {error.message}
+      </div>
+    );
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: "flex" }}>
       {/* Sidebar component */}
       <Sidebar />
 
       {/* Main content container */}
-      <Container sx={{ mt: 4, ml: '150px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Container
+        sx={{
+          mt: 4,
+          ml: "150px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         {/* כותרת עם גרדיאנט */}
         <Typography
           variant="h4"
           gutterBottom
           sx={{
             mb: 4,
-            fontWeight: 'bold',
-            background: 'linear-gradient(90deg, #3f51b5, #21CBF3)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            animation: 'fadeIn 2s ease-in-out',
+            fontWeight: "bold",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
           }}
         >
           Admin Dashboard
         </Typography>
 
         {/* כרטיסי מידע מהירים */}
-        <Grid container spacing={4} sx={{ width: '100%', mb: 4 }}>
+        <Grid container spacing={4} sx={{ width: "100%", mb: 4 }}>
           <Grid item xs={12} md={4}>
-            <InfoCard title="Total Users" value={totalUsers} bgColor="#3f51b5" />
+            <InfoCard
+              title="Total Users"
+              value={totalUsers}
+              bgColor="#3f51b5"
+            />
           </Grid>
           <Grid item xs={12} md={4}>
             <InfoCard title="Active Users" value="56" bgColor="#4caf50" />
@@ -162,35 +224,77 @@ const AdminDashboard = () => {
         </Grid>
 
         {/* Grid for Charts */}
-        <Grid container spacing={4} sx={{ width: '100%' }}>
+        <Grid container spacing={4} sx={{ width: "100%" }}>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, boxShadow: 4, borderRadius: 3, height: '400px', backgroundColor: '#f5f7fa', transition: 'box-shadow 0.3s ease', '&:hover': { boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)' } }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+            <Paper
+              sx={{
+                p: 3,
+                boxShadow: 4,
+                borderRadius: 3,
+                height: "400px",
+                backgroundColor: "#f5f7fa",
+                transition: "box-shadow 0.3s ease",
+                "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ fontWeight: "bold", color: "#3f51b5" }}
+              >
                 Users Overview
               </Typography>
-              <Box sx={{ height: '100%' }}>
+              <Box sx={{ height: "100%" }}>
                 <Bar data={barData} options={chartOptions} />
               </Box>
             </Paper>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, boxShadow: 4, borderRadius: 3, height: '400px', backgroundColor: '#f5f7fa', transition: 'box-shadow 0.3s ease', '&:hover': { boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)' } }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+            <Paper
+              sx={{
+                p: 3,
+                boxShadow: 4,
+                borderRadius: 3,
+                height: "400px",
+                backgroundColor: "#f5f7fa",
+                transition: "box-shadow 0.3s ease",
+                "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ fontWeight: "bold", color: "#3f51b5" }}
+              >
                 User Activity (Last Month)
               </Typography>
-              <Box sx={{ height: '100%' }}>
+              <Box sx={{ height: "100%" }}>
                 <Line data={lineData} options={chartOptions} />
               </Box>
             </Paper>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, boxShadow: 4, borderRadius: 3, height: '400px', backgroundColor: '#f5f7fa', transition: 'box-shadow 0.3s ease', '&:hover': { boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)' } }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+            <Paper
+              sx={{
+                p: 3,
+                boxShadow: 4,
+                borderRadius: 3,
+                height: "400px",
+                backgroundColor: "#f5f7fa",
+                transition: "box-shadow 0.3s ease",
+                "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ fontWeight: "bold", color: "#3f51b5" }}
+              >
                 Device Usage
               </Typography>
-              <Box sx={{ height: '100%' }}>
+              <Box sx={{ height: "100%" }}>
                 <Bar data={deviceData} options={chartOptions} />
               </Box>
             </Paper>
@@ -198,11 +302,25 @@ const AdminDashboard = () => {
 
           {/* Pie Chart */}
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, boxShadow: 4, borderRadius: 3, height: '400px', backgroundColor: '#f5f7fa', transition: 'box-shadow 0.3s ease', '&:hover': { boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)' } }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+            <Paper
+              sx={{
+                p: 3,
+                boxShadow: 4,
+                borderRadius: 3,
+                height: "400px",
+                backgroundColor: "#f5f7fa",
+                transition: "box-shadow 0.3s ease",
+                "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ fontWeight: "bold", color: "#3f51b5" }}
+              >
                 User Roles Distribution
               </Typography>
-              <Box sx={{ height: '100%' }}>
+              <Box sx={{ height: "100%" }}>
                 <Pie data={pieData} options={chartOptions} />
               </Box>
             </Paper>
@@ -210,11 +328,25 @@ const AdminDashboard = () => {
 
           {/* Radar Chart */}
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, boxShadow: 4, borderRadius: 3, height: '400px', backgroundColor: '#f5f7fa', transition: 'box-shadow 0.3s ease', '&:hover': { boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)' } }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+            <Paper
+              sx={{
+                p: 3,
+                boxShadow: 4,
+                borderRadius: 3,
+                height: "400px",
+                backgroundColor: "#f5f7fa",
+                transition: "box-shadow 0.3s ease",
+                "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ fontWeight: "bold", color: "#3f51b5" }}
+              >
                 Feature Usage by Users
               </Typography>
-              <Box sx={{ height: '100%' }}>
+              <Box sx={{ height: "100%" }}>
                 <Radar data={radarData} options={chartOptions} />
               </Box>
             </Paper>
@@ -222,11 +354,25 @@ const AdminDashboard = () => {
 
           {/* Doughnut Chart */}
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, boxShadow: 4, borderRadius: 3, height: '400px', backgroundColor: '#f5f7fa', transition: 'box-shadow 0.3s ease', '&:hover': { boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)' } }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+            <Paper
+              sx={{
+                p: 3,
+                boxShadow: 4,
+                borderRadius: 3,
+                height: "400px",
+                backgroundColor: "#f5f7fa",
+                transition: "box-shadow 0.3s ease",
+                "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ fontWeight: "bold", color: "#3f51b5" }}
+              >
                 Tasks Completion
               </Typography>
-              <Box sx={{ height: '100%' }}>
+              <Box sx={{ height: "100%" }}>
                 <Doughnut data={doughnutData} options={chartOptions} />
               </Box>
             </Paper>
