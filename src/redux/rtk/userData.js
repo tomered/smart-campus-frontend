@@ -6,12 +6,11 @@ export const userDataApi = createApi({
   baseQuery: fetchBaseQuery({ 
     baseUrl,
     responseHandler: async (response) => {
-      // Check if the response content-type is JSON
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
-        return await response.json(); // Parse as JSON if applicable
+        return await response.json();
       } else {
-        return await response.text(); // Otherwise, parse as text
+        return await response.text();
       }
     },
   }),
