@@ -3,8 +3,17 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseUrl = "http://localhost:10000/";
 
 export const userDataApi = createApi({
-  reducerPath: "userDataApi",
-  baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
+  baseQuery: fetchBaseQuery({ 
+    baseUrl,
+    responseHandler: async (response) => {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        return await response.json();
+      } else {
+        return await response.text();
+      }
+    },
+  }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
     registerUser: builder.mutation({
@@ -21,6 +30,13 @@ export const userDataApi = createApi({
         url: "/login",
         method: "POST",
         body: { userName: arg.userName, password: arg.password },
+      }),
+    }),
+    verifyEmail: builder.mutation({
+      query: ({ token, email }) => ({
+        url: "/verify-email",
+        method: "POST",
+        body: { token , email },
       }),
     }),
     getAllUsers: builder.query({
@@ -66,6 +82,7 @@ export const userDataApi = createApi({
 export const {
   useRegisterUserMutation,
   useLoginUserMutation,
+  useVerifyEmailMutation,
   useGetAllUsersQuery,
   useGetNumberOfUsersQuery,
   useEditUserMutation,
