@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { TextField, Container, Typography, Button, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation  } from 'react-router-dom';
 import LoadingScreen from '../LoadingScreen'; 
 import SuccessScreen from '../SuccessScreen'; 
 import FailureScreen from '../FailureScreen';
+import { useVerifyEmailMutation } from '../../../redux/rtk/userData';
 
 const ValidTokenPage = () => {
   const [token, setToken] = useState('');
@@ -12,7 +13,10 @@ const ValidTokenPage = () => {
   const [isFailure, setIsFailure] = useState(false);
 
   const navigate = useNavigate();
-
+  const [verifyEmail] = useVerifyEmailMutation();
+  const location = useLocation();
+  const { email } = location.state || {}; 
+  
   const handleChange = (e) => {
     setToken(e.target.value);
   };
@@ -24,16 +28,19 @@ const ValidTokenPage = () => {
     const handleSubmit = async () => {
     setIsLoading(true);
     
-    setTimeout(() => {
-      if (token) {
+    try {
+      // Attempt to verify the token
+      const result = await verifyEmail({ token, email }).unwrap();
+      if (result) {
         setIsSuccess(true);
         setIsFailure(false);
-      } else {
-        setIsSuccess(false);
-        setIsFailure(true);
       }
+    } catch (error) {
+      setIsSuccess(false);
+      setIsFailure(true);
+    } finally {
       setIsLoading(false);
-    }, 2000); 
+    }
   };
 
   if (isSuccess) {

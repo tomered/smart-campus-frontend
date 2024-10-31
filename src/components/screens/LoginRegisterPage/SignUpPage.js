@@ -104,38 +104,35 @@ const SignUpPage = () => {
       const email = emailUsername + emailDomain;
       const phone = phonePrefix + phoneNumber;
       setIsLoading(true);
-      console.log(
-        `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
-      );
       try {
         const newUser = {
           userName, password, firstName, lastName, phone, userId: id, email
         }
         // Registering new user to database
         const result = await registerUser(newUser);
-        if (result.error) {
-          throw new Error(result.error.data.message);
-        }
-        else {
+        if (typeof result.data === "string") {
+          console.log("Registration message:", result.data);
           setIsSuccess(true);
+        } else if (result.error) {
+          throw new Error(result.error.data || "An unexpected error occurred");
         }
       } catch (error) {
-        console.error(`error registering user ${id}: ${error.message}`);
+        console.error(`Error registering user ${id}: ${error.message}`);
         setErrorMessage(error.message);
         setIsFailure(true);
-        setIsLoading(false);
       }
     }
   };
 
+  const userEmail = emailUsername + emailDomain;
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
-        navigate('/validateToken');
+        navigate('/validateToken', { state: { email: userEmail } });
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, navigate, userEmail]);
 
   //Clear button
   const handleClear = () => {
