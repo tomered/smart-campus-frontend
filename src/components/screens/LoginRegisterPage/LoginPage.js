@@ -1,37 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useLoginUserMutation } from '../../../redux/rtk/userData';
-import { useDispatch } from 'react-redux';
-import { setToken, setUserName } from '../../../redux/slices/userDataSlice';
-
+import { useLoginUserMutation } from "../../../redux/rtk/userData";
+import { useDispatch } from "react-redux";
+import { setToken, setUserName } from "../../../redux/slices/userDataSlice";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [loginUser] = useLoginUserMutation()
+  const [loginUser] = useLoginUserMutation();
   const dispatch = useDispatch();
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
 
     // Perform actions with collected data (username, password, userRole)
     // For example, send it to a server for validation or display a message
-    console.log(
-      `Username: ${username}, Password: ${password}`
-    );
+    console.log(`Username: ${username}, Password: ${password}`);
 
     try {
       // Getting user from database
-      const result = await loginUser({userName:username, password});
+      const result = await loginUser({ userName: username, password });
 
       // Save user token and userName
       dispatch(setToken(result.data.token));
       dispatch(setUserName(username));
       //localStorage.setItem("isLogin", true)
-
     } catch (error) {
-      console.error('error longing in: ' + error.message);
+      console.error("error longing in: " + error.message);
     }
 
     // Reset form after submission (optional)
@@ -59,7 +55,7 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        
+
         <button type="submit">Submit</button>
         <SignUpLink href="/sign-up">Not registered yet? Sign Up</SignUpLink>
       </LoginForm>
@@ -115,12 +111,12 @@ const Container = styled.div`
 `;
 
 const SignUpLink = styled.a`
-  color: #2f80ed; 
-  font-size: 0.9rem; 
-  text-decoration: none; 
+  color: #2f80ed;
+  font-size: 0.9rem;
+  text-decoration: none;
 
   &:hover {
-    text-decoration: underline; 
+    text-decoration: underline;
   }
 `;
 
@@ -129,6 +125,5 @@ const LoginForm = styled.form`
   flex-direction: column;
   gap: 10px;
 `;
-
 
 export default LoginPage;

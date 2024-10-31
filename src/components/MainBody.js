@@ -1,25 +1,25 @@
-import React from 'react'
-import "../Style.css"
-import CardsRow from './card/CardsRow'
-import InfoSection from './InfoSection'
-import InfoCompanySection from './InfoCompanySection'
-import BenefitCardsSection from './BenefitCardsSection'
+import React from "react";
+import "../Style.css";
+import CardsRow from "./card/CardsRow";
+import InfoSection from "./InfoSection";
+import InfoCompanySection from "./InfoCompanySection";
+import BenefitCardsSection from "./BenefitCardsSection";
 
 const MainBody = () => {
-  return (  
+  return (
     <>
-      <InfoSection/>
-      <br/>
-      <BenefitCardsSection/>
-      <br/>
-      <InfoCompanySection/>
-      <br/>
-      <br/>
-      <br/>
-      <CardsRow/>
-      <br/>
+      <InfoSection />
+      <br />
+      <BenefitCardsSection />
+      <br />
+      <InfoCompanySection />
+      <br />
+      <br />
+      <br />
+      <CardsRow />
+      <br />
     </>
-  )
-}
+  );
+};
 
-export default MainBody
+export default MainBody;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useRegisterUserMutation } from '../../../redux/rtk/userData';
+import React, { useState } from "react";
+import { useRegisterUserMutation } from "../../../redux/rtk/userData";
 import {
   Container,
   SignUpForm,
@@ -13,22 +13,27 @@ import {
   SubmitButton,
   ClearButton,
   SignInLink,
-  ErrorMessage
-} from './SignUpPageStyles';
+  ErrorMessage,
+} from "./SignUpPageStyles";
 
 const SignUpPage = () => {
-  const emailDomains = ['@gmail.com', '@walla.co.il', '@outlook.com', '@yahoo.com'];
-  const phonePrefixes = ['050', '052', '053', '054', '055', '058'];
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [userName, setUserName] = useState('');
-  const [emailUsername, setEmailUsername] = useState('');
-  const [emailDomain, setEmailDomain] = useState('@gmail.com');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [id, setId] = useState('');
-  const [phonePrefix, setPhonePrefix] = useState('050');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const emailDomains = [
+    "@gmail.com",
+    "@walla.co.il",
+    "@outlook.com",
+    "@yahoo.com",
+  ];
+  const phonePrefixes = ["050", "052", "053", "054", "055", "058"];
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [emailUsername, setEmailUsername] = useState("");
+  const [emailDomain, setEmailDomain] = useState("@gmail.com");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [id, setId] = useState("");
+  const [phonePrefix, setPhonePrefix] = useState("050");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [errors, setErrors] = useState({});
 
   const [registerUser] = useRegisterUserMutation();
@@ -38,56 +43,60 @@ const SignUpPage = () => {
 
     // Validate first name and last name (letters only)
     if (!/^[a-zA-Z\s]*$/.test(firstName)) {
-      newErrors.firstName = 'First name must include letters only';
+      newErrors.firstName = "First name must include letters only";
     }
     if (!/^[a-zA-Z\s]*$/.test(lastName)) {
-      newErrors.lastName = 'Last name must include letters only';
+      newErrors.lastName = "Last name must include letters only";
     }
 
-    // Validate password 
+    // Validate password
     const passwordErrors = [];
 
     if (password.length === 0) {
-      passwordErrors.push('Password is required');
+      passwordErrors.push("Password is required");
     }
 
     if (password.length < 8) {
-      passwordErrors.push('Password must be at least 8 characters long');
+      passwordErrors.push("Password must be at least 8 characters long");
     }
 
     if (password.length > 20) {
-      passwordErrors.push('Password must be at most 20 characters long');
+      passwordErrors.push("Password must be at most 20 characters long");
     }
 
     if (!/[a-z]/.test(password)) {
-      passwordErrors.push('Password must contain at least one lowercase letter');
+      passwordErrors.push(
+        "Password must contain at least one lowercase letter",
+      );
     }
 
     if (!/[A-Z]/.test(password)) {
-      passwordErrors.push('Password must contain at least one uppercase letter');
+      passwordErrors.push(
+        "Password must contain at least one uppercase letter",
+      );
     }
 
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      passwordErrors.push('Password must contain at least one symbol');
+      passwordErrors.push("Password must contain at least one symbol");
     }
 
     if (passwordErrors.length > 0) {
-      newErrors.password = passwordErrors.join('. ');
+      newErrors.password = passwordErrors.join(". ");
     }
 
     // Validate ID
     if (!/^\d{9}$/.test(id)) {
-      newErrors.id = 'Invalid id';
+      newErrors.id = "Invalid id";
     }
 
     // Validate phone number (exactly 7 digits)
     if (!/^\d{7}$/.test(phoneNumber)) {
-      newErrors.phoneNumber = 'Invalid phone number';
+      newErrors.phoneNumber = "Invalid phone number";
     }
 
     // Validate password confirmation
     if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Passwords should be equals';
+      newErrors.confirmPassword = "Passwords should be equals";
     }
 
     setErrors(newErrors);
@@ -100,17 +109,22 @@ const SignUpPage = () => {
       const email = emailUsername + emailDomain;
       const phone = phonePrefix + phoneNumber;
       console.log(
-        `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
+        `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`,
       );
       try {
         const newUser = {
-          userName, password, firstName, lastName, phone, userId:id, email
-        }
+          userName,
+          password,
+          firstName,
+          lastName,
+          phone,
+          userId: id,
+          email,
+        };
         // Registering new user to database
         const result = await registerUser(newUser);
 
-        console.log(result)
-
+        console.log(result);
       } catch (error) {
         console.error(`error registering user ${id}: ${error.message}`);
       }
@@ -119,20 +133,19 @@ const SignUpPage = () => {
     }
   };
 
-
   const handleClear = () => {
-    setFirstName('');
-    setLastName('');
-    setUserName('');
-    setEmailUsername('');
-    setEmailDomain('@gmail.com');
-    setPassword('');
-    setConfirmPassword('');
-    setId('');
-    setPhonePrefix('050');
-    setPhoneNumber('');
+    setFirstName("");
+    setLastName("");
+    setUserName("");
+    setEmailUsername("");
+    setEmailDomain("@gmail.com");
+    setPassword("");
+    setConfirmPassword("");
+    setId("");
+    setPhonePrefix("050");
+    setPhoneNumber("");
     setErrors({});
-  }
+  };
 
   return (
     <Container>
@@ -183,7 +196,9 @@ const SignUpPage = () => {
             onChange={(e) => setEmailDomain(e.target.value)}
           >
             {emailDomains.map((domain) => (
-              <option key={domain} value={domain}>{domain}</option>
+              <option key={domain} value={domain}>
+                {domain}
+              </option>
             ))}
           </EmailDomainSelect>
         </EmailInputContainer>
@@ -206,7 +221,9 @@ const SignUpPage = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        {errors.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage>}
+        {errors.confirmPassword && (
+          <ErrorMessage>{errors.confirmPassword}</ErrorMessage>
+        )}
 
         <label htmlFor="id">ID:</label>
         <input
@@ -226,7 +243,9 @@ const SignUpPage = () => {
             onChange={(e) => setPhonePrefix(e.target.value)}
           >
             {phonePrefixes.map((prefix) => (
-              <option key={prefix} value={prefix}>{prefix}</option>
+              <option key={prefix} value={prefix}>
+                {prefix}
+              </option>
             ))}
           </PhonePrefixSelect>
           <PhoneNumberInput
@@ -238,11 +257,15 @@ const SignUpPage = () => {
             placeholder="phone number"
           />
         </PhoneInputContainer>
-        {errors.phoneNumber && <ErrorMessage>{errors.phoneNumber}</ErrorMessage>}
+        {errors.phoneNumber && (
+          <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
+        )}
 
         <ButtonContainer>
           <SubmitButton type="submit">Create Account</SubmitButton>
-          <ClearButton type="button" onClick={handleClear}>Clear</ClearButton>
+          <ClearButton type="button" onClick={handleClear}>
+            Clear
+          </ClearButton>
         </ButtonContainer>
         <SignInLink href="/login">Already have an account? Sign In</SignInLink>
       </SignUpForm>

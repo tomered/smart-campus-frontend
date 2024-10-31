@@ -31,7 +31,7 @@ const AdminUsersTable = () => {
   const [deleteUser] = useDeleteUserMutation(); // delete users mutation from backend
   const [editUserMutation] = useEditUserMutation(); // edit users mutation from backend
   const [users, setUsers] = useState(initialUsers); // state for the users
-  const [editUser, setEditUser] = useState(null); 
+  const [editUser, setEditUser] = useState(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); //ofir-לצורך שמירת הטקסט שהמשתמש ירצה לחפש לפיו
   const [searchBy, setSearchBy] = useState("name"); //ofir- לצורך שמירת הקרטריון שלפיו המשתמש ירצה לחפש
@@ -63,8 +63,8 @@ const AdminUsersTable = () => {
 
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
-          user.id === updatedUser.id ? updatedUser : user
-        )
+          user.id === updatedUser.id ? updatedUser : user,
+        ),
       );
     } catch (error) {
       console.error("Failed to edit user:", error);
@@ -81,7 +81,7 @@ const AdminUsersTable = () => {
         await deleteUser({ id: deleteConfirmation.id, token }).unwrap();
         setDeleteConfirmation(null);
         setUsers((prevUsers) =>
-          prevUsers.filter((user) => user.id !== deleteConfirmation.id)
+          prevUsers.filter((user) => user.id !== deleteConfirmation.id),
         );
       } catch (error) {
         console.error("Failed to delete user:", error);

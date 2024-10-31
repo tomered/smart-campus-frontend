@@ -1,16 +1,35 @@
-import React from 'react';
-import styled from 'styled-components';
-import { FaDollarSign, FaShieldAlt, FaBatteryHalf, FaWifi } from 'react-icons/fa'; // Importing icons
-
-
+import React from "react";
+import styled from "styled-components";
+import {
+  FaDollarSign,
+  FaShieldAlt,
+  FaBatteryHalf,
+  FaWifi,
+} from "react-icons/fa"; // Importing icons
 
 const BenefitCardsSection = () => {
-    const benefits = [
-        { title: 'Low Cost', description: 'Efficient use of resources with reduced expenses.', icon: <FaDollarSign /> },
-        { title: 'Security', description: 'Enhanced safety measures to protect campus assets.', icon: <FaShieldAlt /> },
-        { title: 'Low Power', description: 'Energy-efficient systems to minimize power consumption.', icon: <FaBatteryHalf /> },
-        { title: 'Long Range', description: 'Reliable connectivity over long distances.', icon: <FaWifi /> }
-      ];
+  const benefits = [
+    {
+      title: "Low Cost",
+      description: "Efficient use of resources with reduced expenses.",
+      icon: <FaDollarSign />,
+    },
+    {
+      title: "Security",
+      description: "Enhanced safety measures to protect campus assets.",
+      icon: <FaShieldAlt />,
+    },
+    {
+      title: "Low Power",
+      description: "Energy-efficient systems to minimize power consumption.",
+      icon: <FaBatteryHalf />,
+    },
+    {
+      title: "Long Range",
+      description: "Reliable connectivity over long distances.",
+      icon: <FaWifi />,
+    },
+  ];
 
   return (
     <Section>
@@ -44,8 +63,8 @@ const Cards = styled.div`
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  
-    @media (max-width: 700px) {
+
+  @media (max-width: 700px) {
     flex-direction: column;
     align-items: center;
   }
@@ -64,8 +83,8 @@ const Card = styled.div`
     transform: scale(1.05);
   }
 
-    @media (max-width: 700px) {
-    width: 80%;  /* Adjust width for mobile */
+  @media (max-width: 700px) {
+    width: 80%; /* Adjust width for mobile */
   }
 `;
 

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = 'https://smart-campus-backend-4hd6.onrender.com/';
+const baseUrl = "https://smart-campus-backend-4hd6.onrender.com/";
 
 export const userDataApi = createApi({
   reducerPath: "userDataApi",
@@ -26,23 +26,23 @@ export const userDataApi = createApi({
     getAllUsers: builder.query({
       query: (token) => ({
         url: "api/admin/users",
-        method: 'GET',
+        method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`, 
-        }
+          Authorization: `Bearer ${token}`,
+        },
       }),
     }),
     getNumberOfUsers: builder.query({
       query: (token) => ({
         url: "api/admin/users/count",
-        method: 'GET',
+        method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`, 
-        }
+          Authorization: `Bearer ${token}`,
+        },
       }),
     }),
     editUser: builder.mutation({
-      query: ({ id, userData, token  }) => ({
+      query: ({ id, userData, token }) => ({
         url: `api/admin/edit/${id}`,
         method: "PUT",
         body: userData,
@@ -52,7 +52,7 @@ export const userDataApi = createApi({
       }),
     }),
     deleteUser: builder.mutation({
-      query: ({ id, token } ) => ({
+      query: ({ id, token }) => ({
         url: `api/admin/delete/${id}`,
         method: "DELETE",
         headers: {

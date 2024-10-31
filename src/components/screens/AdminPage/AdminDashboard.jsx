@@ -31,12 +31,13 @@ Chart.register(
   Tooltip,
   Legend,
   ArcElement,
-  RadialLinearScale
+  RadialLinearScale,
 );
 
 const AdminDashboard = () => {
   const token = useSelector((state) => state.userData.token); // storing the token of the user
-  const { data: userCountData, error: apiError } = useGetNumberOfUsersQuery(token); // getting the number of users from Backend
+  const { data: userCountData, error: apiError } =
+    useGetNumberOfUsersQuery(token); // getting the number of users from Backend
   const [error, setError] = useState(null); // state for error
   const [totalUsers, setTotalUsers] = useState(0); // state for total users (how many users in total)
 
@@ -58,13 +59,13 @@ const AdminDashboard = () => {
   ];
 
   const totalStudents = initialUsers.filter(
-    (user) => user.role === "Student"
+    (user) => user.role === "Student",
   ).length;
   const totalLecturers = initialUsers.filter(
-    (user) => user.role === "Lecturer"
+    (user) => user.role === "Lecturer",
   ).length;
   const totalAdmins = initialUsers.filter(
-    (user) => user.role === "Admin"
+    (user) => user.role === "Admin",
   ).length;
   // נתוני הגרפים (הנתונים נשארים זהים)
   const barData = {

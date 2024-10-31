@@ -27,10 +27,10 @@ ChartJS.register(
   LinearScale,
   PointElement,
   ChartTooltip,
-  Legend,
+  Legend
 );
 
-const AirDashboard = ({ goHome }) => {
+const RecycleDashboard = ({ goHome }) => {
   const token = useSelector((state) => state.userData.token); //storing the token of the user
 
   useEffect(() => {
@@ -66,12 +66,33 @@ const AirDashboard = ({ goHome }) => {
             animation: "fadeIn 2s ease-in-out",
           }}
         >
-          Air Dashboard
+          Recycle Dashboard
         </Typography>
       </Box>
+      {/* Centered "SOON..." text */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "50vh", // Adjust as needed
+        }}
+      >
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: "80px",
+            fontWeight: "bold",
+            color: "#888",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
+          SOON...
+        </Typography>
+      </div>
           
     </Box>
   );
 };
 
-export default AirDashboard;
+export default RecycleDashboard;

@@ -11,12 +11,12 @@ body {
   font-size: 16px;
   margin: 0;
   padding: 0;
-  background-color: #F0FFFF; /* replace with your desired color */
+  background-color: #f0ffff; /* replace with your desired color */
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-  /* Style for the image to cover the full viewport height */
+/* Style for the image to cover the full viewport height */
 #image-section {
   position: relative;
   width: 100%;
@@ -45,7 +45,6 @@ nav {
   padding: 0 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds slight shadow */
 }
-
 
 /* Style the about section */
 #about {
@@ -141,7 +140,10 @@ blockquote {
     height: auto; /* Ensure image adjusts for mobile screens */
   }
 
-  #about, #features, #testimonials, #call-to-action {
+  #about,
+  #features,
+  #testimonials,
+  #call-to-action {
     padding: 20px;
   }
 
@@ -149,8 +151,8 @@ blockquote {
     font-size: 28px;
   }
 
-  p, li {
+  p,
+  li {
     font-size: 16px;
   }
 }
-
