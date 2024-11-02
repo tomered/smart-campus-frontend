@@ -1,5 +1,3 @@
-// delete comment
-
 import './App.css';
 import WaterPage from './components/screens/learnMorePage/WaterPage.js';
 import MicroClimaticPage from './components/screens/learnMorePage/MicroClimaticPage.js';
@@ -19,7 +17,12 @@ import Login from './components/screens/LoginRegisterPage/LoginPage.js';
 import Register from './components/screens/LoginRegisterPage/SignUpPage.js';
 import AirDashboard from './components/dashboard/AirDashboard.jsx';
 import PowerDashboard from './components/dashboard/PowerDashboard.jsx';
+import AdminDashboard from './components/screens/AdminPage/AdminDashboard'; 
+import AdminUsersTable from './components/screens/AdminPage/AdminUsersTable'; 
+import AdminAlertCenter from './components/screens/AdminPage/AdminAlertCenter'; 
+import SensorStatistics from './components/screens/AdminPage/SensorStatistics';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 const App = () => {
   return (
     <>
@@ -51,6 +54,10 @@ const App = () => {
           <Route path='/sign-up' element={<Register />} />
           <Route path='/airDashboard' element={<AirDashboard />} />
           <Route path='/powerDashboard' element={<PowerDashboard />} />
+          <Route path='/admin' element={<AdminDashboard />} /> {/* נתיב למסך האדמין */}
+          <Route path='/UsersTable' element={<AdminUsersTable />} />
+          <Route path='/SensorStatistics' element={<SensorStatistics/>} />
+          <Route path='/AlertCenter' element={<AdminAlertCenter/>} />
         </Routes>
         <Footer />
       </BrowserRouter>
