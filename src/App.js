@@ -22,6 +22,8 @@ import AdminUsersTable from './components/screens/AdminPage/AdminUsersTable';
 import AdminAlertCenter from './components/screens/AdminPage/AdminAlertCenter'; 
 import SensorStatistics from './components/screens/AdminPage/SensorStatistics';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ValidTokenPage from './components/screens/LoginRegisterPage/ValidTokenPage.js';
+import LoadingScreen from './components/screens/LoadingScreen.js';
 
 const App = () => {
   return (
@@ -58,6 +60,8 @@ const App = () => {
           <Route path='/UsersTable' element={<AdminUsersTable />} />
           <Route path='/SensorStatistics' element={<SensorStatistics/>} />
           <Route path='/AlertCenter' element={<AdminAlertCenter/>} />
+          <Route path='/validateToken' element={<ValidTokenPage />} />
+          <Route path='/loading' element={<LoadingScreen />} />
         </Routes>
         <Footer />
       </BrowserRouter>
