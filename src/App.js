@@ -20,6 +20,8 @@ import Register from './components/screens/LoginRegisterPage/SignUpPage.js';
 import AirDashboard from './components/dashboard/AirDashboard.jsx';
 import PowerDashboard from './components/dashboard/PowerDashboard.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ValidTokenPage from './components/screens/LoginRegisterPage/ValidTokenPage.js';
+import LoadingScreen from './components/screens/LoadingScreen.js';
 const App = () => {
   return (
     <>
@@ -51,6 +53,8 @@ const App = () => {
           <Route path='/sign-up' element={<Register />} />
           <Route path='/airDashboard' element={<AirDashboard />} />
           <Route path='/powerDashboard' element={<PowerDashboard />} />
+          <Route path='/validateToken' element={<ValidTokenPage />} />
+          <Route path='/loading' element={<LoadingScreen />} />
         </Routes>
         <Footer />
       </BrowserRouter>
