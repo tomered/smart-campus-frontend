@@ -1,21 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRegisterUserMutation } from '../../../redux/rtk/userData';
 import {
-  Container, SignUpForm, EmailInputContainer, EmailUsernameInput, EmailDomainSelect,
-  PhoneInputContainer, PhonePrefixSelect, PhoneNumberInput, ButtonContainer, SubmitButton,
-  ClearButton, SignInLink, ErrorMessage
+  Container,
+  SignUpForm,
+  EmailInputContainer,
+  EmailUsernameInput,
+  EmailDomainSelect,
+  PhoneInputContainer,
+  PhonePrefixSelect,
+  PhoneNumberInput,
+  ButtonContainer,
+  SubmitButton,
+  ClearButton,
+  SignInLink,
+  ErrorMessage
 } from './SignUpPageStyles';
-import { useNavigate } from 'react-router-dom';
-import LoadingScreen from '../LoadingScreen';
-import SuccessScreen from '../SuccessScreen';
-import FailureScreen from '../FailureScreen';
 
 const SignUpPage = () => {
-
   const emailDomains = ['@gmail.com', '@walla.co.il', '@outlook.com', '@yahoo.com'];
   const phonePrefixes = ['050', '052', '053', '054', '055', '058'];
-
-  //SignUp form states
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
@@ -28,15 +31,8 @@ const SignUpPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [errors, setErrors] = useState({});
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isFailure, setIsFailure] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
-
   const [registerUser] = useRegisterUserMutation();
 
-  //Validations
   const validateForm = () => {
     const newErrors = {};
 
@@ -103,38 +99,27 @@ const SignUpPage = () => {
     if (validateForm()) {
       const email = emailUsername + emailDomain;
       const phone = phonePrefix + phoneNumber;
-      setIsLoading(true);
+      console.log(
+        `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`
+      );
       try {
         const newUser = {
-          userName, password, firstName, lastName, phone, userId: id, email
+          userName, password, firstName, lastName, phone, userId:id, email
         }
         // Registering new user to database
         const result = await registerUser(newUser);
-        if (typeof result.data === "string") {
-          console.log("Registration message:", result.data);
-          setIsSuccess(true);
-        } else if (result.error) {
-          throw new Error(result.error.data || "An unexpected error occurred");
-        }
+
+        console.log(result)
+
       } catch (error) {
-        console.error(`Error registering user ${id}: ${error.message}`);
-        setErrorMessage(error.message);
-        setIsFailure(true);
+        console.error(`error registering user ${id}: ${error.message}`);
       }
+
+      handleClear();
     }
   };
 
-  const userEmail = emailUsername + emailDomain;
-  useEffect(() => {
-    if (isSuccess) {
-      const timer = setTimeout(() => {
-        navigate('/validateToken', { state: { email: userEmail } });
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isSuccess, navigate, userEmail]);
 
-  //Clear button
   const handleClear = () => {
     setFirstName('');
     setLastName('');
@@ -147,10 +132,6 @@ const SignUpPage = () => {
     setPhonePrefix('050');
     setPhoneNumber('');
     setErrors({});
-  }
-  const onErrorClose=()=>{
-    setIsFailure(false);
-    setErrorMessage('');
   }
 
   return (
@@ -260,17 +241,11 @@ const SignUpPage = () => {
         {errors.phoneNumber && <ErrorMessage>{errors.phoneNumber}</ErrorMessage>}
 
         <ButtonContainer>
-          <SubmitButton type="submit" disabled={isLoading}>Create Account</SubmitButton>
-          <ClearButton type="button" onClick={handleClear} disabled={isLoading}>Clear</ClearButton>
+          <SubmitButton type="submit">Create Account</SubmitButton>
+          <ClearButton type="button" onClick={handleClear}>Clear</ClearButton>
         </ButtonContainer>
         <SignInLink href="/login">Already have an account? Sign In</SignInLink>
       </SignUpForm>
-      {isLoading && <LoadingScreen message="Registering..." />}
-      {isSuccess && <SuccessScreen message="Redirecting to token verification..." />}
-      {isFailure && <FailureScreen
-        mainMessage="Registration Failed!"
-        bodyMessage={errorMessage}
-        onClose={onErrorClose} />}
     </Container>
   );
 };
