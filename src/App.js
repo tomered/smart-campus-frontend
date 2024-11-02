@@ -1,5 +1,3 @@
-// delete comment
-
 import './App.css';
 import WaterPage from './components/screens/learnMorePage/WaterPage.js';
 import MicroClimaticPage from './components/screens/learnMorePage/MicroClimaticPage.js';
