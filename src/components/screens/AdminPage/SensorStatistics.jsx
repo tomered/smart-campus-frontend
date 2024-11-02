@@ -1,7 +1,7 @@
 // screens/AdminPage/SensorStatistics.js
 import React from 'react';
 import { Typography, Container, Box, Grid, Paper } from '@mui/material';
-import Sidebar from './Sidebar'; // ייבוא Sidebar
+import Sidebar from './Sidebar';
 import { Bar, Line, Pie } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import InfoCard from '../../card/InfoCard';
@@ -11,13 +11,13 @@ Chart.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement
 
 const SensorStatistics = () => {
 
-  // נתוני חדרים
+  
   const roomData = {
-    totalRooms: 50, // סה"כ חדרים
-    occupiedRooms: 30, // חדרים תפוסים
-    freeRooms: 20, // חדרים פנויים
-    roomsWithLightsOn: 25, // חדרים עם אורות דולקים
-    roomsWithPeople: 30, // חדרים עם אנשים
+    totalRooms: 50, 
+    occupiedRooms: 30, 
+    freeRooms: 20, 
+    roomsWithLightsOn: 25, 
+    roomsWithPeople: 30, 
   };
 
   const barData = {
@@ -68,7 +68,7 @@ const SensorStatistics = () => {
 
       {/* Main content container */}
       <Container sx={{ mt: 4, ml: '150px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {/* כותרת עם גרדיאנט */}
+        {}
         <Typography
           variant="h4"
           gutterBottom
@@ -84,7 +84,7 @@ const SensorStatistics = () => {
           Sensor Statistics
         </Typography>
 
-        {/* כרטיסי מידע מהירים */}
+        {}
         <Grid container spacing={4} sx={{ width: '100%', mb: 4 }}>
           <Grid item xs={12} md={4}>
             <InfoCard title="Total Rooms" value={roomData.totalRooms} bgColor="#3f51b5" />
@@ -103,7 +103,7 @@ const SensorStatistics = () => {
           </Grid>
         </Grid>
 
-        {/* גרף עבור החדרים */}
+        {}
         <Grid container spacing={4} sx={{ width: '100%' }}>
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 3, boxShadow: 4, borderRadius: 3, height: '400px', backgroundColor: '#f5f7fa', transition: 'box-shadow 0.3s ease', '&:hover': { boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)' } }}>

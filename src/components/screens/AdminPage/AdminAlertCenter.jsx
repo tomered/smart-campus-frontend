@@ -1,7 +1,7 @@
 // screens/AdminPage/AdminAlertCenter.js
 import React, { useState, useEffect } from 'react';
 import { Typography, Container, Box, Grid, Paper, List, ListItem } from '@mui/material';
-import Sidebar from './Sidebar'; // ייבוא Sidebar
+import Sidebar from './Sidebar'; 
 import { Alert, AlertTitle } from '@mui/material';
 import { WarningAmber, Error, Info } from '@mui/icons-material';
 
@@ -22,7 +22,7 @@ const AdminAlertCenter = () => {
     setAlerts(mockAlerts);
   }, []);
 
-  // פונקציה להחזרת האייקון לפי סוג ההתראה
+  
   const getAlertIcon = (type) => {
     switch (type) {
       case 'error':
@@ -36,7 +36,7 @@ const AdminAlertCenter = () => {
     }
   };
   
-  //סוג התראה
+  
   const getAlertTitle = (type) => {
     switch (type) {
       case 'error':
@@ -57,7 +57,7 @@ const AdminAlertCenter = () => {
 
       
       <Container sx={{ mt: 4, ml: '150px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {/* כותרת עם גרדיאנט */}
+        {}
         <Typography
           variant="h4"
           gutterBottom

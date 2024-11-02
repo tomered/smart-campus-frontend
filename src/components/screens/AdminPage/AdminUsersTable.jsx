@@ -15,7 +15,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import Sidebar from "./Sidebar"; // ייבוא של ה-Sidebar
+import Sidebar from "./Sidebar"; 
 import EditUserDialog from "./Dialogs/EditUserDialog";
 import DeleteUserDialog from "./Dialogs/DeleteUserDialog";
 import {
@@ -33,8 +33,8 @@ const AdminUsersTable = () => {
   const [users, setUsers] = useState(initialUsers); // state for the users
   const [editUser, setEditUser] = useState(null); 
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); //ofir-לצורך שמירת הטקסט שהמשתמש ירצה לחפש לפיו
-  const [searchBy, setSearchBy] = useState("name"); //ofir- לצורך שמירת הקרטריון שלפיו המשתמש ירצה לחפש
+  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchBy, setSearchBy] = useState("name"); 
 
   useEffect(() => {
     setUsers(initialUsers);
@@ -144,7 +144,7 @@ const AdminUsersTable = () => {
           Users Management
         </Typography>
 
-        {/* ofir- יצירת איזור חיפוש שבו המשתמש יוכל לבחור אופציה שלפיה הוא יחפש ולהקליד את המילה הספציפית שלפיה יחפש */}
+        {}
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <TextField
             label="Search"
