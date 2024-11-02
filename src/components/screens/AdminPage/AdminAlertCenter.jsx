@@ -90,7 +90,7 @@ const AdminAlertCenter = () => {
                 System Alerts
               </Typography>
 
-              {/* רשימת התראות */}
+              {/* Alert list */}
               {alerts.length === 0 ? (
                 <Typography variant="body1" color="textSecondary">
                   No alerts to display at the moment.
