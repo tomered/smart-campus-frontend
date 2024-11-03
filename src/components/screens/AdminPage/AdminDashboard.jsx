@@ -36,19 +36,16 @@ Chart.register(
 
 const AdminDashboard = () => {
   const token = useSelector((state) => state.userData.token); // storing the token of the user
-  const { data: userCountData, error: apiError } = useGetNumberOfUsersQuery(token); // getting the number of users from Backend
-  const [error, setError] = useState(null); // state for error
+  const { data = {}, error } = useGetNumberOfUsersQuery(token); // getting the number of users from Backend
   const [totalUsers, setTotalUsers] = useState(0); // state for total users (how many users in total)
 
   useEffect(() => {
-    if (userCountData) {
-      setTotalUsers(userCountData.totalUsers); // setting the total users count
+    if (data.totalUsers !== undefined) {
+      setTotalUsers(data.totalUsers);
     }
+  }, [data]);
 
-    if (apiError) {
-      setError(apiError.message); // set error message if there's an error
-    }
-  }, [userCountData, apiError]);
+  console.log(data.totalUsers);
 
   const initialUsers = [
     { id: 1, name: "David Azran", email: "david@gmail.com", role: "Student" },
