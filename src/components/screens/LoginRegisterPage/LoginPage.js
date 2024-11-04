@@ -1,4 +1,4 @@
-import React, { useState  } from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import { useLoginUserMutation } from '../../../redux/rtk/userData';
 import { useDispatch } from 'react-redux';
@@ -16,32 +16,29 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
-
-    // Perform actions with collected data (username, password, userRole)
-    // For example, send it to a server for validation or display a message
-    console.log(
-      `Username: ${username}, Password: ${password}`
-    );
 
     try {
       // Getting user from database
-      const result = await loginUser({userName:username, password});
+      const result = await loginUser({ userName: username, password });
 
       // Save user token and userName
       dispatch(setToken(result.data.token));
       dispatch(setUserName(username));
-      if(result) {
+
+      //Succsesfully login , navigate to home page
+      if (result) {
         navigate("/");
       }
-    } catch (error) {
+    }
+    //If failed , the failure screen will show up
+    catch (error) {
       setIsFailure(true);
     }
-    // Reset form after submission (optional)
   };
 
-  const onErrorClose=()=>{
+  const onErrorClose = () => {
     setIsFailure(false);
   }
 
@@ -65,13 +62,13 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        
+
         <button type="submit">Submit</button>
         <SignUpLink href="/sign-up">Not registered yet? Sign Up</SignUpLink>
-      {isFailure && <FailureScreen
-        mainMessage="Sign in Failed!"
-        bodyMessage="UserName or Password are incorrect"
-        onClose={onErrorClose} />}
+        {isFailure && <FailureScreen
+          mainMessage="Sign in Failed!"
+          bodyMessage="UserName or Password are incorrect"
+          onClose={onErrorClose} />}
       </LoginForm>
     </Container>
   );
