@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     userName: '',
     token: '',
+    role:'',
     isLoading: false
 };
 
@@ -18,12 +19,16 @@ const userDataSlice = createSlice({
         setToken: (state, action) => {
             state.token = action.payload;
         },
+        setRole: (state, action) => {
+            state.role = action.payload;
+        },
     },
 });
 
 export const {
     setUserName,
-    setToken
+    setToken,
+    setRole
 } = userDataSlice.actions;
 
 export default userDataSlice.reducer

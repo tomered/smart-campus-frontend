@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useLoginUserMutation } from '../../../redux/rtk/userData';
-import { useDispatch } from 'react-redux';
-import { setToken, setUserName } from '../../../redux/slices/userDataSlice';
+import {
+  useLoginUserMutation,
+  useGetAdminStatusQuery,
+} from "../../../redux/rtk/userData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setToken,
+  setUserName,
+  setRole,
+} from "../../../redux/slices/userDataSlice";
 import { useNavigate } from "react-router-dom";
-import FailureScreen from '../FailureScreen';
-
+import FailureScreen from "../FailureScreen";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [isFailure, setIsFailure] = useState(false);
 
-  const [loginUser] = useLoginUserMutation()
+  const [loginUser] = useLoginUserMutation();
+  const token = useSelector((state) => state.userData.token);
+  const { data } = useGetAdminStatusQuery(token, { skip: !token });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,21 +34,23 @@ const LoginPage = () => {
       // Save user token and userName
       dispatch(setToken(result.data.token));
       dispatch(setUserName(username));
+      if (data && data.status.includes("admin (0)")) {
+        dispatch(setRole("admin")); // Set the role as admin
+      }
 
       //Succsesfully login , navigate to home page
       if (result) {
         navigate("/");
       }
-    }
-    //If failed , the failure screen will show up
-    catch (error) {
+    } catch (error) {
+      //If failed , the failure screen will show up
       setIsFailure(true);
     }
   };
 
   const onErrorClose = () => {
     setIsFailure(false);
-  }
+  };
 
   return (
     <Container>
@@ -65,16 +75,17 @@ const LoginPage = () => {
 
         <button type="submit">Submit</button>
         <SignUpLink href="/sign-up">Not registered yet? Sign Up</SignUpLink>
-        {isFailure && <FailureScreen
-          mainMessage="Sign in Failed!"
-          bodyMessage="UserName or Password are incorrect"
-          onClose={onErrorClose} />}
+        {isFailure && (
+          <FailureScreen
+            mainMessage="Sign in Failed!"
+            bodyMessage="UserName or Password are incorrect"
+            onClose={onErrorClose}
+          />
+        )}
       </LoginForm>
     </Container>
   );
 };
-
-
 
 const Container = styled.div`
   max-width: 500px;
@@ -124,12 +135,12 @@ const Container = styled.div`
 `;
 
 const SignUpLink = styled.a`
-  color: #2f80ed; 
-  font-size: 0.9rem; 
-  text-decoration: none; 
+  color: #2f80ed;
+  font-size: 0.9rem;
+  text-decoration: none;
 
   &:hover {
-    text-decoration: underline; 
+    text-decoration: underline;
   }
 `;
 
@@ -138,6 +149,5 @@ const LoginForm = styled.form`
   flex-direction: column;
   gap: 10px;
 `;
-
 
 export default LoginPage;
