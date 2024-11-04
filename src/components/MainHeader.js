@@ -58,6 +58,7 @@ const MainHeader = () => {
                     } else {
                       navigate(item.path);
                     }
+                    setShowMenu(false);
                   }}
                 >
                   {item.name}
