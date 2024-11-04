@@ -7,21 +7,15 @@ import { useNavigate } from "react-router-dom";
 
 const MainHeader = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [loggedOut, setLoggedOut] = useState(false);
   const navigate = useNavigate();
 
-  const menuItems = [
-    { name: "Staff", path: "/staff" },
-    { name: "Students", path: "/students" },
-    { name: "Partners", path: "/partners" },
-    { name: "Contact Us", path: "/contact" },
-    { name: "News", path: "/news" },
-    {
-      name: "HIT 3D Map",
-      path: "/",
-      onClick: (e) => handleMapClick(e, "hitMap"),
-    },
-    { name: "Login", path: "/login" },
-  ];
+  //Retrieve user data from local storage
+  const userData = localStorage.getItem("persist:root");
+  const parsedData = userData ? JSON.parse(userData) : null;
+  const user = parsedData ? JSON.parse(parsedData.userData) : null;
+
+  const isLoggedIn = user && user.token;
 
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
@@ -36,6 +30,30 @@ const MainHeader = () => {
   const handleLogoAndTitleClick = () => {
     navigate('/');
   };
+
+  const handleLogout = () => {
+    if (userData !== null) {
+      localStorage.removeItem("persist:root");
+    }
+    setLoggedOut(true);
+  };
+
+  const menuItems = [
+    { name: "Staff", path: "/staff" },
+    { name: "Students", path: "/students" },
+    { name: "Partners", path: "/partners" },
+    { name: "Contact Us", path: "/contact" },
+    { name: "News", path: "/news" },
+    {
+      name: "HIT 3D Map",
+      path: "/",
+      onClick: (e) => handleMapClick(e, "hitMap"),
+    },
+    {
+      name: isLoggedIn ? "Logout" : "Login",
+      onClick: isLoggedIn ? handleLogout : () => navigate("/login"),
+    },
+  ];
 
   return (
     <Container>
