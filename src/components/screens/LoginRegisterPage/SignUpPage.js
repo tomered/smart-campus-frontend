@@ -98,6 +98,25 @@ const SignUpPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+//Backend may return some errors , print these errors to client seperatly
+  const getCleanErrorMessage = (error) => {
+    if (!error?.data?.driverError?.detail) {
+      return "An unexpected error occurred";
+    }
+    setIsFailure(false);
+    setErrorMessage('');
+    const errorDetail = error.data.driverError.detail;
+    console.log({errorDetail});
+    
+    // Multiple errors handling
+    const errors = [];
+    if (errorDetail.includes("email")) errors.push("Mail already exists");
+    if (errorDetail.includes("userId")) errors.push("ID already exists");
+    if (errorDetail.includes("userName")) errors.push("UserName alrady exists");
+    
+    return errors.length > 0 ? errors.join(", ") : "Registration error";
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (validateForm()) {
@@ -105,18 +124,19 @@ const SignUpPage = () => {
       const phone = phonePrefix + phoneNumber;
       setIsLoading(true);
       try {
-        const newUser = {
-          userName, password, firstName, lastName, phone, userId: id, email
-        }
-        // Registering new user to database
+        const newUser = { userName, password, firstName, lastName, phone, userId: id, email } // Registering new user to database
         const result = await registerUser(newUser);
         if (typeof result.data === "string") {
           console.log("Registration message:", result.data);
           setIsSuccess(true);
-        } else if (result.error) {
-          throw new Error(result.error.data || "An unexpected error occurred");
         }
-      } catch (error) {
+        else if (result.error) {
+          const errorDetail = getCleanErrorMessage(result.error);
+          setErrorMessage(errorDetail);
+          setIsFailure(true);
+        }
+      }
+      catch (error) {
         console.error(`Error registering user ${id}: ${error.message}`);
         setErrorMessage(error.message);
         setIsFailure(true);
@@ -148,7 +168,7 @@ const SignUpPage = () => {
     setPhoneNumber('');
     setErrors({});
   }
-  const onErrorClose=()=>{
+  const onErrorClose = () => {
     setIsFailure(false);
     setIsLoading(false);
     setErrorMessage('');
@@ -270,7 +290,7 @@ const SignUpPage = () => {
       {isSuccess && <SuccessScreen message="Redirecting to token verification..." />}
       {isFailure && <FailureScreen
         mainMessage="Registration Failed!"
-        bodyMessage="some error"
+        bodyMessage={errorMessage}
         onClose={onErrorClose} />}
     </Container>
   );
