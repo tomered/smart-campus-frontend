@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState  } from 'react';
 import styled from "styled-components";
 import { useLoginUserMutation } from '../../../redux/rtk/userData';
 import { useDispatch } from 'react-redux';
 import { setToken, setUserName } from '../../../redux/slices/userDataSlice';
+import { useNavigate } from "react-router-dom";
+import FailureScreen from '../FailureScreen';
 
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isFailure, setIsFailure] = useState(false);
 
   const [loginUser] = useLoginUserMutation()
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async(event) => {
     event.preventDefault(); // Prevent default form submission
@@ -28,16 +32,18 @@ const LoginPage = () => {
       // Save user token and userName
       dispatch(setToken(result.data.token));
       dispatch(setUserName(username));
-
-
+      if(result) {
+        navigate("/");
+      }
     } catch (error) {
-      console.error('error longing in: ' + error.message);
+      setIsFailure(true);
     }
-
     // Reset form after submission (optional)
-    setUsername("");
-    setPassword("");
   };
+
+  const onErrorClose=()=>{
+    setIsFailure(false);
+  }
 
   return (
     <Container>
@@ -62,10 +68,16 @@ const LoginPage = () => {
         
         <button type="submit">Submit</button>
         <SignUpLink href="/sign-up">Not registered yet? Sign Up</SignUpLink>
+      {isFailure && <FailureScreen
+        mainMessage="Sign in Failed!"
+        bodyMessage="UserName or Password are incorrect"
+        onClose={onErrorClose} />}
       </LoginForm>
     </Container>
   );
 };
+
+
 
 const Container = styled.div`
   max-width: 500px;

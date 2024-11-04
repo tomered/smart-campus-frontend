@@ -150,6 +150,7 @@ const SignUpPage = () => {
   }
   const onErrorClose=()=>{
     setIsFailure(false);
+    setIsLoading(false);
     setErrorMessage('');
   }
 
@@ -269,7 +270,7 @@ const SignUpPage = () => {
       {isSuccess && <SuccessScreen message="Redirecting to token verification..." />}
       {isFailure && <FailureScreen
         mainMessage="Registration Failed!"
-        bodyMessage={errorMessage}
+        bodyMessage="some error"
         onClose={onErrorClose} />}
     </Container>
   );
