@@ -46,6 +46,7 @@ const MainHeader = () => {
   };
 
   const menuItems = [
+    {name:"Admin panel" ,path: "/admin"},
     { name: "Staff", path: "/staff" },
     { name: "Students", path: "/students" },
     { name: "Partners", path: "/partners" },
