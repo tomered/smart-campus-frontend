@@ -65,12 +65,12 @@ const App = () => {
           <Route path="/news" element={<NewsPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<Register />} />
-          <Route path="/airDashboard" element={<AdminRoute element={<AirDashboard />} />} />
-          <Route path="/powerDashboard" element={<AdminRoute element={<PowerDashboard />} />} />
-          <Route path="/admin" element={<AdminRoute element={<AdminDashboard />} />} />
-          <Route path="/UsersTable" element={<AdminRoute element={<AdminUsersTable />} />} />
-          <Route path="/SensorStatistics" element={<AdminRoute element={<SensorStatistics />} />} />
-          <Route path="/AlertCenter" element={<AdminRoute element={<AdminAlertCenter />} />} />
+          <Route path="/airDashboard" element={<AirDashboard />} />
+          <Route path="/powerDashboard" element={<PowerDashboard />}/>
+          <Route path="/admin" element={<AdminDashboard />}/>
+          <Route path="/UsersTable" element={<AdminUsersTable />} />
+          <Route path="/SensorStatistics" element={<SensorStatistics />} />
+          <Route path="/AlertCenter" element={<AdminAlertCenter />} />
           <Route path="/validateToken" element={<ValidTokenPage />} />
           <Route path="/loading" element={<LoadingScreen />} />
         </Routes>

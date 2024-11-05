@@ -41,8 +41,8 @@ const MainHeader = () => {
     setIsSuccess(true);
     setTimeout(() => {
       setIsSuccess(false);
+      navigate('/');
     }, 2000);
-    navigate('/');
   };
 
   const menuItems = [
@@ -95,7 +95,7 @@ const MainHeader = () => {
         </MenuLinks>
       </CustomNavBar>
     </Container>
-    {isSuccess && <SuccessScreen mainMessage="Logged out successfully!"/>}
+    {isSuccess && <SuccessScreen mainMessage="Logged out successfully!" message="Redirecting to home page..."/>}
     </>
   );
 };
