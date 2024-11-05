@@ -1,42 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState  } from "react";
 import styled from "styled-components";
-import { useLoginUserMutation } from '../../../redux/rtk/userData';
-import { useDispatch } from 'react-redux';
-import { setToken, setUserName } from '../../../redux/slices/userDataSlice';
-
+import {
+  useLoginUserMutation,
+} from "../../../redux/rtk/userData";
+import { useDispatch } from "react-redux";
+import {
+  setToken,
+  setUserName,
+  setRole,
+} from "../../../redux/slices/userDataSlice";
+import { useNavigate } from "react-router-dom";
+import FailureScreen from "../FailureScreen";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isFailure, setIsFailure] = useState(false);
 
-  const [loginUser] = useLoginUserMutation()
+  const [loginUser] = useLoginUserMutation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
-
-    // Perform actions with collected data (username, password, userRole)
-    // For example, send it to a server for validation or display a message
-    console.log(
-      `Username: ${username}, Password: ${password}`
-    );
 
     try {
       // Getting user from database
-      const result = await loginUser({userName:username, password});
+      const result = await loginUser({ userName: username, password });
 
+      console.log("Login successful, token:", result.data.token);
+      console.log("Login successful, role:", result.data.roleId);
       // Save user token and userName
       dispatch(setToken(result.data.token));
       dispatch(setUserName(username));
+      dispatch(setRole(result.data.roleId));
 
-
+      //Succsesfully login , navigate to home page
+      if (result) {
+        navigate("/");
+      }
     } catch (error) {
-      console.error('error longing in: ' + error.message);
+      //If failed , the failure screen will show up
+      setIsFailure(true);
     }
+  };
 
-    // Reset form after submission (optional)
-    setUsername("");
-    setPassword("");
+  const onErrorClose = () => {
+    setIsFailure(false);
   };
 
   return (
@@ -59,9 +69,16 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        
+
         <button type="submit">Submit</button>
         <SignUpLink href="/sign-up">Not registered yet? Sign Up</SignUpLink>
+        {isFailure && (
+          <FailureScreen
+            mainMessage="Sign in Failed!"
+            bodyMessage="UserName or Password are incorrect"
+            onClose={onErrorClose}
+          />
+        )}
       </LoginForm>
     </Container>
   );
@@ -115,12 +132,12 @@ const Container = styled.div`
 `;
 
 const SignUpLink = styled.a`
-  color: #2f80ed; 
-  font-size: 0.9rem; 
-  text-decoration: none; 
+  color: #2f80ed;
+  font-size: 0.9rem;
+  text-decoration: none;
 
   &:hover {
-    text-decoration: underline; 
+    text-decoration: underline;
   }
 `;
 
@@ -129,6 +146,5 @@ const LoginForm = styled.form`
   flex-direction: column;
   gap: 10px;
 `;
-
 
 export default LoginPage;

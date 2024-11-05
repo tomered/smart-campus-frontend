@@ -14,7 +14,7 @@ const Sidebar = () => {
 
   const toggleDrawer = () => {
     setIsExpanded(!isExpanded);
-  };
+  }; 
 
   return (
     <Drawer

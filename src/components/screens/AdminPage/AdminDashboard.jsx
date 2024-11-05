@@ -1,7 +1,7 @@
 // screens/AdminPage/AdminDashboard.js
 import React, { useEffect, useState } from "react";
 import { Typography, Container, Box, Grid, Paper } from "@mui/material";
-import Sidebar from "./Sidebar"; 
+import Sidebar from "./Sidebar";
 import { Bar, Line, Pie, Radar, Doughnut } from "react-chartjs-2";
 import {
   Chart,
@@ -63,7 +63,7 @@ const AdminDashboard = () => {
   const totalAdmins = initialUsers.filter(
     (user) => user.role === "Admin"
   ).length;
-  
+
   const barData = {
     labels: ["Students", "Lecturers", "Admins"],
     datasets: [
@@ -178,7 +178,7 @@ const AdminDashboard = () => {
           alignItems: "center",
         }}
       >
-        {}
+        { }
         <Typography
           variant="h4"
           gutterBottom
@@ -194,7 +194,7 @@ const AdminDashboard = () => {
           Admin Dashboard
         </Typography>
 
-        {}
+        { }
         <Grid container spacing={4} sx={{ width: "100%", mb: 4 }}>
           <Grid item xs={12} md={4}>
             <InfoCard
