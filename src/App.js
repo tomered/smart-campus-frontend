@@ -37,6 +37,17 @@ const AdminRoute = ({ element }) => {
   return element;
 };
 
+const UserRoute = ({ element }) => {
+  const role = useSelector((state) => state.userData.role);
+  console.log("role is "+ role);
+  
+  if (role === "") {
+    //Redirect to login or unauthorized page if user is not an admin
+    return <Navigate to="/" />;
+  }
+  return element;
+};
+
 const App = () => {
   return (
     <>
@@ -66,8 +77,8 @@ const App = () => {
           <Route path="/news" element={<NewsPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<Register />} />
-          <Route path="/airDashboard" element={<AdminRoute element={<AirDashboard />} />} />
-          <Route path="/powerDashboard" element={<AdminRoute element={<PowerDashboard />} />} />
+          <Route path="/airDashboard" element={<UserRoute element={<AirDashboard />} />} />
+          <Route path="/powerDashboard" element={<UserRoute element={<PowerDashboard />} />} />
           <Route path="/admin" element={<AdminRoute element={<AdminDashboard />} />} />
           <Route path="/UsersTable" element={<AdminRoute element={<AdminUsersTable />} />} />
           <Route path="/SensorStatistics" element={<AdminRoute element={<SensorStatistics />} />} />
