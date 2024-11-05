@@ -5,6 +5,7 @@ import "../Style.css"; // Ensure this file doesn't conflict with the styled-comp
 import logoImage from "../HIT.png";
 import { useNavigate } from "react-router-dom";
 import SuccessScreen from './screens/SuccessScreen';
+import { useSelector } from 'react-redux';
 
 const MainHeader = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -16,6 +17,8 @@ const MainHeader = () => {
   const userData = localStorage.getItem("persist:root");
   const parsedData = userData ? JSON.parse(userData) : null;
   const user = parsedData ? JSON.parse(parsedData.userData) : null;
+  const role = useSelector((state) => state.userData.role); // 0 is admin , 1 regular user
+  console.log("role is "+ role);
 
   const isLoggedIn = user && user.token;
 
@@ -46,7 +49,7 @@ const MainHeader = () => {
   };
 
   const menuItems = [
-    {name:"Admin panel" ,path: "/admin"},
+    {name:user?"Admin panel":"" ,path: "/admin"},
     { name: "Staff", path: "/staff" },
     { name: "Students", path: "/students" },
     { name: "Partners", path: "/partners" },
