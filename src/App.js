@@ -42,7 +42,7 @@ const UserRoute = ({ element }) => {
   console.log("role is "+ role);
   
   if (role === "") {
-    //Redirect to login or unauthorized page if user is not an admin
+    //Redirect to login or unauthorized page if user is not logged in user
     return <Navigate to="/" />;
   }
   return element;
