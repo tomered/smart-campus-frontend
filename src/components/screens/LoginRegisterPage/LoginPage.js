@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState  } from "react";
 import styled from "styled-components";
 import {
   useLoginUserMutation,
-  useGetAdminStatusQuery,
 } from "../../../redux/rtk/userData";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setToken,
   setUserName,
@@ -19,8 +18,6 @@ const LoginPage = () => {
   const [isFailure, setIsFailure] = useState(false);
 
   const [loginUser] = useLoginUserMutation();
-  const token = useSelector((state) => state.userData.token);
-  const { data } = useGetAdminStatusQuery(token, { skip: !token });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,12 +28,12 @@ const LoginPage = () => {
       // Getting user from database
       const result = await loginUser({ userName: username, password });
 
+      console.log("Login successful, token:", result.data.token);
+      console.log("Login successful, role:", result.data.roleId);
       // Save user token and userName
       dispatch(setToken(result.data.token));
       dispatch(setUserName(username));
-      if (data && data.status.includes("admin (0)")) {
-        dispatch(setRole("admin")); // Set the role as admin
-      }
+      dispatch(setRole(result.data.roleId));
 
       //Succsesfully login , navigate to home page
       if (result) {

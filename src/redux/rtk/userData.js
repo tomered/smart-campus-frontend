@@ -76,15 +76,6 @@ export const userDataApi = createApi({
         },
       }),
     }),
-    getAdminStatus: builder.query({
-      query: (token) => ({
-        url: "api/admin",
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }),
-    }),
   }),
 });
 
@@ -96,5 +87,4 @@ export const {
   useGetNumberOfUsersQuery,
   useEditUserMutation,
   useDeleteUserMutation,
-  useGetAdminStatusQuery,
 } = userDataApi;
