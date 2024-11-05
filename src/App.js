@@ -43,7 +43,7 @@ const UserRoute = ({ element }) => {
   
   if (role === "") {
     //Redirect to login or unauthorized page if user is not logged in user
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
   return element;
 };
