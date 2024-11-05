@@ -49,7 +49,7 @@ const MainHeader = () => {
   };
 
   const menuItems = [
-    {name:user?"Admin panel":"" ,path: "/admin"},
+    {name: !role ? "Admin panel" : "" ,path: "/admin"},
     { name: "Staff", path: "/staff" },
     { name: "Students", path: "/students" },
     { name: "Partners", path: "/partners" },
