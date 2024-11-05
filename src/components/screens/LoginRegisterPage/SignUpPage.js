@@ -287,7 +287,7 @@ const SignUpPage = () => {
         <SignInLink href="/login">Already have an account? Sign In</SignInLink>
       </SignUpForm>
       {isLoading && <LoadingScreen message="Registering..." />}
-      {isSuccess && <SuccessScreen message="Redirecting to token verification..." />}
+      {isSuccess && <SuccessScreen mainMessage="Registration Successful!" message="Redirecting to token verification..." />}
       {isFailure && <FailureScreen
         mainMessage="Registration Failed!"
         bodyMessage={errorMessage}

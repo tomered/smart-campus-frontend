@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SuccessScreen = ({ message }) => {
+const SuccessScreen = ({ mainMessage ,message }) => {
   return (
     <div style={{
       position: 'fixed',
@@ -27,7 +27,7 @@ const SuccessScreen = ({ message }) => {
           }} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-          <p style={{ fontSize: '1.125rem', fontWeight: 600 }}>Registration Successful!</p>
+          <p style={{ fontSize: '1.125rem', fontWeight: 600 }}>{mainMessage}</p>
           <p style={{ marginTop: '0.5rem' }}>{message}</p>
         </div>
       </div>

@@ -47,8 +47,7 @@ const ValidTokenPage = () => {
     setTimeout(() => {
       navigate('/login'); 
     }, 2000); 
-
-    return <SuccessScreen message="Redirecting to Login page..." />;
+    return <SuccessScreen mainMessage="Registration Successful!"  message="Redirecting to Login page..." />;
   }
 
   if (isFailure) {

@@ -4,10 +4,12 @@ import { FaBars } from "react-icons/fa";
 import "../Style.css"; // Ensure this file doesn't conflict with the styled-components
 import logoImage from "../HIT.png";
 import { useNavigate } from "react-router-dom";
+import SuccessScreen from './screens/SuccessScreen';
 
 const MainHeader = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [loggedOut, setLoggedOut] = useState(false);
+  const [isSuccess ,setIsSuccess] = useState(false);
   const navigate = useNavigate();
 
   //Retrieve user data from local storage
@@ -36,6 +38,11 @@ const MainHeader = () => {
       localStorage.removeItem("persist:root");
     }
     setLoggedOut(true);
+    setIsSuccess(true);
+    setTimeout(() => {
+      setIsSuccess(false);
+    }, 2000);
+    navigate('/');
   };
 
   const menuItems = [
@@ -56,6 +63,7 @@ const MainHeader = () => {
   ];
 
   return (
+    <>
     <Container>
       <CustomNavBar>
         <LogoAndTitle  onClick={handleLogoAndTitleClick}>
@@ -87,6 +95,8 @@ const MainHeader = () => {
         </MenuLinks>
       </CustomNavBar>
     </Container>
+    {isSuccess && <SuccessScreen mainMessage="Logged out successfully!"/>}
+    </>
   );
 };
 
