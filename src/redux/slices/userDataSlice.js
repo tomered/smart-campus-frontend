@@ -22,13 +22,15 @@ const userDataSlice = createSlice({
         setRole: (state, action) => {
             state.role = action.payload;
         },
+        logout: () => initialState
     },
 });
 
 export const {
     setUserName,
     setToken,
-    setRole
+    setRole,
+    logout
 } = userDataSlice.actions;
 
 export default userDataSlice.reducer

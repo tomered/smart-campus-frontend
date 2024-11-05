@@ -4,23 +4,18 @@ import { FaBars } from "react-icons/fa";
 import "../Style.css"; // Ensure this file doesn't conflict with the styled-components
 import logoImage from "../HIT.png";
 import { useNavigate } from "react-router-dom";
-import SuccessScreen from './screens/SuccessScreen';
-import { useSelector } from 'react-redux';
+import SuccessScreen from "./screens/SuccessScreen";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/slices/userDataSlice";
 
 const MainHeader = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const [loggedOut, setLoggedOut] = useState(false);
-  const [isSuccess ,setIsSuccess] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //Retrieve user data from local storage
-  const userData = localStorage.getItem("persist:root");
-  const parsedData = userData ? JSON.parse(userData) : null;
-  const user = parsedData ? JSON.parse(parsedData.userData) : null;
-  const role = useSelector((state) => state.userData.role); // 0 is admin , 1 regular user
-  console.log("role is "+ role);
-
-  const isLoggedIn = user && user.token;
+  const role = useSelector((state) => state.userData.role); // 0 is admin
 
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
@@ -33,23 +28,21 @@ const MainHeader = () => {
   };
 
   const handleLogoAndTitleClick = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleLogout = () => {
-    if (userData !== null) {
-      localStorage.removeItem("persist:root");
-    }
-    setLoggedOut(true);
+    localStorage.removeItem("persist:root");
+    dispatch(logout()); // Clears the Redux state
     setIsSuccess(true);
     setTimeout(() => {
       setIsSuccess(false);
-      navigate('/');
+      navigate("/");
     }, 2000);
-  };
+};
 
   const menuItems = [
-    {name: !role ? "Admin panel" : "" ,path: "/admin"},
+    { name: role === 0 ? "Admin panel" : "", path: "/admin" },
     { name: "Staff", path: "/staff" },
     { name: "Students", path: "/students" },
     { name: "Partners", path: "/partners" },
@@ -60,46 +53,50 @@ const MainHeader = () => {
       path: "/",
       onClick: (e) => handleMapClick(e, "hitMap"),
     },
-    {
-      name: isLoggedIn ? "Logout" : "Login",
-      onClick: isLoggedIn ? handleLogout : () => navigate("/login"),
-    },
+    role !== ""
+      ? { name: "Logout", path: "/logout", onClick: handleLogout }
+      : { name: "Login", path: "/login" },
   ];
 
   return (
     <>
-    <Container>
-      <CustomNavBar>
-        <LogoAndTitle  onClick={handleLogoAndTitleClick}>
-          <Logo src={logoImage} alt="Smart Campus Logo" />
-          <Title>Smart Campus</Title>
-        </LogoAndTitle>
-        <MenuIcon onClick={handleMenuClick}>
-          <FaBars />
-        </MenuIcon>
-        <MenuLinks show={showMenu}>
-          <ul>
-            {menuItems.map((item) => (
-              <MenuItem key={item.name}>
-                <a
-                  onClick={(e) => {
-                    if (item.onClick) {
-                      item.onClick(e);
-                    } else {
-                      navigate(item.path);
-                    }
-                    setShowMenu(false);
-                  }}
-                >
-                  {item.name}
-                </a>
-              </MenuItem>
-            ))}
-          </ul>
-        </MenuLinks>
-      </CustomNavBar>
-    </Container>
-    {isSuccess && <SuccessScreen mainMessage="Logged out successfully!" message="Redirecting to home page..."/>}
+      <Container>
+        <CustomNavBar>
+          <LogoAndTitle onClick={handleLogoAndTitleClick}>
+            <Logo src={logoImage} alt="Smart Campus Logo" />
+            <Title>Smart Campus</Title>
+          </LogoAndTitle>
+          <MenuIcon onClick={handleMenuClick}>
+            <FaBars />
+          </MenuIcon>
+          <MenuLinks show={showMenu}>
+            <ul>
+              {menuItems.map((item) => (
+                <MenuItem key={item.name}>
+                  <a
+                    onClick={(e) => {
+                      if (item.onClick) {
+                        item.onClick(e);
+                      } else {
+                        navigate(item.path);
+                      }
+                      setShowMenu(false);
+                    }}
+                  >
+                    {item.name}
+                  </a>
+                </MenuItem>
+              ))}
+            </ul>
+          </MenuLinks>
+        </CustomNavBar>
+      </Container>
+      {isSuccess && (
+        <SuccessScreen
+          mainMessage="Logged out successfully!"
+          message="Redirecting to home page..."
+        />
+      )}
     </>
   );
 };
