@@ -14,8 +14,10 @@ import {
   Select,
   MenuItem,
   Typography,
+  IconButton
 } from "@mui/material";
-import Sidebar from "./Sidebar"; 
+import { ArrowDropUp, ArrowDropDown} from "@mui/icons-material";
+import Sidebar from "./Sidebar";
 import EditUserDialog from "./Dialogs/EditUserDialog";
 import DeleteUserDialog from "./Dialogs/DeleteUserDialog";
 import {
@@ -31,14 +33,22 @@ const AdminUsersTable = () => {
   const [deleteUser] = useDeleteUserMutation(); // delete users mutation from backend
   const [editUserMutation] = useEditUserMutation(); // edit users mutation from backend
   const [users, setUsers] = useState(initialUsers); // state for the users
-  const [editUser, setEditUser] = useState(null); 
+  const [editUser, setEditUser] = useState(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); 
-  const [searchBy, setSearchBy] = useState("name"); 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchBy, setSearchBy] = useState("name");
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");//Sort direction (asc or desc)
 
   useEffect(() => {
     setUsers(initialUsers);
   }, [initialUsers]);
+
+  const handleSort = (field) => {
+    const isAsc = sortField === field && sortDirection === "asc";
+    setSortDirection(isAsc ? "desc" : "asc");
+    setSortField(field);
+  };
 
   const handleEditClick = (user) => {
     setEditUser(user);
@@ -93,8 +103,22 @@ const AdminUsersTable = () => {
     setDeleteConfirmation(null);
   };
 
+  const sortedUsers = useMemo(() => {
+    const sorted = [...users];
+    if (sortField) {
+      sorted.sort((a, b) => {
+        const aValue = a[sortField].toString().toLowerCase();
+        const bValue = b[sortField].toString().toLowerCase();
+        if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+    return sorted;
+  }, [users, sortField, sortDirection]);
+
   const filteredUsers = useMemo(() => {
-    return users.filter((user) => {
+    return sortedUsers.filter((user) => {
       const searchValue = searchQuery.toLowerCase();
       if (searchBy === "name") {
         const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
@@ -104,7 +128,7 @@ const AdminUsersTable = () => {
       }
       return false;
     });
-  }, [users, searchQuery, searchBy, error]);
+  }, [sortedUsers, searchQuery, searchBy, error]);
 
   if (error)
     return (
@@ -144,7 +168,7 @@ const AdminUsersTable = () => {
           Users Management
         </Typography>
 
-        {}
+        { }
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <TextField
             label="Search"
@@ -184,10 +208,42 @@ const AdminUsersTable = () => {
             <Table>
               <TableHead>
                 <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-                  <TableCell sx={{ fontWeight: "bold" }}>ID</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Role</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>ID
+                    <IconButton onClick={() => handleSort("id")}>
+                    {sortField === "id" ? (
+                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
+                      ) : (
+                        <ArrowDropUp color="disabled" />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Name
+                    <IconButton onClick={() => handleSort("firstName")} size="small">
+                      {sortField === "firstName" ? (
+                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
+                      ) : (
+                        <ArrowDropUp color="disabled" />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Email
+                    <IconButton onClick={() => handleSort("email")}>
+                    {sortField === "Email" ? (
+                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
+                      ) : (
+                        <ArrowDropUp color="disabled" />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Role
+                    <IconButton onClick={() => handleSort("role")}>
+                    {sortField === "role" ? (
+                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
+                      ) : (
+                        <ArrowDropUp color="disabled" />
+                      )}
+                    </IconButton>
+                  </TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Edit</TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Delete</TableCell>
                 </TableRow>
