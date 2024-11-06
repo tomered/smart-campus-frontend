@@ -47,6 +47,7 @@ const AdminDashboard = () => {
 
   console.log(data.totalUsers);
 
+  //Mock users
   const initialUsers = [
     { id: 1, name: "David Azran", email: "david@gmail.com", role: "Student" },
     { id: 2, name: "Ofir Harar", email: "ofir@gmail.com", role: "Student" },

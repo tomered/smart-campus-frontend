@@ -1,44 +1,21 @@
 import React, { useState, useMemo, useEffect } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  TextField,
-  Box,
-  Container,
-  Select,
-  MenuItem,
-  Typography,
-  IconButton
-} from "@mui/material";
-import { ArrowDropUp, ArrowDropDown} from "@mui/icons-material";
+import { Container, Typography, Box } from "@mui/material";
 import Sidebar from "./Sidebar";
-import EditUserDialog from "./Dialogs/EditUserDialog";
-import DeleteUserDialog from "./Dialogs/DeleteUserDialog";
-import {
-  useGetAllUsersQuery,
-  useDeleteUserMutation,
-  useEditUserMutation,
-} from "../../../redux/rtk/userData";
+import UsersTable from "./UsersTable";
+import SearchBar from "./SearchBar";
+import { useGetAllUsersQuery, useDeleteUserMutation, useEditUserMutation } from "../../../redux/rtk/userData";
 import { useSelector } from "react-redux";
 
 const AdminUsersTable = () => {
-  const token = useSelector((state) => state.userData.token); // storing the token of the users
-  const { data: initialUsers = [], error } = useGetAllUsersQuery(token); // getting all users from the backend
-  const [deleteUser] = useDeleteUserMutation(); // delete users mutation from backend
-  const [editUserMutation] = useEditUserMutation(); // edit users mutation from backend
-  const [users, setUsers] = useState(initialUsers); // state for the users
-  const [editUser, setEditUser] = useState(null);
-  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
+  const token = useSelector((state) => state.userData.token);
+  const { data: initialUsers = [], error } = useGetAllUsersQuery(token);
+  const [deleteUser] = useDeleteUserMutation();
+  const [editUserMutation] = useEditUserMutation();
+  const [users, setUsers] = useState(initialUsers);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchBy, setSearchBy] = useState("name");
   const [sortField, setSortField] = useState(null);
-  const [sortDirection, setSortDirection] = useState("asc");//Sort direction (asc or desc)
+  const [sortDirection, setSortDirection] = useState("asc");
 
   useEffect(() => {
     setUsers(initialUsers);
@@ -48,14 +25,6 @@ const AdminUsersTable = () => {
     const isAsc = sortField === field && sortDirection === "asc";
     setSortDirection(isAsc ? "desc" : "asc");
     setSortField(field);
-  };
-
-  const handleEditClick = (user) => {
-    setEditUser(user);
-  };
-
-  const handleClose = () => {
-    setEditUser(null);
   };
 
   const handleSave = async (updatedUser) => {
@@ -81,30 +50,19 @@ const AdminUsersTable = () => {
     }
   };
 
-  const handleDeleteClick = (user) => {
-    setDeleteConfirmation(user);
-  };
-
-  const handleDeleteConfirm = async () => {
-    if (deleteConfirmation) {
-      try {
-        await deleteUser({ id: deleteConfirmation.id, token }).unwrap();
-        setDeleteConfirmation(null);
-        setUsers((prevUsers) =>
-          prevUsers.filter((user) => user.id !== deleteConfirmation.id)
-        );
-      } catch (error) {
-        console.error("Failed to delete user:", error);
-      }
+  const handleDelete = async (userId) => {
+    try {
+      await deleteUser({ id: userId, token }).unwrap();
+      setUsers((prevUsers) =>
+        prevUsers.filter((user) => user.id !== userId)
+      );
+    } catch (error) {
+      console.error("Failed to delete user:", error);
     }
   };
 
-  const handleDeleteClose = () => {
-    setDeleteConfirmation(null);
-  };
-
-  const sortedUsers = useMemo(() => {
-    const sorted = [...users];
+  const filteredSortedUsers = useMemo(() => {
+    let sorted = [...users];
     if (sortField) {
       sorted.sort((a, b) => {
         const aValue = a[sortField].toString().toLowerCase();
@@ -114,11 +72,8 @@ const AdminUsersTable = () => {
         return 0;
       });
     }
-    return sorted;
-  }, [users, sortField, sortDirection]);
 
-  const filteredUsers = useMemo(() => {
-    return sortedUsers.filter((user) => {
+    return sorted.filter((user) => {
       const searchValue = searchQuery.toLowerCase();
       if (searchBy === "name") {
         const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
@@ -128,7 +83,7 @@ const AdminUsersTable = () => {
       }
       return false;
     });
-  }, [sortedUsers, searchQuery, searchBy, error]);
+  }, [users, searchQuery, searchBy, sortField, sortDirection]);
 
   if (error)
     return (
@@ -138,181 +93,53 @@ const AdminUsersTable = () => {
       </div>
     );
 
-  return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Main content container */}
-      <Container
-        sx={{
-          mt: 4,
-          ml: "150px",
-          display: "flex",
-          flexDirection: "column",
-          height: "calc(100vh - 32px)", // Subtracting top margin
-          overflow: "hidden", // Prevent scrolling on the container
-        }}
-      >
-        <Typography
-          variant="h4"
-          gutterBottom
+    return (
+      <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+        <Sidebar />
+        <Container
           sx={{
-            mb: 4,
-            background: "linear-gradient(45deg, #2196F3, #21CBF3)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            fontWeight: "bold",
-          }}
-        >
-          Users Management
-        </Typography>
-
-        { }
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <TextField
-            label="Search"
-            variant="outlined"
-            fullWidth
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <Select
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
-          >
-            <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="email">Email</MenuItem>
-            {/*<MenuItem value="lastName">Last Name</MenuItem>*/}
-          </Select>
-        </Box>
-        {/*ofir*/}
-        <Box
-          sx={{
-            flexGrow: 1,
+            mt: 4,
+            ml: "150px",
             display: "flex",
             flexDirection: "column",
+            height: "calc(100vh - 32px)",
             overflow: "hidden",
           }}
         >
-          <TableContainer
-            component={Paper}
-            sx={{
-              borderRadius: 2,
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-              overflow: "hidden",
-            }}
-          >
-            <Table>
-              <TableHead>
-                <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-                  <TableCell sx={{ fontWeight: "bold" }}>ID
-                    <IconButton onClick={() => handleSort("id")}>
-                    {sortField === "id" ? (
-                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
-                      ) : (
-                        <ArrowDropUp color="disabled" />
-                      )}
-                    </IconButton>
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Name
-                    <IconButton onClick={() => handleSort("firstName")} size="small">
-                      {sortField === "firstName" ? (
-                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
-                      ) : (
-                        <ArrowDropUp color="disabled" />
-                      )}
-                    </IconButton>
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Email
-                    <IconButton onClick={() => handleSort("email")}>
-                    {sortField === "Email" ? (
-                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
-                      ) : (
-                        <ArrowDropUp color="disabled" />
-                      )}
-                    </IconButton>
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Role
-                    <IconButton onClick={() => handleSort("role")}>
-                    {sortField === "role" ? (
-                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
-                      ) : (
-                        <ArrowDropUp color="disabled" />
-                      )}
-                    </IconButton>
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Edit</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredUsers.map((user) => (
-                  <TableRow
-                    key={user.id}
-                    sx={{
-                      "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" },
-                      "&:hover": { backgroundColor: "#f1f1f1" },
-                    }}
-                  >
-                    <TableCell>{user.id}</TableCell>
-                    <TableCell>
-                      {user.firstName} {user.lastName}
-                    </TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: "#21CBF3",
-                          "&:hover": { backgroundColor: "#1e88e5" },
-                          borderRadius: "20px",
-                          textTransform: "none",
-                        }}
-                        size="small"
-                        onClick={() => handleEditClick(user)}
-                      >
-                        Edit
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: "#ff4444",
-                          "&:hover": { backgroundColor: "#cc0000" },
-                          borderRadius: "20px",
-                          textTransform: "none",
-                        }}
-                        size="small"
-                        onClick={() => handleDeleteClick(user)}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <EditUserDialog
-            open={Boolean(editUser)}
-            user={editUser}
-            onClose={handleClose}
-            onSave={handleSave}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              sx={{
+                mb: 4,
+                background: "linear-gradient(45deg, #2196F3, #21CBF3)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                fontWeight: "bold",
+              }}
+            >
+              User Management
+            </Typography>
+          </div>
+          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <SearchBar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              searchBy={searchBy}
+              setSearchBy={setSearchBy}
+            />
+          </Box>
+          <UsersTable
+            users={filteredSortedUsers}
+            handleSort={handleSort}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            handleEdit={handleSave}
+            handleDelete={handleDelete}
           />
-          <DeleteUserDialog
-            open={Boolean(deleteConfirmation)}
-            onClose={handleDeleteClose}
-            onDelete={handleDeleteConfirm}
-          />
-        </Box>
-      </Container>
-    </div>
-  );
-};
+        </Container>
+      </div>
+    );
+  };
 
 export default AdminUsersTable;
