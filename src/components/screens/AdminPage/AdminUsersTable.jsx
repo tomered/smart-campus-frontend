@@ -38,17 +38,19 @@ const AdminUsersTable = () => {
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");//Sort direction (asc or desc)
 
-
+  //when there is any change in users list it will be update
   useEffect(() => {
     setUsers(initialUsers);
   }, [initialUsers]);
 
+  //sort for each column , can sort ascending or desc
   const handleSort = (field) => {
     const isAsc = sortField === field && sortDirection === "asc";
     setSortDirection(isAsc ? "desc" : "asc");
     setSortField(field);
   };
 
+  //edit sprcific user
   const handleEditClick = (user) => {
     setEditUser(user);
   };
@@ -57,6 +59,7 @@ const AdminUsersTable = () => {
     setEditUser(null);
   };
 
+  //save the new user detailes
   const handleSave = async (updatedUser) => {
     try {
       await editUserMutation({
@@ -80,10 +83,7 @@ const AdminUsersTable = () => {
     }
   };
 
-  const handleDeleteClick = (user) => {
-    setDeleteConfirmation(user);
-  };
-
+  //delete specific user
   const handleDeleteConfirm = async () => {
     if (deleteConfirmation) {
       try {
@@ -98,10 +98,15 @@ const AdminUsersTable = () => {
     }
   };
 
+  const handleDeleteClick = (user) => {
+    setDeleteConfirmation(user);
+  };
+
   const handleDeleteClose = () => {
     setDeleteConfirmation(null);
   };
 
+  //show changes in the list if there is trying to sort or search
   const sortedUsers = useMemo(() => {
     const sorted = [...users];
     if (sortField) {
@@ -139,9 +144,7 @@ const AdminUsersTable = () => {
 
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      {/* Sidebar */}
       <Sidebar />
-
       {/* Main content container */}
       <Container
         sx={{
@@ -151,8 +154,7 @@ const AdminUsersTable = () => {
           flexDirection: "column",
           height: "calc(100vh - 32px)", // Subtracting top margin
           overflow: "hidden", // Prevent scrolling on the container
-        }}
-      >
+        }}>
         <Typography
           variant="h4"
           gutterBottom
@@ -162,16 +164,14 @@ const AdminUsersTable = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             fontWeight: "bold",
-          }}
-        >
+          }}>
           Users Management
         </Typography>
         <SearchBar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           searchBy={searchBy}
-          setSearchBy={setSearchBy}
-        />
+          setSearchBy={setSearchBy} />
         {/*ofir*/}
         <Box
           sx={{
@@ -179,8 +179,7 @@ const AdminUsersTable = () => {
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
-          }}
-        >
+          }}>
           <TableContainer
             component={Paper}
             sx={{
@@ -189,8 +188,7 @@ const AdminUsersTable = () => {
               display: "flex",
               flexDirection: "column",
               overflow: "auto",
-            }}
-          >
+            }}>
             <Table>
               <TableHead>
                 <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
@@ -259,8 +257,7 @@ const AdminUsersTable = () => {
                           textTransform: "none",
                         }}
                         size="small"
-                        onClick={() => handleEditClick(user)}
-                      >
+                        onClick={() => handleEditClick(user)}>
                         Edit
                       </Button>
                     </TableCell>
@@ -274,8 +271,7 @@ const AdminUsersTable = () => {
                           textTransform: "none",
                         }}
                         size="small"
-                        onClick={() => handleDeleteClick(user)}
-                      >
+                        onClick={() => handleDeleteClick(user)}>
                         Delete
                       </Button>
                     </TableCell>
@@ -288,13 +284,11 @@ const AdminUsersTable = () => {
             open={Boolean(editUser)}
             user={editUser}
             onClose={handleClose}
-            onSave={handleSave}
-          />
+            onSave={handleSave} />
           <DeleteUserDialog
             open={Boolean(deleteConfirmation)}
             onClose={handleDeleteClose}
-            onDelete={handleDeleteConfirm}
-          />
+            onDelete={handleDeleteConfirm} />
         </Box>
       </Container>
     </div>

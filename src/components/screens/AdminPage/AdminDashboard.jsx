@@ -95,7 +95,7 @@ const AdminDashboard = () => {
   };
 
   const infoCards = [
-    { title: "Total Users", value:isLoading?"" :totalUsers, bgColor: "#3f51b5" },
+    { title: "Total Users", value: isLoading ? "" : totalUsers, bgColor: "#3f51b5" },
     { title: "Active Users", value: "56", bgColor: "#ff4081" },
     { title: "New Signups", value: "15", bgColor: "#4caf50" },
     { title: "Logins Today", value: "34", bgColor: "#ff9800" },
@@ -121,11 +121,9 @@ const AdminDashboard = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             animation: "fadeIn 2s ease-in-out",
-          }}
-        >
+          }}>
           Admin Dashboard
         </Typography>
-
         <Grid container spacing={4} sx={{ width: "100%", mb: 4 }}>
           {infoCards.map((card, index) => (
             <Grid item xs={12} md={4} key={index}>
@@ -133,7 +131,6 @@ const AdminDashboard = () => {
             </Grid>
           ))}
         </Grid>
-
         <Grid container spacing={4} sx={{ width: "100%" }}>
           <ChartContainer title="Users Overview">
             <Bar data={chartData.bar} options={CHART_OPTIONS} />
