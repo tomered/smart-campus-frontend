@@ -188,7 +188,7 @@ const AdminUsersTable = () => {
               flexGrow: 1,
               display: "flex",
               flexDirection: "column",
-              overflow: "hidden",
+              overflow: "auto",
             }}
           >
             <Table>
