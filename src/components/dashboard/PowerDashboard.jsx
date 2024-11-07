@@ -66,9 +66,9 @@ const PowerDashboard = () => {
   };
 
   const initialCardData = [
-    { title: "Number of light bulbs in the room", value: "", bgColor: "#3f51b5" },
-    { title: "The lights that are on", value: "", bgColor: "#4caf50" },
-    { title: "Projector on/off", value: "", bgColor: "#ff9800" },
+    { title: "Temperature", value: "", bgColor: "#3f51b5" },
+    { title: "Humidity", value: "", bgColor: "#4caf50" },
+    { title: "CO2", value: "", bgColor: "#ff9800" },
     { title: "Computer on/off", value: "", bgColor: "#e91e63" },
     { title: "Air condition on/off", value: "", bgColor: "#673ab7" },
   ];
@@ -77,15 +77,42 @@ const PowerDashboard = () => {
 
   const handleDisplayDataClick = () => {
     const selectedFormat = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
-
-    const updatedCardData = cardData.map((card) => ({
-      ...card,
-      value: selectedFormat, // אפשר לשנות את זה בהתאם לפורמט הרצוי
-    }));
-
+    
+    // Update each card with a unique value based on the selected format
+    const updatedCardData = cardData.map((card, index) => {
+      
+      let newValue;
+      switch(index) {
+        case 0:
+          //index = indexof('temprature')
+          //newValue =  tempSensors.sensors_data.data[index]; // לדוגמה, מספר נורות בחדר
+          //tempSensors = sensors.filter((sens) => sens.type.includes("Temperature"));
+          //newValue = tempSensors.sensors_data.data[1]
+          newValue = `24`
+          break;
+        case 1:
+          newValue = `30%`; // מצב תאורה דולקת או כבויה
+          break;
+        case 2:
+          newValue = `10pcc`; // מצב מקרן
+          break;
+        case 3:
+          newValue = `Computer: ${Math.random() > 0.5 ? "On" : "Off"}`; // מצב מחשב
+          break;
+        case 4:
+          newValue = `AC: ${Math.random() > 0.5 ? "On" : "Off"}`; // מצב מיזוג אוויר
+          break;
+        default:
+          newValue = "N/A";
+      }
+      
+      return { ...card, value: newValue };
+    });
+  
     setCardData(updatedCardData);
     alert(`Data updated to ${selectedFormat}`);
   };
+  
 
   const buildingsData = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const classesData = [
