@@ -8,16 +8,14 @@ import {
   TableRow,
   Paper,
   Button,
-  TextField,
   Box,
   Container,
-  Select,
-  MenuItem,
   Typography,
   IconButton
 } from "@mui/material";
-import { ArrowDropUp, ArrowDropDown} from "@mui/icons-material";
+import { ArrowDropUp, ArrowDropDown } from "@mui/icons-material";
 import Sidebar from "./Sidebar";
+import SearchBar from "./SearchBar";
 import EditUserDialog from "./Dialogs/EditUserDialog";
 import DeleteUserDialog from "./Dialogs/DeleteUserDialog";
 import {
@@ -25,7 +23,6 @@ import {
   useDeleteUserMutation,
   useEditUserMutation,
 } from "../../../redux/rtk/userData";
-
 import { useSelector } from "react-redux";
 
 const AdminUsersTable = () => {
@@ -130,8 +127,8 @@ const AdminUsersTable = () => {
       }
       return false;
     });
-  }, [sortedUsers, searchQuery, searchBy, error]);
-   
+  }, [sortedUsers, searchQuery, searchBy]);
+
   if (error)
     return (
       <div>
@@ -169,30 +166,17 @@ const AdminUsersTable = () => {
         >
           Users Management
         </Typography>
-
-        { }
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <TextField
-            label="Search"
-            variant="outlined"
-            fullWidth
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <Select
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
-          >
-            <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="email">Email</MenuItem>
-            {/*<MenuItem value="lastName">Last Name</MenuItem>*/}
-          </Select>
-        </Box>
+        <SearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          searchBy={searchBy}
+          setSearchBy={setSearchBy}
+        />
         {/*ofir*/}
         <Box
-        sx={{
-          flexGrow: 1,
-          display: "flex",
+          sx={{
+            flexGrow: 1,
+            display: "flex",
             flexDirection: "column",
             overflow: "hidden",
           }}
@@ -212,7 +196,7 @@ const AdminUsersTable = () => {
                 <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
                   <TableCell sx={{ fontWeight: "bold" }}>ID
                     <IconButton onClick={() => handleSort("id")}>
-                    {sortField === "id" ? (
+                      {sortField === "id" ? (
                         sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
                       ) : (
                         <ArrowDropUp color="disabled" />
@@ -230,7 +214,7 @@ const AdminUsersTable = () => {
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Email
                     <IconButton onClick={() => handleSort("email")}>
-                    {sortField === "Email" ? (
+                      {sortField === "Email" ? (
                         sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
                       ) : (
                         <ArrowDropUp color="disabled" />
@@ -239,7 +223,7 @@ const AdminUsersTable = () => {
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Role
                     <IconButton onClick={() => handleSort("role")}>
-                    {sortField === "role" ? (
+                      {sortField === "role" ? (
                         sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
                       ) : (
                         <ArrowDropUp color="disabled" />
@@ -310,11 +294,11 @@ const AdminUsersTable = () => {
             open={Boolean(deleteConfirmation)}
             onClose={handleDeleteClose}
             onDelete={handleDeleteConfirm}
-            />
-            </Box>
-          </Container>
-        </div>
-      );
-    };
-    export default AdminUsersTable;
+          />
+        </Box>
+      </Container>
+    </div>
+  );
+};
+export default AdminUsersTable;
 
