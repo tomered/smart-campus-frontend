@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Drawer, List, ListItem, ListItemText, Divider, ListItemIcon, Typography, IconButton } from '@mui/material';
+import React, { useState , useEffect } from 'react';
+import { Box, Drawer, List, ListItem, ListItemText, Divider, ListItemIcon, Typography, IconButton,useMediaQuery,useTheme  } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; 
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
@@ -8,9 +8,16 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddAlertIcon from '@mui/icons-material/AddAlert';
 
+
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  useEffect(() => {
+    setIsExpanded(!isMobile);
+  }, [isMobile]);
 
   const toggleDrawer = () => {
     setIsExpanded(!isExpanded);
