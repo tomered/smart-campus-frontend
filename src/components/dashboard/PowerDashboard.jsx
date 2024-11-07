@@ -22,45 +22,25 @@ import {
 } from "chart.js";
 
 import axios from "axios";
-import { useSelector } from "react-redux";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  ChartTooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, ChartTooltip, Legend);
 
-const PowerDashboard = ({ goHome }) => {
-  //const token = useSelector((state) => state.userData.token); //storing the token of the user
-  //if there is no token - that means no user is connected so he cannot view that page
-  //if (!token) {
-  //return <div>Error loading page! Please log in to view this page.</div>;
-  //}
-
+const PowerDashboard = () => {
   const sensorFunction = async () => {
     try {
-      //const res = await getSensors()
-      const res = await axios.get(
-        "http://localhost:10000/sensorsData/all-data"
-      );
-      console.log(res);
+      const res = await axios.get("http://localhost:10000/sensorsData/all-data");
       const sensors = res.data;
-      const tempSensors = sensors.filter((sens) =>
-        sens.type.includes("Temperature")
-      );
+      const tempSensors = sensors.filter((sens) => sens.type.includes("Temperature"));
       console.log(tempSensors);
     } catch (error) {
-      console.error("error fatching sesors " + error);
+      console.error("error fetching sensors " + error);
     }
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     sensorFunction();
   }, []);
-
-  const isMobile = window.innerWidth < 700;
 
   const [menuState, setMenuState] = useState({
     anchorEl: null,
@@ -81,78 +61,38 @@ const PowerDashboard = ({ goHome }) => {
       ...prevState,
       [menuType]: null,
       ...(value && menuType === "anchorEl" ? { selectedBuilding: value } : {}),
-      ...(value && menuType === "classAnchorEl"
-        ? { selectedClass: value }
-        : {}),
+      ...(value && menuType === "classAnchorEl" ? { selectedClass: value } : {}),
     }));
   };
 
-  const cardValue = [
-    ["2/4", "the front ones", "off", "on", "on"],
-    ["3/4", "the back ones", "off", "off", "on"],
-  ];
-
-  const defaultCardData = [
-    {
-      title: "Number of light bulbs in the room",
-      value: "",
-      bgColor: "#3f51b5",
-    },
+  const initialCardData = [
+    { title: "Number of light bulbs in the room", value: "", bgColor: "#3f51b5" },
     { title: "The lights that are on", value: "", bgColor: "#4caf50" },
     { title: "Projector on/off", value: "", bgColor: "#ff9800" },
     { title: "Computer on/off", value: "", bgColor: "#e91e63" },
     { title: "Air condition on/off", value: "", bgColor: "#673ab7" },
   ];
 
-  const [currentCardData, setCurrentCardData] = useState(defaultCardData);
+  const [cardData, setCardData] = useState(initialCardData);
 
   const handleDisplayDataClick = () => {
     const selectedFormat = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
 
-    alert(`Data updated to ${selectedFormat}`); // Display the combined format in an alert
+    const updatedCardData = cardData.map((card) => ({
+      ...card,
+      value: selectedFormat, // אפשר לשנות את זה בהתאם לפורמט הרצוי
+    }));
+
+    setCardData(updatedCardData);
+    alert(`Data updated to ${selectedFormat}`);
   };
 
   const buildingsData = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const classesData = [
-    "100",
-    "101",
-    "102",
-    "103",
-    "104",
-    "105",
-    "106",
-    "107",
-    "108",
-    "109",
-    "110",
-    "111",
-    "112",
-    "200",
-    "201",
-    "202",
-    "203",
-    "204",
-    "205",
-    "206",
-    "207",
-    "208",
-    "209",
-    "210",
-    "211",
-    "212",
-    "300",
-    "301",
-    "302",
-    "303",
-    "304",
-    "305",
-    "306",
-    "307",
-    "308",
-    "309",
-    "310",
-    "311",
-    "312",
+    "100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110",
+    "111", "112", "200", "201", "202", "203", "204", "205", "206", "207", "208",
+    "209", "210", "211", "212", "300", "301", "302", "303", "304", "305", "306",
+    "307", "308", "309", "310", "311", "312",
   ];
 
   const scatterData = {
@@ -214,126 +154,76 @@ const PowerDashboard = ({ goHome }) => {
           marginBottom: 4,
         }}
       >
-        <Typography
-          variant="h3"
-          gutterBottom
-          sx={{
-            mb: 4,
-            padding: "25px 1px",
-            fontWeight: "bold",
-            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            animation: "fadeIn 2s ease-in-out",
-          }}
-        >
+        <Typography variant="h3" gutterBottom sx={{
+          mb: 4,
+          padding: "25px 1px",
+          fontWeight: "bold",
+          background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          animation: "fadeIn 2s ease-in-out",
+        }}>
           Power Dashboard
         </Typography>
 
         <Box>
           <Tooltip title="Select a building" arrow>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{
-                marginRight: 2,
-                backgroundColor: "#0288d1",
-                "&:hover": { backgroundColor: "#01579b" },
-              }}
-              onClick={(e) => handleMenuOpen(e, "anchorEl")}
-            >
+            <Button variant="contained" color="primary" sx={{ marginRight: 2, backgroundColor: "#0288d1", "&:hover": { backgroundColor: "#01579b" } }}
+              onClick={(e) => handleMenuOpen(e, "anchorEl")}>
               Building
             </Button>
           </Tooltip>
-          <Menu
-            anchorEl={menuState.anchorEl}
-            open={Boolean(menuState.anchorEl)}
-            onClose={() => handleMenuClose("anchorEl")}
-          >
+          <Menu anchorEl={menuState.anchorEl} open={Boolean(menuState.anchorEl)} onClose={() => handleMenuClose("anchorEl")}>
             {buildingsData.map((building) => (
-              <MenuItem
-                key={building}
-                onClick={() => handleMenuClose("anchorEl", building)}
-              >
+              <MenuItem key={building} onClick={() => handleMenuClose("anchorEl", building)}>
                 {building}
               </MenuItem>
             ))}
           </Menu>
 
           <Tooltip title="Select a class" arrow>
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                marginRight: 2,
-                backgroundColor: "#7b1fa2",
-                "&:hover": { backgroundColor: "#4a148c" },
-              }}
-              onClick={(e) => handleMenuOpen(e, "classAnchorEl")}
-            >
+            <Button variant="contained" color="secondary" sx={{ marginRight: 2, backgroundColor: "#7b1fa2", "&:hover": { backgroundColor: "#4a148c" } }}
+              onClick={(e) => handleMenuOpen(e, "classAnchorEl")}>
               Class
             </Button>
           </Tooltip>
-          <Menu
-            anchorEl={menuState.classAnchorEl}
-            open={Boolean(menuState.classAnchorEl)}
-            onClose={() => handleMenuClose("classAnchorEl")}
-          >
+          <Menu anchorEl={menuState.classAnchorEl} open={Boolean(menuState.classAnchorEl)} onClose={() => handleMenuClose("classAnchorEl")}>
             {classesData.map((className) => (
-              <MenuItem
-                key={className}
-                onClick={() => handleMenuClose("classAnchorEl", className)}
-              >
+              <MenuItem key={className} onClick={() => handleMenuClose("classAnchorEl", className)}>
                 {className}
               </MenuItem>
             ))}
           </Menu>
 
           <Tooltip title="Click to display data" arrow>
-            <Button
-              variant="outlined"
-              color="info"
-              onClick={() => {
-                handleDisplayDataClick(); // Call the function to update the card data
-              }}
-            >
+            <Button variant="outlined" color="info" onClick={handleDisplayDataClick}>
               {`Selected: ${menuState.selectedBuilding || "None"}, ${menuState.selectedClass || "None"}`}
             </Button>
           </Tooltip>
         </Box>
       </Box>
-      {/* Grid with Cards */}
+
       <Grid container spacing={4} sx={{ width: "100%", mb: 4 }}>
-        {currentCardData.map((card, index) => (
+        {cardData.map((card, index) => (
           <Grid item xs={12} md={4} key={index}>
-            <Card
-              sx={{
-                backgroundColor: card.bgColor,
-                borderRadius: "12px",
-                boxShadow: 3,
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                "&:hover": {
-                  transform: "translateY(-10px)",
-                  boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.2)",
-                },
-              }}
-            >
+            <Card sx={{
+              backgroundColor: card.bgColor,
+              borderRadius: "12px",
+              boxShadow: 3,
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+              "&:hover": {
+                transform: "translateY(-10px)",
+                boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.2)",
+              },
+            }}>
               <CardContent sx={{ display: "flex", alignItems: "center" }}>
-                <LightbulbIcon
-                  sx={{ fontSize: 40, color: "white", marginRight: 2 }}
-                />
+                <LightbulbIcon sx={{ fontSize: 40, color: "white", marginRight: 2 }} />
                 <Typography variant="h5" sx={{ color: "white" }}>
                   {card.title}
                 </Typography>
               </CardContent>
-              <CardContent
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
+              <CardContent sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Typography variant="h6" sx={{ color: "white" }}>
                   {card.value}
                 </Typography>
@@ -342,34 +232,8 @@ const PowerDashboard = ({ goHome }) => {
           </Grid>
         ))}
       </Grid>
-      {/* Scatter Plot Graph */}
-      <Box
-        sx={{
-          marginTop: 4,
-          height: 400,
-          backgroundColor: "white",
-          padding: 3,
-          borderRadius: 2,
-          boxShadow: 2,
-        }}
-      >
-        <Typography variant="h5" gutterBottom>
-          Light On Times Throughout the Day
-        </Typography>
-        <Scatter data={scatterData} options={scatterOptions} />
-      </Box>
-      {/* Material Design Back to Main Page Button */}
-      <Box sx={{ display: "flex", justifyContent: "right", marginTop: 4 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ padding: "10px 20px", borderRadius: 2 }}
-          onClick={() => (window.location.href = "/")}
-        >
-          {isMobile ? "Main" : "Back to Main Page"}
-        </Button>
-      </Box>
-          
+
+      <Scatter options={scatterOptions} data={scatterData} />
     </Box>
   );
 };
