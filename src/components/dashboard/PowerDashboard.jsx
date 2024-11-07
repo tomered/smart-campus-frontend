@@ -26,12 +26,11 @@ import axios from "axios";
 ChartJS.register(CategoryScale, LinearScale, PointElement, ChartTooltip, Legend);
 
 const PowerDashboard = () => {
+
   const sensorFunction = async () => {
     try {
       const res = await axios.get("http://localhost:10000/sensorsData/all-data");
-      const sensors = res.data;
-      const tempSensors = sensors.filter((sens) => sens.type.includes("Temperature"));
-      console.log(tempSensors);
+      setSensorsData(res.data); // Store fetched data in state
     } catch (error) {
       console.error("error fetching sensors " + error);
     }
@@ -72,29 +71,56 @@ const PowerDashboard = () => {
     { title: "Computer on/off", value: "", bgColor: "#e91e63" },
     { title: "Air condition on/off", value: "", bgColor: "#673ab7" },
   ];
-
+  
+  const [sensorsData, setSensorsData] = useState([]);
   const [cardData, setCardData] = useState(initialCardData);
 
   const handleDisplayDataClick = () => {
-    const selectedFormat = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
+
+    const selectedClass = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
     
+    const selectedClassSensors = sensorsData.filter((sens) => sens.location.room.includes(selectedClass));
+    //console.log(selectedClassSensors);
+    if (selectedClassSensors.length == 0){
+      alert(`There is no sensors in the class- ${selectedClass}, please choose another one.`);
+      return
+    }
+    else{
+      alert(`Data updated to ${selectedClass}`);
+    }
+
+    const tempSensors = selectedClassSensors.filter((sens) => sens.type.includes("Temperature"));
+    const humiditySensors = selectedClassSensors.filter((sens) => sens.type.includes("Humidity"));
+    const co2Sensors = selectedClassSensors.filter((sens) => sens.type.includes("CO2"));
+
     // Update each card with a unique value based on the selected format
     const updatedCardData = cardData.map((card, index) => {
       
       let newValue;
       switch(index) {
         case 0:
-          //index = indexof('temprature')
-          //newValue =  tempSensors.sensors_data.data[index]; // לדוגמה, מספר נורות בחדר
-          //tempSensors = sensors.filter((sens) => sens.type.includes("Temperature"));
-          //newValue = tempSensors.sensors_data.data[1]
-          newValue = `24`
+          if (tempSensors.length == 0){
+            newValue = `There is no a temperature sensor in this class`
+          }
+          else{
+            newValue = `24`
+          }     
           break;
         case 1:
-          newValue = `30%`; // מצב תאורה דולקת או כבויה
+          if (humiditySensors.length == 0){
+            newValue = `There is no a humidity sensor in this class`
+          }
+          else{
+            newValue = `30%`
+          }     
           break;
         case 2:
-          newValue = `10pcc`; // מצב מקרן
+          if (co2Sensors.length == 0){
+            newValue = `There is no a CO2 sensor in this class`
+          }
+          else{
+            newValue = `10pcc`
+          }     
           break;
         case 3:
           newValue = `Computer: ${Math.random() > 0.5 ? "On" : "Off"}`; // מצב מחשב
@@ -110,7 +136,7 @@ const PowerDashboard = () => {
     });
   
     setCardData(updatedCardData);
-    alert(`Data updated to ${selectedFormat}`);
+    
   };
   
 
