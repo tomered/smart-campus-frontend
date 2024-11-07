@@ -104,60 +104,12 @@ const PowerDashboard = ({ goHome }) => {
     { title: "Air condition on/off", value: "", bgColor: "#673ab7" },
   ];
 
-  const cardData = [
-    {
-      title: "Number of light bulbs in the room",
-      value: cardValue[0][0],
-      bgColor: "#3f51b5",
-    },
-    {
-      title: "The lights that are on",
-      value: cardValue[0][1],
-      bgColor: "#4caf50",
-    },
-    { title: "Projector on/off", value: cardValue[0][2], bgColor: "#ff9800" },
-    { title: "Computer on/off", value: cardValue[0][3], bgColor: "#e91e63" },
-    {
-      title: "Air condition on/off",
-      value: cardValue[0][4],
-      bgColor: "#673ab7",
-    },
-  ];
-
-  const cardData2 = [
-    {
-      title: "Number of light bulbs in the room",
-      value: cardValue[1][0],
-      bgColor: "#3f51b5",
-    },
-    {
-      title: "The lights that are on",
-      value: cardValue[1][1],
-      bgColor: "#4caf50",
-    },
-    { title: "Projector on/off", value: cardValue[1][2], bgColor: "#ff9800" },
-    { title: "Computer on/off", value: cardValue[1][3], bgColor: "#e91e63" },
-    {
-      title: "Air condition on/off",
-      value: cardValue[1][4],
-      bgColor: "#673ab7",
-    },
-  ];
-
   const [currentCardData, setCurrentCardData] = useState(defaultCardData);
 
   const handleDisplayDataClick = () => {
-    if (
-      menuState.selectedBuilding === "Building 1" &&
-      menuState.selectedClass === "Class 1"
-    ) {
-      setCurrentCardData(cardData);
-    } else if (
-      menuState.selectedBuilding === "Building 1" &&
-      menuState.selectedClass === "Class 2"
-    ) {
-      setCurrentCardData(cardData2);
-    }
+    const selectedFormat = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
+
+    alert(`Data updated to ${selectedFormat}`); // Display the combined format in an alert
   };
 
   const buildingsData = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -342,9 +294,6 @@ const PowerDashboard = ({ goHome }) => {
               variant="outlined"
               color="info"
               onClick={() => {
-                alert(
-                  `Data updated to ${menuState.selectedBuilding || "None"}, ${menuState.selectedClass || "None"}`
-                );
                 handleDisplayDataClick(); // Call the function to update the card data
               }}
             >
