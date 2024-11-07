@@ -1,54 +1,31 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "https://smart-campus-backend-4hd6.onrender.com/";
+const baseUrl = "http://localhost:10000/";
 
 export const sensorsApi = createApi({
   reducerPath: "sensorsApi",
   baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
   tagTypes: ["Sensor"],
   endpoints: (builder) => ({
-
-    // Get all locations
-    getAllLocations: builder.query({
-      query: () => ({
-        url: "/api/locations",
-        method: "GET",
-      }),
-      providesTags: ["Sensor"],
-    }),
-
-    // Get sensor data by location
-    getSensorByLocation: builder.query({
-      query: (locationId) => ({
-        url: `/api/sensors/location/${locationId}`,
-        method: "GET",
-      }),
-      providesTags: ["Sensor"],
-    }),
-
-    // Get sensor by its ID
-    getSensorByID: builder.query({
-      query: (sensorId) => ({
-        url: `/api/sensors/${sensorId}`,
-        method: "GET",
-      }),
-      providesTags: ["Sensor"],
-    }),
-
     // Get all sensor data including associated information
     getAllDataSensors: builder.query({
       query: () => ({
-        url: "/api/sensors/all-data",
+        url: "/sensorsData/all-data",
         method: "GET",
       }),
       providesTags: ["Sensor"],
     }),
+    // getAllRooms: builder.query({
+    //   query: () => ({
+    //       url: "/sensorsData/locations",
+    //       method: "GET"
+    //   }),
+    //   providesTags: ["Locations"]
+    //})
   }),
 });
 
 export const {
-  useGetAllLocationsQuery,
-  useGetSensorByLocationQuery,
-  useGetSensorByIDQuery,
   useGetAllDataSensorsQuery,
+  //useGetAllRoomsQuery
 } = sensorsApi;

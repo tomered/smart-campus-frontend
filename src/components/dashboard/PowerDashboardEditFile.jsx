@@ -10,8 +10,6 @@ import {
   Tooltip as ChartTooltip,
   Legend,
 } from "chart.js";
-
-import axios from 'axios'
 import { useSelector } from "react-redux";
 
 ChartJS.register(
@@ -23,27 +21,10 @@ ChartJS.register(
 );
 
 const PowerDashboard = ({ goHome }) => {
-  //const token = useSelector((state) => state.userData.token); //storing the token of the user
-//if there is no token - that means no user is connected so he cannot view that page
-  //if (!token) {
-  //return <div>Error loading page! Please log in to view this page.</div>;
-  //}
+  const token = useSelector((state) => state.userData.token); //storing the token of the user
 
-  const sensorFunction = async () => {
-    try{
-      //const res = await getSensors()
-      const res = await axios.get("http://localhost:10000/sensorsData/all-data")
-      console.log(res)
-      const sensors = res.data
-      const tempSensors = sensors.filter(sens => sens.type.includes('Temperature')) 
-      console.log(tempSensors) 
-    }catch(error){
-      console.error("error fatching sesors " + error)
-    }
-  }
   useEffect(() => {
     window.scrollTo(0, 0);
-    sensorFunction()
   }, []);
 
   const isMobile = window.innerWidth < 700;
@@ -146,9 +127,6 @@ const PowerDashboard = ({ goHome }) => {
     }
   };
 
-  const buildingsData = ["1","2"]
-  const classesData = ["100","200", "300"]
-
   const scatterData = {
     datasets: [
       {
@@ -198,8 +176,10 @@ const PowerDashboard = ({ goHome }) => {
     backgroundColor: "white",
   };
 
-  
-  
+  //if there is no token - that means no user is connected so he cannot view that page
+  if (!token) {
+    return <div>Error loading page! Please log in to view this page.</div>;
+  }
   return (
     <Box sx={{ padding: 4 }}>
       <Box
@@ -246,7 +226,7 @@ const PowerDashboard = ({ goHome }) => {
             open={Boolean(menuState.anchorEl)}
             onClose={() => handleMenuClose("anchorEl")}
           >
-            {buildingsData.map((building) => (
+            {["Building 1", "Building 2"].map((building) => (
               <MenuItem
                 key={building}
                 onClick={() => handleMenuClose("anchorEl", building)}
@@ -275,7 +255,7 @@ const PowerDashboard = ({ goHome }) => {
             open={Boolean(menuState.classAnchorEl)}
             onClose={() => handleMenuClose("classAnchorEl")}
           >
-            {classesData.map(
+            {["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"].map(
               (className) => (
                 <MenuItem
                   key={className}
