@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {Box,Typography,Grid,Card,CardContent,Button,Menu,MenuItem,Tooltip} from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Button,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { Scatter } from "react-chartjs-2";
 import {
@@ -11,7 +21,7 @@ import {
   Legend,
 } from "chart.js";
 
-import axios from 'axios'
+import axios from "axios";
 import { useSelector } from "react-redux";
 
 ChartJS.register(
@@ -19,31 +29,35 @@ ChartJS.register(
   LinearScale,
   PointElement,
   ChartTooltip,
-  Legend,
+  Legend
 );
 
 const PowerDashboard = ({ goHome }) => {
   //const token = useSelector((state) => state.userData.token); //storing the token of the user
-//if there is no token - that means no user is connected so he cannot view that page
+  //if there is no token - that means no user is connected so he cannot view that page
   //if (!token) {
   //return <div>Error loading page! Please log in to view this page.</div>;
   //}
 
   const sensorFunction = async () => {
-    try{
+    try {
       //const res = await getSensors()
-      const res = await axios.get("http://localhost:10000/sensorsData/all-data")
-      console.log(res)
-      const sensors = res.data
-      const tempSensors = sensors.filter(sens => sens.type.includes('Temperature')) 
-      console.log(tempSensors) 
-    }catch(error){
-      console.error("error fatching sesors " + error)
+      const res = await axios.get(
+        "http://localhost:10000/sensorsData/all-data"
+      );
+      console.log(res);
+      const sensors = res.data;
+      const tempSensors = sensors.filter((sens) =>
+        sens.type.includes("Temperature")
+      );
+      console.log(tempSensors);
+    } catch (error) {
+      console.error("error fatching sesors " + error);
     }
-  }
+  };
   useEffect(() => {
     window.scrollTo(0, 0);
-    sensorFunction()
+    sensorFunction();
   }, []);
 
   const isMobile = window.innerWidth < 700;
@@ -146,8 +160,48 @@ const PowerDashboard = ({ goHome }) => {
     }
   };
 
-  const buildingsData = ["1","2"]
-  const classesData = ["100","200", "300"]
+  const buildingsData = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  const classesData = [
+    "100",
+    "101",
+    "102",
+    "103",
+    "104",
+    "105",
+    "106",
+    "107",
+    "108",
+    "109",
+    "110",
+    "111",
+    "112",
+    "200",
+    "201",
+    "202",
+    "203",
+    "204",
+    "205",
+    "206",
+    "207",
+    "208",
+    "209",
+    "210",
+    "211",
+    "212",
+    "300",
+    "301",
+    "302",
+    "303",
+    "304",
+    "305",
+    "306",
+    "307",
+    "308",
+    "309",
+    "310",
+    "311",
+    "312",
+  ];
 
   const scatterData = {
     datasets: [
@@ -198,8 +252,6 @@ const PowerDashboard = ({ goHome }) => {
     backgroundColor: "white",
   };
 
-  
-  
   return (
     <Box sx={{ padding: 4 }}>
       <Box
@@ -275,16 +327,14 @@ const PowerDashboard = ({ goHome }) => {
             open={Boolean(menuState.classAnchorEl)}
             onClose={() => handleMenuClose("classAnchorEl")}
           >
-            {classesData.map(
-              (className) => (
-                <MenuItem
-                  key={className}
-                  onClick={() => handleMenuClose("classAnchorEl", className)}
-                >
-                  {className}
-                </MenuItem>
-              ),
-            )}
+            {classesData.map((className) => (
+              <MenuItem
+                key={className}
+                onClick={() => handleMenuClose("classAnchorEl", className)}
+              >
+                {className}
+              </MenuItem>
+            ))}
           </Menu>
 
           <Tooltip title="Click to display data" arrow>
@@ -293,7 +343,7 @@ const PowerDashboard = ({ goHome }) => {
               color="info"
               onClick={() => {
                 alert(
-                  `Data updated to ${menuState.selectedBuilding || "None"}, ${menuState.selectedClass || "None"}`,
+                  `Data updated to ${menuState.selectedBuilding || "None"}, ${menuState.selectedClass || "None"}`
                 );
                 handleDisplayDataClick(); // Call the function to update the card data
               }}
