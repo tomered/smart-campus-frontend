@@ -9,9 +9,9 @@ import {
   Paper,
   IconButton
 } from "@mui/material";
-import   
- { ArrowDropUp, ArrowDropDown } from "@mui/icons-material";
+import { ArrowDropUp, ArrowDropDown } from "@mui/icons-material";
 import UserRow from './UserRow';
+
 
 const UsersTable = ({
   users,
@@ -66,7 +66,7 @@ const UsersTable = ({
             <TableCell sx={{ fontWeight: "bold" }}>Delete</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>   
+        <TableBody>
 
           {users.map((user) => (
             <UserRow
