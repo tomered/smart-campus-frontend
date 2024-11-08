@@ -74,15 +74,14 @@ const PowerDashboard = () => {
   };
 
   const initialCardData = [
-    { title: "Temperature", value: "", bgColor: "#3f51b5" },
-    { title: "Humidity", value: "", bgColor: "#4caf50" },
-    { title: "CO2", value: "", bgColor: "#ff9800" },
-    { title: "Computer on/off", value: "", bgColor: "#e91e63" },
-    { title: "Air condition on/off", value: "", bgColor: "#673ab7" },
+    { title: "Light", valData: "", valDate: "", valLoc: "", bgColor: "#4caf50" },
+    { title: "Movment", valData: "", valDate: "", valLoc: "", bgColor: "#ff9800" },
+    { title: "Air condition on/off", valData: "", valDate: "", valLoc: "", bgColor: "#673ab7" },
   ];
 
   const [sensorsData, setSensorsData] = useState([]);
   const [cardData, setCardData] = useState(initialCardData);
+
 
   const handleDisplayDataClick = () => {
     const selectedClass = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
@@ -112,11 +111,13 @@ const PowerDashboard = () => {
 
     // Update each card with a unique value based on the selected format
     const updatedCardData = cardData.map((card, index) => {
-      let newValue;
+      let newValData;
+      let newValDate;
+      let newValLoc;
       switch (index) {
         case 0:
           if (tempSensors.length === 0) {
-            newValue = `There is no temperature sensor in this class`;
+            newValData = `There is no temperature sensor in this class`;
           } else {
             tempSensors.forEach((sensor, index) => {
               const temperatureIndex = sensor.type.indexOf("Temperature");
@@ -127,36 +128,34 @@ const PowerDashboard = () => {
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
               const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-              newValue = `${temperatureValue},  Last Update: ${formattedDate}`;
+              const locatedAt = sensor.location.room[1];
+              newValData = `${temperatureValue}`;
+              newValDate = `Last Update: ${formattedDate}`;
+              newValLoc = `Located at: ${locatedAt}`;
 
             });
           }
           break;
         case 1:
           if (humiditySensors.length == 0) {
-            newValue = `There is no a humidity sensor in this class`;
+            newValData = `There is no a humidity sensor in this class`;
           } else {
-            newValue = `30%`;
+            newValData = `30%`;
           }
           break;
         case 2:
           if (co2Sensors.length == 0) {
-            newValue = `There is no a CO2 sensor in this class`;
+            newValData = `There is no a CO2 sensor in this class`;
           } else {
-            newValue = `10pcc`;
+            newValData = `10pcc`;
           }
           break;
-        case 3:
-          newValue = `Computer: ${Math.random() > 0.5 ? "On" : "Off"}`; // מצב מחשב
-          break;
-        case 4:
-          newValue = `AC: ${Math.random() > 0.5 ? "On" : "Off"}`; // מצב מיזוג אוויר
-          break;
+
         default:
-          newValue = "N/A";
+          newValData = "N/A";
       }
 
-      return { ...card, value: newValue };
+      return { ...card, valData: newValData, valDate: newValDate, valLoc: newValLoc };
     });
 
     setCardData(updatedCardData);
@@ -383,7 +382,11 @@ const PowerDashboard = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ color: "white" }}>
-                  {card.value}
+                  {card.valData}
+                  <br></br>
+                  {card.valDate}
+                  <br></br>
+                  {card.valLoc}
                 </Typography>
               </CardContent>
             </Card>
