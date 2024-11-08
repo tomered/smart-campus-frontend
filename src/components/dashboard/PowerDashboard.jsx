@@ -121,10 +121,14 @@ const PowerDashboard = () => {
             tempSensors.forEach((sensor, index) => {
               const temperatureIndex = sensor.type.indexOf("Temperature");
               // Get the latest data entry (last element in sensors_data array)
-              const latestData =
-                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
               const temperatureValue = latestData.data[temperatureIndex];
-              newValue = `${temperatureValue} , Last Update: ${latestData.last_update}`;
+
+              const date = new Date(latestData.last_update);
+              // Extract the parts and format them
+              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+              newValue = `${temperatureValue},  Last Update: ${formattedDate}`;
+
             });
           }
           break;
