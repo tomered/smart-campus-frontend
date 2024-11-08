@@ -112,7 +112,6 @@ const PowerDashboard = () => {
 
     // Update each card with a unique value based on the selected format
     const updatedCardData = cardData.map((card, index) => {
-      let temperature_index;
       let newValue;
       switch (index) {
         case 0:
@@ -120,21 +119,14 @@ const PowerDashboard = () => {
             newValue = `There is no temperature sensor in this class`;
           } else {
             tempSensors.forEach((sensor, index) => {
-              // Check if 'type' includes 'Temperature'
-              if (sensor.type.includes("Temperature")) {
-                const temperatureIndex = sensor.type.indexOf("Temperature");
-                console.log(
-                  `Sensor ${index} - Index of 'Temperature':`,
-                  temperatureIndex
-                );
-              } else {
-                console.log(
-                  `Sensor ${index} does not have 'Temperature' in 'type'`
-                );
-              }
+              const temperatureIndex = sensor.type.indexOf("Temperature");
+              // Get the latest data entry (last element in sensors_data array)
+              const latestData =
+                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const temperatureValue = latestData.data[temperatureIndex];
+              newValue = `${temperatureValue} , Last Update: ${latestData.last_update}`;
             });
           }
-
           break;
         case 1:
           if (humiditySensors.length == 0) {
