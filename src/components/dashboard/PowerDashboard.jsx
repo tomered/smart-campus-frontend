@@ -74,9 +74,9 @@ const PowerDashboard = () => {
   };
 
   const initialCardData = [
-    { title: "Light", valData: "", valDate: "", valLoc: "", bgColor: "#4caf50" },
-    { title: "Movment", valData: "", valDate: "", valLoc: "", bgColor: "#ff9800" },
-    { title: "Air condition on/off", valData: "", valDate: "", valLoc: "", bgColor: "#673ab7" },
+    { title: "Light", valData: "", valDate: "", valLoc: "", bgColor: "#87A2FF" },
+    { title: "Movment", valData: "", valDate: "", valLoc: "", bgColor: "#629584" },
+    { title: "Air condition on/off", valData: "", valDate: "", valLoc: "", bgColor: "#08C2FF" },
   ];
 
   const [sensorsData, setSensorsData] = useState([]);
@@ -99,14 +99,14 @@ const PowerDashboard = () => {
       alert(`Data updated to ${selectedClass}`);
     }
 
-    const tempSensors = selectedClassSensors.filter((sens) =>
-      sens.type.includes("Temperature")
+    const LightSensors = selectedClassSensors.filter((sens) =>
+      sens.type.includes("Light")
     );
-    const humiditySensors = selectedClassSensors.filter((sens) =>
-      sens.type.includes("Humidity")
+    const MovementSensors = selectedClassSensors.filter((sens) =>
+      sens.type.includes("Movement")
     );
-    const co2Sensors = selectedClassSensors.filter((sens) =>
-      sens.type.includes("CO2")
+    const ACSensors = selectedClassSensors.filter((sens) =>
+      sens.type.includes("AC")
     );
 
     // Update each card with a unique value based on the selected format
@@ -116,20 +116,26 @@ const PowerDashboard = () => {
       let newValLoc;
       switch (index) {
         case 0:
-          if (tempSensors.length === 0) {
-            newValData = `There is no temperature sensor in this class`;
+          if (LightSensors.length === 0) {
+            newValData = `There is no Light sensors in this class`;
           } else {
-            tempSensors.forEach((sensor, index) => {
-              const temperatureIndex = sensor.type.indexOf("Temperature");
+            LightSensors.forEach((sensor, index) => {
+              const LightIndex = sensor.type.indexOf("Light");
               // Get the latest data entry (last element in sensors_data array)
               const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
-              const temperatureValue = latestData.data[temperatureIndex];
+              const LightValue = latestData.data[LightIndex];
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
               const locatedAt = sensor.location.room[1];
-              newValData = `${temperatureValue}`;
+              console.log(sensor.sensors_data.id);
+              if (LightValue == "true"){
+                newValData = `ON`;
+              }
+              else{
+                newValData = `OFF`;
+              }
               newValDate = `Last Update: ${formattedDate}`;
               newValLoc = `Located at: ${locatedAt}`;
 
@@ -137,17 +143,51 @@ const PowerDashboard = () => {
           }
           break;
         case 1:
-          if (humiditySensors.length == 0) {
-            newValData = `There is no a humidity sensor in this class`;
+          if (MovementSensors.length == 0) {
+            newValData = `There is no Movement sensors in this class`;
           } else {
-            newValData = `30%`;
+            MovementSensors.forEach((sensor, index) => {
+              const MovementIndex = sensor.type.indexOf("Movement");
+              // Get the latest data entry (last element in sensors_data array)
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
+              const MovmentValue = latestData.data[MovementIndex];          
+
+              const date = new Date(latestData.last_update);
+              // Extract the parts and format them
+              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+              const locatedAt = sensor.location.room[1];
+
+              newValData = MovmentValue;
+              newValDate = `Last Update: ${formattedDate}`;
+              newValLoc = `Located at: ${locatedAt}`;
+
+            });
           }
           break;
         case 2:
-          if (co2Sensors.length == 0) {
-            newValData = `There is no a CO2 sensor in this class`;
+          if (ACSensors.length == 0) {
+            newValData = `There is no Air Condition sensors in this class`;
           } else {
-            newValData = `10pcc`;
+            ACSensors.forEach((sensor, index) => {
+              const ACIndex = sensor.type.indexOf("Movement");
+              // Get the latest data entry (last element in sensors_data array)
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
+              const ACValue = latestData.data[ACIndex];          
+
+              const date = new Date(latestData.last_update);
+              // Extract the parts and format them
+              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+              const locatedAt = sensor.location.room[1];
+              if (ACValue == "true"){
+                newValData = `ON`;
+              }
+              else{
+                newValData = `OFF`;
+              }
+              newValDate = `Last Update: ${formattedDate}`;
+              newValLoc = `Located at: ${locatedAt}`;
+
+            });
           }
           break;
 
