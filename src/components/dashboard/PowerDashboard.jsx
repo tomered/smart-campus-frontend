@@ -23,13 +23,20 @@ import {
 
 import axios from "axios";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, ChartTooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  ChartTooltip,
+  Legend
+);
 
 const PowerDashboard = () => {
-
   const sensorFunction = async () => {
     try {
-      const res = await axios.get("http://localhost:10000/sensorsData/all-data");
+      const res = await axios.get(
+        "http://localhost:10000/sensorsData/all-data"
+      );
       setSensorsData(res.data); // Store fetched data in state
     } catch (error) {
       console.error("error fetching sensors " + error);
@@ -60,7 +67,9 @@ const PowerDashboard = () => {
       ...prevState,
       [menuType]: null,
       ...(value && menuType === "anchorEl" ? { selectedBuilding: value } : {}),
-      ...(value && menuType === "classAnchorEl" ? { selectedClass: value } : {}),
+      ...(value && menuType === "classAnchorEl"
+        ? { selectedClass: value }
+        : {}),
     }));
   };
 
@@ -71,56 +80,75 @@ const PowerDashboard = () => {
     { title: "Computer on/off", value: "", bgColor: "#e91e63" },
     { title: "Air condition on/off", value: "", bgColor: "#673ab7" },
   ];
-  
+
   const [sensorsData, setSensorsData] = useState([]);
   const [cardData, setCardData] = useState(initialCardData);
 
   const handleDisplayDataClick = () => {
-
     const selectedClass = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
-    
-    const selectedClassSensors = sensorsData.filter((sens) => sens.location.room.includes(selectedClass));
+
+    const selectedClassSensors = sensorsData.filter((sens) =>
+      sens.location.room.includes(selectedClass)
+    );
     //console.log(selectedClassSensors);
-    if (selectedClassSensors.length == 0){
-      alert(`There is no sensors in the class- ${selectedClass}, please choose another one.`);
-      return
-    }
-    else{
+    if (selectedClassSensors.length == 0) {
+      alert(
+        `There is no sensors in the class- ${selectedClass}, please choose another one.`
+      );
+      return;
+    } else {
       alert(`Data updated to ${selectedClass}`);
     }
 
-    const tempSensors = selectedClassSensors.filter((sens) => sens.type.includes("Temperature"));
-    const humiditySensors = selectedClassSensors.filter((sens) => sens.type.includes("Humidity"));
-    const co2Sensors = selectedClassSensors.filter((sens) => sens.type.includes("CO2"));
+    const tempSensors = selectedClassSensors.filter((sens) =>
+      sens.type.includes("Temperature")
+    );
+    const humiditySensors = selectedClassSensors.filter((sens) =>
+      sens.type.includes("Humidity")
+    );
+    const co2Sensors = selectedClassSensors.filter((sens) =>
+      sens.type.includes("CO2")
+    );
 
     // Update each card with a unique value based on the selected format
     const updatedCardData = cardData.map((card, index) => {
-      
+      let temperature_index;
       let newValue;
-      switch(index) {
+      switch (index) {
         case 0:
-          if (tempSensors.length == 0){
-            newValue = `There is no a temperature sensor in this class`
+          if (tempSensors.length === 0) {
+            newValue = `There is no temperature sensor in this class`;
+          } else {
+            tempSensors.forEach((sensor, index) => {
+              // Check if 'type' includes 'Temperature'
+              if (sensor.type.includes("Temperature")) {
+                const temperatureIndex = sensor.type.indexOf("Temperature");
+                console.log(
+                  `Sensor ${index} - Index of 'Temperature':`,
+                  temperatureIndex
+                );
+              } else {
+                console.log(
+                  `Sensor ${index} does not have 'Temperature' in 'type'`
+                );
+              }
+            });
           }
-          else{
-            newValue = `24`
-          }     
+
           break;
         case 1:
-          if (humiditySensors.length == 0){
-            newValue = `There is no a humidity sensor in this class`
+          if (humiditySensors.length == 0) {
+            newValue = `There is no a humidity sensor in this class`;
+          } else {
+            newValue = `30%`;
           }
-          else{
-            newValue = `30%`
-          }     
           break;
         case 2:
-          if (co2Sensors.length == 0){
-            newValue = `There is no a CO2 sensor in this class`
+          if (co2Sensors.length == 0) {
+            newValue = `There is no a CO2 sensor in this class`;
+          } else {
+            newValue = `10pcc`;
           }
-          else{
-            newValue = `10pcc`
-          }     
           break;
         case 3:
           newValue = `Computer: ${Math.random() > 0.5 ? "On" : "Off"}`; // מצב מחשב
@@ -131,21 +159,54 @@ const PowerDashboard = () => {
         default:
           newValue = "N/A";
       }
-      
+
       return { ...card, value: newValue };
     });
-  
+
     setCardData(updatedCardData);
-    
   };
-  
 
   const buildingsData = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const classesData = [
-    "100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110",
-    "111", "112", "200", "201", "202", "203", "204", "205", "206", "207", "208",
-    "209", "210", "211", "212", "300", "301", "302", "303", "304", "305", "306",
-    "307", "308", "309", "310", "311", "312",
+    "100",
+    "101",
+    "102",
+    "103",
+    "104",
+    "105",
+    "106",
+    "107",
+    "108",
+    "109",
+    "110",
+    "111",
+    "112",
+    "200",
+    "201",
+    "202",
+    "203",
+    "204",
+    "205",
+    "206",
+    "207",
+    "208",
+    "209",
+    "210",
+    "211",
+    "212",
+    "300",
+    "301",
+    "302",
+    "303",
+    "304",
+    "305",
+    "306",
+    "307",
+    "308",
+    "309",
+    "310",
+    "311",
+    "312",
   ];
 
   const scatterData = {
@@ -207,49 +268,87 @@ const PowerDashboard = () => {
           marginBottom: 4,
         }}
       >
-        <Typography variant="h3" gutterBottom sx={{
-          mb: 4,
-          padding: "25px 1px",
-          fontWeight: "bold",
-          background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          animation: "fadeIn 2s ease-in-out",
-        }}>
+        <Typography
+          variant="h3"
+          gutterBottom
+          sx={{
+            mb: 4,
+            padding: "25px 1px",
+            fontWeight: "bold",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
           Power Dashboard
         </Typography>
 
         <Box>
           <Tooltip title="Select a building" arrow>
-            <Button variant="contained" color="primary" sx={{ marginRight: 2, backgroundColor: "#0288d1", "&:hover": { backgroundColor: "#01579b" } }}
-              onClick={(e) => handleMenuOpen(e, "anchorEl")}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                marginRight: 2,
+                backgroundColor: "#0288d1",
+                "&:hover": { backgroundColor: "#01579b" },
+              }}
+              onClick={(e) => handleMenuOpen(e, "anchorEl")}
+            >
               Building
             </Button>
           </Tooltip>
-          <Menu anchorEl={menuState.anchorEl} open={Boolean(menuState.anchorEl)} onClose={() => handleMenuClose("anchorEl")}>
+          <Menu
+            anchorEl={menuState.anchorEl}
+            open={Boolean(menuState.anchorEl)}
+            onClose={() => handleMenuClose("anchorEl")}
+          >
             {buildingsData.map((building) => (
-              <MenuItem key={building} onClick={() => handleMenuClose("anchorEl", building)}>
+              <MenuItem
+                key={building}
+                onClick={() => handleMenuClose("anchorEl", building)}
+              >
                 {building}
               </MenuItem>
             ))}
           </Menu>
 
           <Tooltip title="Select a class" arrow>
-            <Button variant="contained" color="secondary" sx={{ marginRight: 2, backgroundColor: "#7b1fa2", "&:hover": { backgroundColor: "#4a148c" } }}
-              onClick={(e) => handleMenuOpen(e, "classAnchorEl")}>
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{
+                marginRight: 2,
+                backgroundColor: "#7b1fa2",
+                "&:hover": { backgroundColor: "#4a148c" },
+              }}
+              onClick={(e) => handleMenuOpen(e, "classAnchorEl")}
+            >
               Class
             </Button>
           </Tooltip>
-          <Menu anchorEl={menuState.classAnchorEl} open={Boolean(menuState.classAnchorEl)} onClose={() => handleMenuClose("classAnchorEl")}>
+          <Menu
+            anchorEl={menuState.classAnchorEl}
+            open={Boolean(menuState.classAnchorEl)}
+            onClose={() => handleMenuClose("classAnchorEl")}
+          >
             {classesData.map((className) => (
-              <MenuItem key={className} onClick={() => handleMenuClose("classAnchorEl", className)}>
+              <MenuItem
+                key={className}
+                onClick={() => handleMenuClose("classAnchorEl", className)}
+              >
                 {className}
               </MenuItem>
             ))}
           </Menu>
 
           <Tooltip title="Click to display data" arrow>
-            <Button variant="outlined" color="info" onClick={handleDisplayDataClick}>
+            <Button
+              variant="outlined"
+              color="info"
+              onClick={handleDisplayDataClick}
+            >
               {`Selected: ${menuState.selectedBuilding || "None"}, ${menuState.selectedClass || "None"}`}
             </Button>
           </Tooltip>
@@ -259,24 +358,34 @@ const PowerDashboard = () => {
       <Grid container spacing={4} sx={{ width: "100%", mb: 4 }}>
         {cardData.map((card, index) => (
           <Grid item xs={12} md={4} key={index}>
-            <Card sx={{
-              backgroundColor: card.bgColor,
-              borderRadius: "12px",
-              boxShadow: 3,
-              transition: "transform 0.3s ease, box-shadow 0.3s ease",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              "&:hover": {
-                transform: "translateY(-10px)",
-                boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.2)",
-              },
-            }}>
+            <Card
+              sx={{
+                backgroundColor: card.bgColor,
+                borderRadius: "12px",
+                boxShadow: 3,
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  transform: "translateY(-10px)",
+                  boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
               <CardContent sx={{ display: "flex", alignItems: "center" }}>
-                <LightbulbIcon sx={{ fontSize: 40, color: "white", marginRight: 2 }} />
+                <LightbulbIcon
+                  sx={{ fontSize: 40, color: "white", marginRight: 2 }}
+                />
                 <Typography variant="h5" sx={{ color: "white" }}>
                   {card.title}
                 </Typography>
               </CardContent>
-              <CardContent sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <CardContent
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Typography variant="h6" sx={{ color: "white" }}>
                   {card.value}
                 </Typography>
