@@ -74,11 +74,34 @@ const AirDashboard = () => {
   };
 
   const initialCardData = [
-    { title: "Temperature", value: "", bgColor: "#3f51b5" },
-    { title: "Humidity", value: "", bgColor: "#4caf50" },
-    { title: "CO2", value: "", bgColor: "#ff9800" },
-    { title: "Computer on/off", value: "", bgColor: "#e91e63" },
-    { title: "Air condition on/off", value: "", bgColor: "#673ab7" },
+    {
+      title: "Temperature",
+      valData: "",
+      valDate: "",
+      valLoc: "",
+      bgColor: "#4caf50",
+    },
+    {
+      title: "Humidity",
+      valData: "",
+      valDate: "",
+      valLoc: "",
+      bgColor: "#87A2FF",
+    },
+    {
+      title: "CO2",
+      valData: "",
+      valDate: "",
+      valLoc: "",
+      bgColor: "#629584",
+    },
+    {
+      title: "Pressure",
+      valData: "",
+      valDate: "",
+      valLoc: "",
+      bgColor: "#08C2FF",
+    },
   ];
 
   const [sensorsData, setSensorsData] = useState([]);
@@ -109,54 +132,108 @@ const AirDashboard = () => {
     const co2Sensors = selectedClassSensors.filter((sens) =>
       sens.type.includes("CO2")
     );
+    const pressurSensors = selectedClassSensors.filter((sens) =>
+      sens.type.includes("Pressure")
+    );
 
     // Update each card with a unique value based on the selected format
     const updatedCardData = cardData.map((card, index) => {
-      let newValue;
+      let newValData;
+      let newValDate;
+      let newValLoc;
       switch (index) {
         case 0:
           if (tempSensors.length === 0) {
-            newValue = `There is no temperature sensor in this class`;
+            newValData = `There is no temperature sensor in this class`;
           } else {
             tempSensors.forEach((sensor, index) => {
               const temperatureIndex = sensor.type.indexOf("Temperature");
               // Get the latest data entry (last element in sensors_data array)
-              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
+              const latestData =
+                sensor.sensors_data[sensor.sensors_data.length - 1];
               const temperatureValue = latestData.data[temperatureIndex];
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-              newValue = `${temperatureValue},  Last Update: ${formattedDate}`;
-
+              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+              const locatedAt = sensor.location.room[1];
+              newValData = `${temperatureValue}`;
+              newValDate = `Last Update: ${formattedDate}`;
+              newValLoc = `Located at: ${locatedAt}`;
             });
           }
           break;
         case 1:
-          if (humiditySensors.length == 0) {
-            newValue = `There is no a humidity sensor in this class`;
+          if (humiditySensors.length === 0) {
+            newValData = `There is no humidity sensor in this class`;
           } else {
-            newValue = `30%`;
+            humiditySensors.forEach((sensor, index) => {
+              const humidityIndex = sensor.type.indexOf("Humidity");
+              // Get the latest data entry (last element in sensors_data array)
+              const latestData =
+                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const humidityValue = latestData.data[humidityIndex];
+
+              const date = new Date(latestData.last_update);
+              // Extract the parts and format them
+              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+              const locatedAt = sensor.location.room[1];
+              newValData = `${humidityValue}`;
+              newValDate = `Last Update: ${formattedDate}`;
+              newValLoc = `Located at: ${locatedAt}`;
+            });
           }
           break;
         case 2:
-          if (co2Sensors.length == 0) {
-            newValue = `There is no a CO2 sensor in this class`;
+          if (co2Sensors.length === 0) {
+            newValData = `There is no humidity sensor in this class`;
           } else {
-            newValue = `10pcc`;
+            co2Sensors.forEach((sensor, index) => {
+              const co2Index = sensor.type.indexOf("CO2");
+              // Get the latest data entry (last element in sensors_data array)
+              const latestData =
+                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const co2Value = latestData.data[co2Index];
+              const date = new Date(latestData.last_update);
+              // Extract the parts and format them
+              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+              const locatedAt = sensor.location.room[1];
+              newValData = `${co2Value}`;
+              newValDate = `Last Update: ${formattedDate}`;
+              newValLoc = `Located at: ${locatedAt}`;
+            });
           }
           break;
         case 3:
-          newValue = `Computer: ${Math.random() > 0.5 ? "On" : "Off"}`; // מצב מחשב
-          break;
-        case 4:
-          newValue = `AC: ${Math.random() > 0.5 ? "On" : "Off"}`; // מצב מיזוג אוויר
+          if (pressurSensors.length === 0) {
+            newValData = `There is no humidity sensor in this class`;
+          } else {
+            pressurSensors.forEach((sensor, index) => {
+              const pressurIndex = sensor.type.indexOf("Pressur");
+              // Get the latest data entry (last element in sensors_data array)
+              const latestData =
+                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const pressurValue = latestData.data[pressurIndex];
+              const date = new Date(latestData.last_update);
+              // Extract the parts and format them
+              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+              const locatedAt = sensor.location.room[1];
+              newValData = `${pressurValue}`;
+              newValDate = `Last Update: ${formattedDate}`;
+              newValLoc = `Located at: ${locatedAt}`;
+            });
+          }
           break;
         default:
-          newValue = "N/A";
+          newValData = "N/A";
       }
 
-      return { ...card, value: newValue };
+      return {
+        ...card,
+        valData: newValData,
+        valDate: newValDate,
+        valLoc: newValLoc,
+      };
     });
 
     setCardData(updatedCardData);
@@ -383,7 +460,11 @@ const AirDashboard = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ color: "white" }}>
-                  {card.value}
+                  {card.valData}
+                  <br></br>
+                  {card.valDate}
+                  <br></br>
+                  {card.valLoc}
                 </Typography>
               </CardContent>
             </Card>
