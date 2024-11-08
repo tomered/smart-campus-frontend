@@ -8,14 +8,14 @@ import {
   TableRow,
   Paper,
   Button,
-  TextField,
   Box,
   Container,
-  Select,
-  MenuItem,
   Typography,
+  IconButton
 } from "@mui/material";
-import Sidebar from "./Sidebar"; 
+import { ArrowDropUp, ArrowDropDown } from "@mui/icons-material";
+import Sidebar from "./Sidebar";
+import SearchBar from "./SearchBar";
 import EditUserDialog from "./Dialogs/EditUserDialog";
 import DeleteUserDialog from "./Dialogs/DeleteUserDialog";
 import {
@@ -31,15 +31,26 @@ const AdminUsersTable = () => {
   const [deleteUser] = useDeleteUserMutation(); // delete users mutation from backend
   const [editUserMutation] = useEditUserMutation(); // edit users mutation from backend
   const [users, setUsers] = useState(initialUsers); // state for the users
-  const [editUser, setEditUser] = useState(null); 
+  const [editUser, setEditUser] = useState(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); 
-  const [searchBy, setSearchBy] = useState("name"); 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchBy, setSearchBy] = useState("name");
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");//Sort direction (asc or desc)
 
+  //when there is any change in users list it will be update
   useEffect(() => {
     setUsers(initialUsers);
   }, [initialUsers]);
 
+  //sort for each column , can sort ascending or desc
+  const handleSort = (field) => {
+    const isAsc = sortField === field && sortDirection === "asc";
+    setSortDirection(isAsc ? "desc" : "asc");
+    setSortField(field);
+  };
+
+  //edit sprcific user
   const handleEditClick = (user) => {
     setEditUser(user);
   };
@@ -48,6 +59,7 @@ const AdminUsersTable = () => {
     setEditUser(null);
   };
 
+  //save the new user detailes
   const handleSave = async (updatedUser) => {
     try {
       await editUserMutation({
@@ -71,10 +83,7 @@ const AdminUsersTable = () => {
     }
   };
 
-  const handleDeleteClick = (user) => {
-    setDeleteConfirmation(user);
-  };
-
+  //delete specific user
   const handleDeleteConfirm = async () => {
     if (deleteConfirmation) {
       try {
@@ -89,12 +98,31 @@ const AdminUsersTable = () => {
     }
   };
 
+  const handleDeleteClick = (user) => {
+    setDeleteConfirmation(user);
+  };
+
   const handleDeleteClose = () => {
     setDeleteConfirmation(null);
   };
 
+  //show changes in the list if there is trying to sort or search
+  const sortedUsers = useMemo(() => {
+    const sorted = [...users];
+    if (sortField) {
+      sorted.sort((a, b) => {
+        const aValue = a[sortField].toString().toLowerCase();
+        const bValue = b[sortField].toString().toLowerCase();
+        if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+    return sorted;
+  }, [users, sortField, sortDirection]);
+
   const filteredUsers = useMemo(() => {
-    return users.filter((user) => {
+    return sortedUsers.filter((user) => {
       const searchValue = searchQuery.toLowerCase();
       if (searchBy === "name") {
         const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
@@ -104,7 +132,7 @@ const AdminUsersTable = () => {
       }
       return false;
     });
-  }, [users, searchQuery, searchBy, error]);
+  }, [sortedUsers, searchQuery, searchBy]);
 
   if (error)
     return (
@@ -116,9 +144,7 @@ const AdminUsersTable = () => {
 
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      {/* Sidebar */}
       <Sidebar />
-
       {/* Main content container */}
       <Container
         sx={{
@@ -128,8 +154,7 @@ const AdminUsersTable = () => {
           flexDirection: "column",
           height: "calc(100vh - 32px)", // Subtracting top margin
           overflow: "hidden", // Prevent scrolling on the container
-        }}
-      >
+        }}>
         <Typography
           variant="h4"
           gutterBottom
@@ -139,29 +164,14 @@ const AdminUsersTable = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             fontWeight: "bold",
-          }}
-        >
+          }}>
           Users Management
         </Typography>
-
-        {}
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <TextField
-            label="Search"
-            variant="outlined"
-            fullWidth
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <Select
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
-          >
-            <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="email">Email</MenuItem>
-            {/*<MenuItem value="lastName">Last Name</MenuItem>*/}
-          </Select>
-        </Box>
+        <SearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          searchBy={searchBy}
+          setSearchBy={setSearchBy} />
         {/*ofir*/}
         <Box
           sx={{
@@ -169,8 +179,7 @@ const AdminUsersTable = () => {
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
-          }}
-        >
+          }}>
           <TableContainer
             component={Paper}
             sx={{
@@ -178,16 +187,47 @@ const AdminUsersTable = () => {
               flexGrow: 1,
               display: "flex",
               flexDirection: "column",
-              overflow: "hidden",
-            }}
-          >
+              overflow: "auto",
+            }}>
             <Table>
               <TableHead>
                 <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-                  <TableCell sx={{ fontWeight: "bold" }}>ID</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Role</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>ID
+                    <IconButton onClick={() => handleSort("id")}>
+                      {sortField === "id" ? (
+                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
+                      ) : (
+                        <ArrowDropUp color="disabled" />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Name
+                    <IconButton onClick={() => handleSort("firstName")} size="small">
+                      {sortField === "firstName" ? (
+                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
+                      ) : (
+                        <ArrowDropUp color="disabled" />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Email
+                    <IconButton onClick={() => handleSort("email")}>
+                      {sortField === "Email" ? (
+                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
+                      ) : (
+                        <ArrowDropUp color="disabled" />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Role
+                    <IconButton onClick={() => handleSort("role")}>
+                      {sortField === "role" ? (
+                        sortDirection === "asc" ? <ArrowDropUp color="primary" /> : <ArrowDropDown color="primary" />
+                      ) : (
+                        <ArrowDropUp color="disabled" />
+                      )}
+                    </IconButton>
+                  </TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Edit</TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Delete</TableCell>
                 </TableRow>
@@ -217,8 +257,7 @@ const AdminUsersTable = () => {
                           textTransform: "none",
                         }}
                         size="small"
-                        onClick={() => handleEditClick(user)}
-                      >
+                        onClick={() => handleEditClick(user)}>
                         Edit
                       </Button>
                     </TableCell>
@@ -232,8 +271,7 @@ const AdminUsersTable = () => {
                           textTransform: "none",
                         }}
                         size="small"
-                        onClick={() => handleDeleteClick(user)}
-                      >
+                        onClick={() => handleDeleteClick(user)}>
                         Delete
                       </Button>
                     </TableCell>
@@ -246,17 +284,15 @@ const AdminUsersTable = () => {
             open={Boolean(editUser)}
             user={editUser}
             onClose={handleClose}
-            onSave={handleSave}
-          />
+            onSave={handleSave} />
           <DeleteUserDialog
             open={Boolean(deleteConfirmation)}
             onClose={handleDeleteClose}
-            onDelete={handleDeleteConfirm}
-          />
+            onDelete={handleDeleteConfirm} />
         </Box>
       </Container>
     </div>
   );
 };
-
 export default AdminUsersTable;
+
