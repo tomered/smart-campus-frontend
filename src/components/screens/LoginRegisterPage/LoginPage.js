@@ -21,6 +21,10 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const handleClick = () => {
+    navigate("/sign-up");
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
 
@@ -71,7 +75,7 @@ const LoginPage = () => {
         />
 
         <button type="submit">Submit</button>
-        <SignUpLink href="/sign-up">Not registered yet? Sign Up</SignUpLink>
+        <SignUpLink onClick={handleClick}>Not registered yet? Sign Up</SignUpLink>
         {isFailure && (
           <FailureScreen
             mainMessage="Sign in Failed!"
@@ -138,6 +142,7 @@ const SignUpLink = styled.a`
 
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
 

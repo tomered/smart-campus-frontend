@@ -36,6 +36,10 @@ const SignUpPage = () => {
 
   const [registerUser] = useRegisterUserMutation();
 
+  const handleClick = () => {
+    navigate("/login");
+  }
+
   //Validations
   const validateForm = () => {
     const newErrors = {};
@@ -284,7 +288,7 @@ const SignUpPage = () => {
           <SubmitButton type="submit" disabled={isLoading}>Create Account</SubmitButton>
           <ClearButton type="button" onClick={handleClear} disabled={isLoading}>Clear</ClearButton>
         </ButtonContainer>
-        <SignInLink href="/login">Already have an account? Sign In</SignInLink>
+        <SignInLink onClick={handleClick}>Already have an account? Sign In</SignInLink>
       </SignUpForm>
       {isLoading && <LoadingScreen message="Registering..." />}
       {isSuccess && <SuccessScreen mainMessage="Registration Successful!" message="Redirecting to token verification..." />}

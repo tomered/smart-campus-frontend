@@ -128,5 +128,6 @@ export const SignInLink = styled.a`
 
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
