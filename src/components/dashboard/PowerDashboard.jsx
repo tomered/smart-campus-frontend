@@ -32,6 +32,8 @@ ChartJS.register(
 );
 
 const PowerDashboard = () => {
+  const isMobile = window.innerWidth < 700;
+
   const sensorFunction = async () => {
     try {
       const res = await axios.get(
@@ -74,14 +76,31 @@ const PowerDashboard = () => {
   };
 
   const initialCardData = [
-    { title: "Light", valData: "", valDate: "", valLoc: "", bgColor: "#87A2FF" },
-    { title: "Movment", valData: "", valDate: "", valLoc: "", bgColor: "#629584" },
-    { title: "Air condition on/off", valData: "", valDate: "", valLoc: "", bgColor: "#08C2FF" },
+    {
+      title: "Light",
+      valData: "",
+      valDate: "",
+      valLoc: "",
+      bgColor: "#87A2FF",
+    },
+    {
+      title: "Movment",
+      valData: "",
+      valDate: "",
+      valLoc: "",
+      bgColor: "#629584",
+    },
+    {
+      title: "Air condition on/off",
+      valData: "",
+      valDate: "",
+      valLoc: "",
+      bgColor: "#08C2FF",
+    },
   ];
 
   const [sensorsData, setSensorsData] = useState([]);
   const [cardData, setCardData] = useState(initialCardData);
-
 
   const handleDisplayDataClick = () => {
     const selectedClass = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
@@ -122,23 +141,22 @@ const PowerDashboard = () => {
             LightSensors.forEach((sensor, index) => {
               const LightIndex = sensor.type.indexOf("Light");
               // Get the latest data entry (last element in sensors_data array)
-              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
+              const latestData =
+                sensor.sensors_data[sensor.sensors_data.length - 1];
               const LightValue = latestData.data[LightIndex];
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
               const locatedAt = sensor.location.room[1];
               console.log(sensor.sensors_data.id);
-              if (LightValue == "true"){
+              if (LightValue == "true") {
                 newValData = `ON`;
-              }
-              else{
+              } else {
                 newValData = `OFF`;
               }
               newValDate = `Last Update: ${formattedDate}`;
               newValLoc = `Located at: ${locatedAt}`;
-
             });
           }
           break;
@@ -149,18 +167,21 @@ const PowerDashboard = () => {
             MovementSensors.forEach((sensor, index) => {
               const MovementIndex = sensor.type.indexOf("Movement");
               // Get the latest data entry (last element in sensors_data array)
-              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
-              const MovmentValue = latestData.data[MovementIndex];          
+              const latestData =
+                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const MovmentValue = latestData.data[MovementIndex];
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
               const locatedAt = sensor.location.room[1];
-
-              newValData = MovmentValue;
+              if (MovmentValue == "true") {
+                newValData = `True`;
+              } else {
+                newValData = `False`;
+              }
               newValDate = `Last Update: ${formattedDate}`;
               newValLoc = `Located at: ${locatedAt}`;
-
             });
           }
           break;
@@ -171,22 +192,21 @@ const PowerDashboard = () => {
             ACSensors.forEach((sensor, index) => {
               const ACIndex = sensor.type.indexOf("Movement");
               // Get the latest data entry (last element in sensors_data array)
-              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
-              const ACValue = latestData.data[ACIndex];          
+              const latestData =
+                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const ACValue = latestData.data[ACIndex];
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
               const locatedAt = sensor.location.room[1];
-              if (ACValue == "true"){
+              if (ACValue == "true") {
                 newValData = `ON`;
-              }
-              else{
+              } else {
                 newValData = `OFF`;
               }
               newValDate = `Last Update: ${formattedDate}`;
               newValLoc = `Located at: ${locatedAt}`;
-
             });
           }
           break;
@@ -195,7 +215,12 @@ const PowerDashboard = () => {
           newValData = "N/A";
       }
 
-      return { ...card, valData: newValData, valDate: newValDate, valLoc: newValLoc };
+      return {
+        ...card,
+        valData: newValData,
+        valDate: newValDate,
+        valLoc: newValLoc,
+      };
     });
 
     setCardData(updatedCardData);
@@ -435,6 +460,17 @@ const PowerDashboard = () => {
       </Grid>
 
       <Scatter options={scatterOptions} data={scatterData} />
+      {/* Material Design Back to Main Page Button */}
+      <Box sx={{ display: "flex", justifyContent: "right", marginTop: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ padding: "10px 20px", borderRadius: 2 }}
+          onClick={() => (window.location.href = "/")}
+        >
+          {isMobile ? "Main" : "Back to Main Page"}
+        </Button>
+      </Box>
     </Box>
   );
 };

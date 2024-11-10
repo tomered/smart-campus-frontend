@@ -32,6 +32,8 @@ ChartJS.register(
 );
 
 const AirDashboard = () => {
+  const isMobile = window.innerWidth < 700;
+
   const sensorFunction = async () => {
     try {
       const res = await axios.get(
@@ -473,6 +475,17 @@ const AirDashboard = () => {
       </Grid>
 
       <Scatter options={scatterOptions} data={scatterData} />
+      {/* Material Design Back to Main Page Button */}
+      <Box sx={{ display: "flex", justifyContent: "right", marginTop: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ padding: "10px 20px", borderRadius: 2 }}
+          onClick={() => (window.location.href = "/")}
+        >
+          {isMobile ? "Main" : "Back to Main Page"}
+        </Button>
+      </Box>
     </Box>
   );
 };
