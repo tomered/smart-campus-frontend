@@ -9,31 +9,36 @@ import {
   Menu,
   MenuItem,
   Tooltip,
+  Paper,
 } from "@mui/material";
+import { Scatter, Bar, Line, Pie, Radar, Doughnut } from "react-chartjs-2";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import { Scatter } from "react-chartjs-2";
+
 import {
   Chart as ChartJS,
+  CategoryScale,
   LinearScale,
   PointElement,
-  CategoryScale,
+  LineElement,
+  Title,
   Tooltip as ChartTooltip,
   Legend,
 } from "chart.js";
-
 import axios from "axios";
 
+// Register chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
+  LineElement,
+  Title,
   ChartTooltip,
   Legend
 );
 
-const PowerDashboard = () => {
-  const isMobile = window.innerWidth < 700;
 
+const PowerDashboard = () => {
   const sensorFunction = async () => {
     try {
       const res = await axios.get(
@@ -76,31 +81,14 @@ const PowerDashboard = () => {
   };
 
   const initialCardData = [
-    {
-      title: "Light",
-      valData: "",
-      valDate: "",
-      valLoc: "",
-      bgColor: "#87A2FF",
-    },
-    {
-      title: "Movment",
-      valData: "",
-      valDate: "",
-      valLoc: "",
-      bgColor: "#629584",
-    },
-    {
-      title: "Air condition on/off",
-      valData: "",
-      valDate: "",
-      valLoc: "",
-      bgColor: "#08C2FF",
-    },
+    { title: "Light", valData: "", valDate: "", valLoc: "", bgColor: "#87A2FF" },
+    { title: "Movment", valData: "", valDate: "", valLoc: "", bgColor: "#629584" },
+    { title: "Air condition on/off", valData: "", valDate: "", valLoc: "", bgColor: "#08C2FF" },
   ];
 
   const [sensorsData, setSensorsData] = useState([]);
   const [cardData, setCardData] = useState(initialCardData);
+
 
   const handleDisplayDataClick = () => {
     const selectedClass = `${menuState.selectedClass || "None"}_${menuState.selectedBuilding || "None"}`;
@@ -141,22 +129,23 @@ const PowerDashboard = () => {
             LightSensors.forEach((sensor, index) => {
               const LightIndex = sensor.type.indexOf("Light");
               // Get the latest data entry (last element in sensors_data array)
-              const latestData =
-                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
               const LightValue = latestData.data[LightIndex];
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
               const locatedAt = sensor.location.room[1];
               console.log(sensor.sensors_data.id);
-              if (LightValue == "true") {
+              if (LightValue == "true"){
                 newValData = `ON`;
-              } else {
+              }
+              else{
                 newValData = `OFF`;
               }
               newValDate = `Last Update: ${formattedDate}`;
               newValLoc = `Located at: ${locatedAt}`;
+
             });
           }
           break;
@@ -167,21 +156,18 @@ const PowerDashboard = () => {
             MovementSensors.forEach((sensor, index) => {
               const MovementIndex = sensor.type.indexOf("Movement");
               // Get the latest data entry (last element in sensors_data array)
-              const latestData =
-                sensor.sensors_data[sensor.sensors_data.length - 1];
-              const MovmentValue = latestData.data[MovementIndex];
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
+              const MovmentValue = latestData.data[MovementIndex];          
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
               const locatedAt = sensor.location.room[1];
-              if (MovmentValue == "true") {
-                newValData = `True`;
-              } else {
-                newValData = `False`;
-              }
+
+              newValData = MovmentValue;
               newValDate = `Last Update: ${formattedDate}`;
               newValLoc = `Located at: ${locatedAt}`;
+
             });
           }
           break;
@@ -192,21 +178,22 @@ const PowerDashboard = () => {
             ACSensors.forEach((sensor, index) => {
               const ACIndex = sensor.type.indexOf("Movement");
               // Get the latest data entry (last element in sensors_data array)
-              const latestData =
-                sensor.sensors_data[sensor.sensors_data.length - 1];
-              const ACValue = latestData.data[ACIndex];
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
+              const ACValue = latestData.data[ACIndex];          
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+              const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
               const locatedAt = sensor.location.room[1];
-              if (ACValue == "true") {
+              if (ACValue == "true"){
                 newValData = `ON`;
-              } else {
+              }
+              else{
                 newValData = `OFF`;
               }
               newValDate = `Last Update: ${formattedDate}`;
               newValLoc = `Located at: ${locatedAt}`;
+
             });
           }
           break;
@@ -215,12 +202,7 @@ const PowerDashboard = () => {
           newValData = "N/A";
       }
 
-      return {
-        ...card,
-        valData: newValData,
-        valDate: newValDate,
-        valLoc: newValLoc,
-      };
+      return { ...card, valData: newValData, valDate: newValDate, valLoc: newValLoc };
     });
 
     setCardData(updatedCardData);
@@ -268,55 +250,145 @@ const PowerDashboard = () => {
     "311",
     "312",
   ];
+  
 
-  const scatterData = {
-    datasets: [
-      {
-        label: "Light On Times",
-        data: [
-          { x: "Rear Right", y: 3 },
-          { x: "Rear Right", y: 14 },
-          { x: "Front Left", y: 8 },
-          { x: "Front Right", y: 10 },
-          { x: "Front Left", y: 18 },
-          { x: "Rear Left", y: 21 },
-        ],
-        backgroundColor: "rgba(75, 192, 192, 1)",
-        pointRadius: 6,
-      },
-    ],
-  };
+    const hoursForMov = Array.from({ length: 24 }, (_, i) => i); // [0, 1, 2, ..., 23]
+    const valuesForMov = [
+      1, 0, 0, 1, 1, 1, 0, 1, 0, 0,  // Example data: 0 = OFF, 1 = ON
+      0, 1, 0, 0, 0, 0, 0, 1, 1, 1,  // Fill in the rest according to actual data
+      0, 1, 0, 1
+    ];
 
-  const scatterOptions = {
-    scales: {
-      x: {
-        type: "category",
-        labels: ["Rear Right", "Rear Left", "Front Right", "Front Left"],
-        title: { display: true, text: "Lights in the Room" },
-      },
-      y: {
-        beginAtZero: true,
-        title: { display: true, text: "Hours of the Day" },
-        ticks: { stepSize: 1 },
-        min: 0,
-        max: 24,
-      },
-    },
-    plugins: {
-      legend: {
-        labels: {
-          color: "black",
+    // Prepare data for the chart
+    const chartDataForMov = {
+      labels: hoursForMov.map(hour => `${hour}:00`), // X-axis labels as hours of the day
+      datasets: [
+        {
+          label: 'Movment Status',
+          data: valuesForMov,
+          backgroundColor: valuesForMov.map(status => (status === 1 ? '#629584' : '#629584')),
+          borderWidth: 1,
+        },
+      ],
+    };
+
+
+    const optionsForMov = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Hour of Day',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Status (ON/OFF)',
+          },
+          ticks: {
+            callback: (value) => (value === 1 ? 'ON' : 'OFF'),
+            stepSize: 1,
+            max: 1,
+            min: 0,
+          },
         },
       },
-      tooltip: {
-        backgroundColor: "rgba(0,0,0,0.7)",
+    };
+
+    const hoursForLight = Array.from({ length: 24 }, (_, i) => i); // [0, 1, 2, ..., 23]
+    const valuesForLight = [
+      0, 0, 0, 1, 0, 1, 1, 1, 0, 0,  // Example data: 0 = OFF, 1 = ON
+      0, 1, 0, 1, 0, 1, 1, 1, 0, 1,  // Fill in the rest according to actual data
+      0, 1, 0, 0
+    ];
+
+    // Prepare data for the chart
+    const chartDataForLight = {
+      labels: hoursForLight.map(hour => `${hour}:00`), // X-axis labels as hours of the day
+      datasets: [
+        {
+          label: 'Light Status',
+          data: valuesForLight,
+          backgroundColor: valuesForLight.map(status => (status === 1 ? '#87A2FF' : '#87A2FF')),
+          borderWidth: 1,
+        },
+      ],
+    };
+
+
+    const optionsForLight = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Hour of Day',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Status (ON/OFF)',
+          },
+          ticks: {
+            callback: (value) => (value === 1 ? 'ON' : 'OFF'),
+            stepSize: 1,
+            max: 1,
+            min: 0,
+          },
+        },
       },
-    },
-    layout: {
-      padding: 20,
-    },
-    backgroundColor: "white",
-  };
+    };
+
+
+    const hoursForAC = Array.from({ length: 24 }, (_, i) => i); // [0, 1, 2, ..., 23]
+    const valuesForAC = [
+      1, 0, 0, 0, 0, 1, 1, 1, 0, 0,  // Example data: 0 = OFF, 1 = ON
+      0, 1, 1, 1, 0, 0, 1, 1, 0, 0,  // Fill in the rest according to actual data
+      0, 1, 0, 0
+    ];
+
+    // Prepare data for the chart
+    const chartDataForAC = {
+      labels: hoursForAC.map(hour => `${hour}:00`), // X-axis labels as hours of the day
+      datasets: [
+        {
+          label: 'Light Status',
+          data: valuesForLight,
+          backgroundColor: valuesForAC.map(status => (status === 1 ? '#08C2FF' : '#08C2FF')),
+          borderWidth: 1,
+        },
+      ],
+    };
+
+
+    const optionsForAC = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Hour of Day',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Status (ON/OFF)',
+          },
+          ticks: {
+            callback: (value) => (value === 1 ? 'ON' : 'OFF'),
+            stepSize: 1,
+            max: 1,
+            min: 0,
+          },
+        },
+      },
+    };
+
+
 
   return (
     <Box sx={{ padding: 4 }}>
@@ -333,7 +405,7 @@ const PowerDashboard = () => {
           gutterBottom
           sx={{
             mb: 4,
-            padding: "25px 1px",
+            padding: "40px 1px",
             fontWeight: "bold",
             background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
             WebkitBackgroundClip: "text",
@@ -458,9 +530,89 @@ const PowerDashboard = () => {
           </Grid>
         ))}
       </Grid>
+        
 
-      <Scatter options={scatterOptions} data={scatterData} />
-      {/* Material Design Back to Main Page Button */}
+      {/* Grid for Charts */}
+      <Grid container spacing={4} sx={{ width: "100%" }}>
+      {/* Left side (Movement Status graph) */}
+      <Grid item xs={12} md={6}>
+        <Paper
+          sx={{
+            p: 3,
+            boxShadow: 4,
+            borderRadius: 3,
+            height: "400px",
+            backgroundColor: "#f5f7fa",
+            transition: "box-shadow 0.3s ease",
+            "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "#3f51b5" }}
+          >
+            Movement Status Throughout the Day
+          </Typography>
+          <Box sx={{ height: "100%" }}>
+            <Bar data={chartDataForMov} options={optionsForMov} />
+          </Box>
+        </Paper>
+      </Grid>
+
+      {/* Right side (Light Status graph) */}
+      <Grid item xs={12} md={6}>
+        <Paper
+          sx={{
+            p: 3,
+            boxShadow: 4,
+            borderRadius: 3,
+            height: "400px",
+            backgroundColor: "#f5f7fa",
+            transition: "box-shadow 0.3s ease",
+            "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "#3f51b5" }}
+          >
+            Light Status Throughout the Day
+          </Typography>
+          <Box sx={{ height: "100%" }}>
+            <Bar data={chartDataForLight} options={optionsForLight} />
+          </Box>
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <Paper
+          sx={{
+            p: 3,
+            boxShadow: 4,
+            borderRadius: 3,
+            height: "400px",
+            backgroundColor: "#f5f7fa",
+            transition: "box-shadow 0.3s ease",
+            "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "#3f51b5" }}
+          >
+            AC Status Throughout the Day
+          </Typography>
+          <Box sx={{ height: "100%" }}>
+            <Bar data={chartDataForAC} options={optionsForAC} />
+          </Box>
+        </Paper>
+      </Grid>
+    </Grid>
+
+          {/* Material Design Back to Main Page Button */}
       <Box sx={{ display: "flex", justifyContent: "right", marginTop: 4 }}>
         <Button
           variant="contained"
@@ -468,9 +620,10 @@ const PowerDashboard = () => {
           sx={{ padding: "10px 20px", borderRadius: 2 }}
           onClick={() => (window.location.href = "/")}
         >
-          {isMobile ? "Main" : "Back to Main Page"}
+          { "Back to Main Page"}
         </Button>
       </Box>
+
     </Box>
   );
 };
