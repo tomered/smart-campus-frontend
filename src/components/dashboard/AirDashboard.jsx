@@ -9,27 +9,34 @@ import {
   Menu,
   MenuItem,
   Tooltip,
+  Paper,
 } from "@mui/material";
+import { Scatter, Bar, Line, Pie, Radar, Doughnut } from "react-chartjs-2";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import { Scatter } from "react-chartjs-2";
+
 import {
   Chart as ChartJS,
+  CategoryScale,
   LinearScale,
   PointElement,
-  CategoryScale,
+  LineElement,
+  Title,
   Tooltip as ChartTooltip,
   Legend,
 } from "chart.js";
-
 import axios from "axios";
 
+// Register chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
+  LineElement,
+  Title,
   ChartTooltip,
   Legend
 );
+
 
 const AirDashboard = () => {
   const isMobile = window.innerWidth < 700;
@@ -284,55 +291,224 @@ const AirDashboard = () => {
     "312",
   ];
 
-  const scatterData = {
+  
+  const hoursForTemp = Array.from({ length: 24 }, (_, i) => i); // [0, 1, 2, ..., 23]
+  const valuesForTemp = [15, 13, 12, 16, 22, 26, 24, 20, 17, 18, 19, 21, 23, 24, 25, 26, 24, 22, 20, 18, 17, 16, 15, 14];
+
+  // Prepare data for the chart
+  const chartDataForTemp = {
+    labels: hoursForTemp.map(hour => `${hour}:00`), // X-axis labels as hours of the day
     datasets: [
       {
-        label: "Light On Times",
-        data: [
-          { x: "Rear Right", y: 3 },
-          { x: "Rear Right", y: 14 },
-          { x: "Front Left", y: 8 },
-          { x: "Front Right", y: 10 },
-          { x: "Front Left", y: 18 },
-          { x: "Rear Left", y: 21 },
-        ],
-        backgroundColor: "rgba(75, 192, 192, 1)",
-        pointRadius: 6,
+        label: 'Temperature Status',
+        data: valuesForTemp,
+        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+        borderColor: '#4caf50',
+        borderWidth: 1,
+        tension: 0.3, // Adds a smooth curve to the line
       },
     ],
   };
 
-  const scatterOptions = {
+
+  const optionsForTemp = {
+    responsive: true,
     scales: {
       x: {
-        type: "category",
-        labels: ["Rear Right", "Rear Left", "Front Right", "Front Left"],
-        title: { display: true, text: "Lights in the Room" },
+        title: {
+          display: true,
+          text: 'Hour of Day',
+        },
       },
       y: {
-        beginAtZero: true,
-        title: { display: true, text: "Hours of the Day" },
-        ticks: { stepSize: 1 },
-        min: 0,
-        max: 24,
+        title: {
+          display: true,
+          text: 'Temperature (°C)',
+        },
+        ticks: {
+          stepSize: 5,
+          max: 50,
+          min: 0,
+        },
       },
     },
     plugins: {
       legend: {
-        labels: {
-          color: "black",
-        },
+        display: true,
+        position: 'top',
       },
       tooltip: {
-        backgroundColor: "rgba(0,0,0,0.7)",
+        callbacks: {
+          label: (context) => `${context.raw}°C`,
+        },
       },
     },
-    layout: {
-      padding: 20,
-    },
-    backgroundColor: "white",
   };
 
+  const hoursForHumid = Array.from({ length: 24 }, (_, i) => i); // [0, 1, 2, ..., 23]
+  const valuesForHumid = [40, 30, 45, 50, 60, 62, 70, 53, 48, 41, 38, 30, 45, 57, 53,64,61,74,80, 72,61,68,56,63]
+
+  // Prepare data for the chart
+  const chartDataForHumid = {
+    labels: hoursForHumid.map(hour => `${hour}:00`), // X-axis labels as hours of the day
+    datasets: [
+      {
+        label: 'Humidity Status',
+        data: valuesForHumid,
+        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+        borderColor: '#87A2FF',
+        borderWidth: 1,
+        tension: 0.3, // Adds a smooth curve to the line
+      },
+    ],
+  };
+
+
+  const optionsForHumid = {
+    responsive: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Hour of Day',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Humidity (%) ',
+        },
+        ticks: {
+          stepSize: 10,
+          max: 100,
+          min: 0,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.raw}%`,
+        },
+      },
+    },
+  };
+
+
+  const hoursForCO2 = Array.from({ length: 24 }, (_, i) => i); // [0, 1, 2, ..., 23]
+  const valuesForCO2 = [1667,1769, 545, 730, 991, 708, 1858, 1189, 884, 1081, 638, 853, 1398, 654, 576, 1546, 979, 1926, 928,1147, 1944, 402, 702, 1538]
+
+  // Prepare data for the chart
+  const chartDataForCO2 = {
+    labels: hoursForCO2.map(hour => `${hour}:00`), // X-axis labels as hours of the day
+    datasets: [
+      {
+        label: 'CO2 Status',
+        data: valuesForCO2,
+        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+        borderColor: '#629584',
+        borderWidth: 1,
+        tension: 0.3, // Adds a smooth curve to the line
+      },
+    ],
+  };
+
+
+  const optionsForCO2 = {
+    responsive: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Hour of Day',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'CO2 (ppm)',
+        },
+        ticks: {
+          stepSize: 100,
+          max: 2000,
+          min: 0,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.raw}pcc`,
+        },
+      },
+    },
+  };
+
+
+  const hoursForPressure = Array.from({ length: 24 }, (_, i) => i); // [0, 1, 2, ..., 23]
+  const valuesForPressure = [83564, 93522, 17364, 76697, 2032, 40089, 15238, 9784, 60295, 37636, 89769,17778, 6931, 43343, 67321, 26543, 88663, 91172, 73532, 8363, 73621,12973,73645,33423 ]
+
+  // Prepare data for the chart
+  const chartDataForPressure = {
+    labels: hoursForPressure.map(hour => `${hour}:00`), // X-axis labels as hours of the day
+    datasets: [
+      {
+        label: 'Pressure Status',
+        data: valuesForPressure,
+        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+        borderColor: '#08C2FF',
+        borderWidth: 1,
+        tension: 0.3, // Adds a smooth curve to the line
+      },
+    ],
+  };
+
+
+  const optionsForPressure = {
+    responsive: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Hour of Day',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Pressure (pa)',
+        },
+        ticks: {
+          stepSize: 10000,
+          max: 100000,
+          min: 0,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.raw}pa`,
+        },
+      },
+    },
+  };
+
+
+
+  
   return (
     <Box sx={{ padding: 4 }}>
       <Box
@@ -474,7 +650,112 @@ const AirDashboard = () => {
         ))}
       </Grid>
 
-      <Scatter options={scatterOptions} data={scatterData} />
+      {/* Grid for Charts */}
+      <Grid container spacing={4} sx={{ width: "100%" }}>
+      {/* Left side (Movement Status graph) */}
+      <Grid item xs={12} md={6}>
+        <Paper
+          sx={{
+            p: 3,
+            boxShadow: 4,
+            borderRadius: 3,
+            height: "400px",
+            backgroundColor: "#f5f7fa",
+            transition: "box-shadow 0.3s ease",
+            "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "#3f51b5" }}
+          >
+            Temperature Status Throughout the Day
+          </Typography>
+          <Box sx={{ height: "100%" }}>
+            <Line data={chartDataForTemp} options={optionsForTemp} />
+          </Box>
+        </Paper>
+      </Grid>
+
+      {/* Right side (Light Status graph) */}
+      <Grid item xs={12} md={6}>
+        <Paper
+          sx={{
+            p: 3,
+            boxShadow: 4,
+            borderRadius: 3,
+            height: "400px",
+            backgroundColor: "#f5f7fa",
+            transition: "box-shadow 0.3s ease",
+            "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "#3f51b5" }}
+          >
+            Humidity Status Throughout the Day
+          </Typography>
+          <Box sx={{ height: "100%" }}>
+            <Line data={chartDataForHumid} options={optionsForHumid} />
+          </Box>
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <Paper
+          sx={{
+            p: 3,
+            boxShadow: 4,
+            borderRadius: 3,
+            height: "400px",
+            backgroundColor: "#f5f7fa",
+            transition: "box-shadow 0.3s ease",
+            "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "#3f51b5" }}
+          >
+            CO2 Status Throughout the Day
+          </Typography>
+          <Box sx={{ height: "100%" }}>
+            <Line data={chartDataForCO2} options={optionsForCO2} />
+          </Box>
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <Paper
+          sx={{
+            p: 3,
+            boxShadow: 4,
+            borderRadius: 3,
+            height: "400px",
+            backgroundColor: "#f5f7fa",
+            transition: "box-shadow 0.3s ease",
+            "&:hover": { boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" },
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "#3f51b5" }}
+          >
+            Pressure Status Throughout the Day
+          </Typography>
+          <Box sx={{ height: "100%" }}>
+            <Line data={chartDataForPressure} options={optionsForPressure} />
+          </Box>
+        </Paper>
+      </Grid>
+    </Grid>
+
+      
       {/* Material Design Back to Main Page Button */}
       <Box sx={{ display: "flex", justifyContent: "right", marginTop: 4 }}>
         <Button
