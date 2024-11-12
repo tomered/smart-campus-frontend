@@ -12,7 +12,7 @@ import {
 
 const EditUserDialog = ({ open, user, onClose, onSave }) => {
   const [editUser, setEditUser] = useState(
-    user || { firstName: "", lastName: "", email: "", role: "" },
+    user || { firstName: "", lastName: "", email: "", role: "" }
   );
 
   useEffect(() => {

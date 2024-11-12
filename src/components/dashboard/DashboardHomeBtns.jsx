@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { TypeDashboard } from "./TypeDashboard";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { TypeDashboard } from './TypeDashboard';
+
+
 
 // New Component for Dashboard Classification
 const DashboardClassification = ({ source }) => {
   const handleUnknownSourceClick = () => {
     console.log(`Clicked from an unknown source: ${source}`);
   };
-  return <TypeDashboard type={source} />;
+  return <TypeDashboard type={source} />
 };
 
 const DashboardHomeBtns = ({ source }) => {
@@ -26,10 +28,10 @@ const DashboardHomeBtns = ({ source }) => {
     <>
       <BtnContainer>
         <DashBtn onClick={() => handleDashboardClick()}>
-          {isMobile ? "Dashboard" : "Show Dashboard"}
+          {isMobile ? 'Dashboard' : 'Show Dashboard'}
         </DashBtn>
-        <HomeBtn onClick={() => (window.location.href = "/")}>
-          {isMobile ? "Main" : "Back to Main Page"}
+        <HomeBtn onClick={() => (window.location.href = '/')}>
+          {isMobile ? 'Main' : 'Back to Main Page'}
         </HomeBtn>
       </BtnContainer>
     </>
@@ -79,7 +81,7 @@ const HomeBtn = styled.button`
     border-radius: 16px;
     border-width: 0 0 4px;
     bottom: -4px;
-    content: "";
+    content: '';
     left: 0;
     position: absolute;
     right: 0;
@@ -153,7 +155,7 @@ const DashBtn = styled.button`
     border-radius: 16px;
     border-width: 0 0 4px;
     bottom: -4px;
-    content: "";
+    content: '';
     left: 0;
     position: absolute;
     right: 0;

@@ -9,7 +9,6 @@ import {
   FaTrash,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion"; // Import framer-motion
 
 const CardsRow = () => {
   const navigate = useNavigate();
@@ -17,16 +16,9 @@ const CardsRow = () => {
   const handleLearnMore = (path) => {
     navigate(path);
   };
-
   return (
     <Container>
-      <MotionCard
-        whileHover={{
-          scale: 1.05,
-          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
-        }}
-        whileTap={{ scale: 0.95 }}
-      >
+      <Card>
         <IconContainer>
           <FaBolt size={64} color="#007FFF" />
         </IconContainer>
@@ -34,15 +26,8 @@ const CardsRow = () => {
         <CardFooterButton onClick={() => handleLearnMore("Power")}>
           Learn More!
         </CardFooterButton>
-      </MotionCard>
-
-      <MotionCard
-        whileHover={{
-          scale: 1.05,
-          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
-        }}
-        whileTap={{ scale: 0.95 }}
-      >
+      </Card>
+      <Card>
         <IconContainer>
           <FaTemperatureLow size={64} color="#007FFF" />
         </IconContainer>
@@ -50,15 +35,8 @@ const CardsRow = () => {
         <CardFooterButton onClick={() => handleLearnMore("Air")}>
           Learn More!
         </CardFooterButton>
-      </MotionCard>
-
-      <MotionCard
-        whileHover={{
-          scale: 1.05,
-          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
-        }}
-        whileTap={{ scale: 0.95 }}
-      >
+      </Card>
+      <Card>
         <IconContainer>
           <FaTint size={64} color="#007FFF" />
         </IconContainer>
@@ -66,33 +44,17 @@ const CardsRow = () => {
         <CardFooterButton onClick={() => handleLearnMore("Water")}>
           Learn More!
         </CardFooterButton>
-      </MotionCard>
-
-      <MotionCard
-        whileHover={{
-          scale: 1.05,
-          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
-        }}
-        whileTap={{ scale: 0.95 }}
-      >
+      </Card>
+      <Card>
         <IconContainer>
           <FaRecycle size={64} color="#007FFF" />
         </IconContainer>
         <TextArea>The Recycling and Garbage Efficiency</TextArea>
-        <CardFooterButton
-          onClick={() => handleLearnMore("RecyclingGarbageEfficiency")}
-        >
+        <CardFooterButton onClick={() => handleLearnMore("RecyclingGarbageEfficiency")}>
           Learn More!
         </CardFooterButton>
-      </MotionCard>
-
-      <MotionCard
-        whileHover={{
-          scale: 1.05,
-          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
-        }}
-        whileTap={{ scale: 0.95 }}
-      >
+      </Card>
+      <Card>
         <IconContainer>
           <FaTree size={64} color="#007FFF" />
         </IconContainer>
@@ -100,15 +62,8 @@ const CardsRow = () => {
         <CardFooterButton onClick={() => handleLearnMore("MicroClimatic")}>
           Learn More!
         </CardFooterButton>
-      </MotionCard>
-
-      <MotionCard
-        whileHover={{
-          scale: 1.05,
-          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
-        }}
-        whileTap={{ scale: 0.95 }}
-      >
+      </Card>
+      <Card>
         <IconContainer>
           <FaTrash size={64} color="#007FFF" />
         </IconContainer>
@@ -116,26 +71,12 @@ const CardsRow = () => {
         <CardFooterButton onClick={() => handleLearnMore("Cleanliness")}>
           Learn More!
         </CardFooterButton>
-      </MotionCard>
+      </Card>
     </Container>
   );
 };
 
 export default CardsRow;
-
-// Convert Card into motion.div for animation
-const MotionCard = motion(styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 12px;
-  width: 15rem;
-  height: 300px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-  background-color: #ffffff;
-`);
 
 const Container = styled.div`
   display: flex;
@@ -154,6 +95,19 @@ const Container = styled.div`
     overflow-y: auto;
     white-space: nowrap;
   }
+`;
+
+const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 12px;
+  width: 15rem;
+  height: 300px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
 `;
 
 const IconContainer = styled.div`
