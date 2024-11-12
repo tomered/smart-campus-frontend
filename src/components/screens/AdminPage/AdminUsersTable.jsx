@@ -75,8 +75,8 @@ const AdminUsersTable = () => {
 
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
-          user.id === updatedUser.id ? updatedUser : user,
-        ),
+          user.id === updatedUser.id ? updatedUser : user
+        )
       );
     } catch (error) {
       console.error("Failed to edit user:", error);
@@ -90,7 +90,7 @@ const AdminUsersTable = () => {
         await deleteUser({ id: deleteConfirmation.id, token }).unwrap();
         setDeleteConfirmation(null);
         setUsers((prevUsers) =>
-          prevUsers.filter((user) => user.id !== deleteConfirmation.id),
+          prevUsers.filter((user) => user.id !== deleteConfirmation.id)
         );
       } catch (error) {
         console.error("Failed to delete user:", error);
