@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -9,18 +9,26 @@ import {
   ListItemIcon,
   Typography,
   IconButton,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home";
 import GroupIcon from "@mui/icons-material/Group";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import AddAlertIcon from "@mui/icons-material/AddAlert";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(true);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    setIsExpanded(!isMobile);
+  }, [isMobile]);
 
   const toggleDrawer = () => {
     setIsExpanded(!isExpanded);
@@ -74,42 +82,42 @@ const Sidebar = () => {
         <ListItem
           button
           onClick={() => navigate("/admin")}
-          sx={{ "&:hover": { backgroundColor: "#e0f7fa" } }}
+          sx={{ "&:hover": { backgroundColor: "#e0f7fa", cursor: "pointer" } }}
         >
           <ListItemIcon>
-            <AccountCircleIcon sx={{ color: "#3f51b5" }} />
+            <HomeIcon sx={{ color: "#3f51b5" }} />
           </ListItemIcon>
           {isExpanded && <ListItemText primary="Admin dashboard" />}
         </ListItem>
         <ListItem
           button
           onClick={() => navigate("/UsersTable")}
-          sx={{ "&:hover": { backgroundColor: "#e0f7fa" } }}
+          sx={{ "&:hover": { backgroundColor: "#e0f7fa", cursor: "pointer" } }}
         >
           <ListItemIcon>
             <GroupIcon sx={{ color: "#3f51b5" }} />
           </ListItemIcon>
-          {isExpanded && <ListItemText primary="Users management" />}
+          {isExpanded && <ListItemText primary="User management" />}
         </ListItem>
         <ListItem
           button
-          onClick={() => navigate("/reports")}
-          sx={{ "&:hover": { backgroundColor: "#e0f7fa" } }}
+          onClick={() => navigate("/SensorStatistics")}
+          sx={{ "&:hover": { backgroundColor: "#e0f7fa", cursor: "pointer" } }}
         >
           <ListItemIcon>
             <BarChartIcon sx={{ color: "#3f51b5" }} />
           </ListItemIcon>
-          {isExpanded && <ListItemText primary="Statistics" />}
+          {isExpanded && <ListItemText primary="Sensors" />}
         </ListItem>
         <ListItem
           button
-          onClick={() => navigate("/settings")}
-          sx={{ "&:hover": { backgroundColor: "#e0f7fa" } }}
+          onClick={() => navigate("/AlertCenter")}
+          sx={{ "&:hover": { backgroundColor: "#e0f7fa", cursor: "pointer" } }}
         >
           <ListItemIcon>
-            <SettingsIcon sx={{ color: "#3f51b5" }} />
+            <AddAlertIcon sx={{ color: "#3f51b5" }} />
           </ListItemIcon>
-          {isExpanded && <ListItemText primary="Setting" />}
+          {isExpanded && <ListItemText primary="Alert center" />}
         </ListItem>
       </List>
     </Drawer>

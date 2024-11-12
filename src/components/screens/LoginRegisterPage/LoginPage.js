@@ -2,37 +2,53 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useLoginUserMutation } from "../../../redux/rtk/userData";
 import { useDispatch } from "react-redux";
-import { setToken, setUserName } from "../../../redux/slices/userDataSlice";
+import {
+  setToken,
+  setUserName,
+  setRole,
+} from "../../../redux/slices/userDataSlice";
+import { useNavigate } from "react-router-dom";
+import FailureScreen from "../FailureScreen";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isFailure, setIsFailure] = useState(false);
 
   const [loginUser] = useLoginUserMutation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/sign-up");
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
-
-    // Perform actions with collected data (username, password, userRole)
-    // For example, send it to a server for validation or display a message
-    console.log(`Username: ${username}, Password: ${password}`);
 
     try {
       // Getting user from database
       const result = await loginUser({ userName: username, password });
 
+      console.log("Login successful, token:", result.data.token);
+      console.log("Login successful, role:", result.data.roleId);
       // Save user token and userName
       dispatch(setToken(result.data.token));
       dispatch(setUserName(username));
-      //localStorage.setItem("isLogin", true)
-    } catch (error) {
-      console.error("error longing in: " + error.message);
-    }
+      dispatch(setRole(result.data.roleId));
 
-    // Reset form after submission (optional)
-    setUsername("");
-    setPassword("");
+      //Succsesfully login , navigate to home page
+      if (result) {
+        navigate("/");
+      }
+    } catch (error) {
+      //If failed , the failure screen will show up
+      setIsFailure(true);
+    }
+  };
+
+  const onErrorClose = () => {
+    setIsFailure(false);
   };
 
   return (
@@ -57,7 +73,16 @@ const LoginPage = () => {
         />
 
         <button type="submit">Submit</button>
-        <SignUpLink href="/sign-up">Not registered yet? Sign Up</SignUpLink>
+        <SignUpLink onClick={handleClick}>
+          Not registered yet? Sign Up
+        </SignUpLink>
+        {isFailure && (
+          <FailureScreen
+            mainMessage="Sign in Failed!"
+            bodyMessage="UserName or Password are incorrect"
+            onClose={onErrorClose}
+          />
+        )}
       </LoginForm>
     </Container>
   );
@@ -117,6 +142,7 @@ const SignUpLink = styled.a`
 
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
 

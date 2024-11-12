@@ -17,15 +17,36 @@ import Login from "./components/screens/LoginRegisterPage/LoginPage.js";
 import Register from "./components/screens/LoginRegisterPage/SignUpPage.js";
 import AirDashboard from "./components/dashboard/AirDashboard.jsx";
 import PowerDashboard from "./components/dashboard/PowerDashboard.jsx";
-import WaterDashboard from "./components/dashboard/WaterDashboard.jsx";
-
-import CleanlinessDashboard from "./components/dashboard/CleanlinessDashboard.jsx";
-import MicroClimaticDashboard from "./components/dashboard/MicroClimaticDashboard.jsx";
-import RecyclingDashboard from "./components/dashboard/RecyclingDashboard.jsx";
-
 import AdminDashboard from "./components/screens/AdminPage/AdminDashboard";
 import AdminUsersTable from "./components/screens/AdminPage/AdminUsersTable";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AdminAlertCenter from "./components/screens/AdminPage/AdminAlertCenter";
+import SensorStatistics from "./components/screens/AdminPage/SensorStatistics";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import ValidTokenPage from "./components/screens/LoginRegisterPage/ValidTokenPage.js";
+import LoadingScreen from "./components/screens/LoadingScreen.js";
+import { useSelector } from "react-redux";
+
+const AdminRoute = ({ element }) => {
+  const role = useSelector((state) => state.userData.role);
+  console.log("role is " + role);
+
+  if (role !== 0) {
+    //Redirect to login or unauthorized page if user is not an admin
+    return <Navigate to="/" />;
+  }
+  return element;
+};
+
+const UserRoute = ({ element }) => {
+  const role = useSelector((state) => state.userData.role);
+  console.log("role is " + role);
+
+  if (role === "") {
+    //Redirect to login or unauthorized page if user is not logged in user
+    return <Navigate to="/login" />;
+  }
+  return element;
+};
 
 const App = () => {
   return (
@@ -56,24 +77,32 @@ const App = () => {
           <Route path="/news" element={<NewsPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<Register />} />
-          <Route path="/airDashboard" element={<AirDashboard />} />
-          <Route path="/powerDashboard" element={<PowerDashboard />} />
-          <Route path="/waterDashboard" element={<WaterDashboard />} />
           <Route
-            path="/cleanlinessDashboard"
-            element={<CleanlinessDashboard />}
+            path="/airDashboard"
+            element={<UserRoute element={<AirDashboard />} />}
           />
           <Route
-            path="/microClimaticDashboard"
-            element={<MicroClimaticDashboard />}
+            path="/powerDashboard"
+            element={<UserRoute element={<PowerDashboard />} />}
           />
           <Route
-            path="/RecyclingGarbageEfficiencyDashboard"
-            element={<RecyclingDashboard />}
+            path="/admin"
+            element={<AdminRoute element={<AdminDashboard />} />}
           />
-          <Route path="/admin" element={<AdminDashboard />} />{" "}
-          {/* נתיב למסך האדמין */}
-          <Route path="/UsersTable" element={<AdminUsersTable />} />
+          <Route
+            path="/UsersTable"
+            element={<AdminRoute element={<AdminUsersTable />} />}
+          />
+          <Route
+            path="/SensorStatistics"
+            element={<AdminRoute element={<SensorStatistics />} />}
+          />
+          <Route
+            path="/AlertCenter"
+            element={<AdminRoute element={<AdminAlertCenter />} />}
+          />
+          <Route path="/validateToken" element={<ValidTokenPage />} />
+          <Route path="/loading" element={<LoadingScreen />} />
         </Routes>
         <Footer />
       </BrowserRouter>

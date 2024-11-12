@@ -4,24 +4,18 @@ import { FaBars } from "react-icons/fa";
 import "../Style.css"; // Ensure this file doesn't conflict with the styled-components
 import logoImage from "../HIT.png";
 import { useNavigate } from "react-router-dom";
+import SuccessScreen from "./screens/SuccessScreen";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/slices/userDataSlice";
 
 const MainHeader = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const menuItems = [
-    { name: "Staff", path: "/staff" },
-    { name: "Students", path: "/students" },
-    { name: "Partners", path: "/partners" },
-    { name: "Contact Us", path: "/contact" },
-    { name: "News", path: "/news" },
-    {
-      name: "HIT 3D Map",
-      path: "/",
-      onClick: (e) => handleMapClick(e, "hitMap"),
-    },
-    { name: "Login", path: "/login" },
-  ];
+  //Retrieve user data from local storage
+  const role = useSelector((state) => state.userData.role); // 0 is admin
 
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
@@ -37,37 +31,73 @@ const MainHeader = () => {
     navigate("/");
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("persist:root");
+    dispatch(logout()); // Clears the Redux state
+    setIsSuccess(true);
+    setTimeout(() => {
+      setIsSuccess(false);
+      navigate("/");
+    }, 2000);
+  };
+
+  const menuItems = [
+    { name: role === 0 ? "Admin panel" : "", path: "/admin" },
+    { name: "Staff", path: "/staff" },
+    { name: "Students", path: "/students" },
+    { name: "Partners", path: "/partners" },
+    { name: "Contact Us", path: "/contact" },
+    { name: "News", path: "/news" },
+    {
+      name: "HIT 3D Map",
+      path: "/",
+      onClick: (e) => handleMapClick(e, "hitMap"),
+    },
+    role !== ""
+      ? { name: "Logout", path: "/logout", onClick: handleLogout }
+      : { name: "Login", path: "/login" },
+  ];
+
   return (
-    <Container>
-      <CustomNavBar>
-        <LogoAndTitle onClick={handleLogoAndTitleClick}>
-          <Logo src={logoImage} alt="Smart Campus Logo" />
-          <Title>Smart Campus</Title>
-        </LogoAndTitle>
-        <MenuIcon onClick={handleMenuClick}>
-          <FaBars />
-        </MenuIcon>
-        <MenuLinks show={showMenu}>
-          <ul>
-            {menuItems.map((item) => (
-              <MenuItem key={item.name}>
-                <a
-                  onClick={(e) => {
-                    if (item.onClick) {
-                      item.onClick(e);
-                    } else {
-                      navigate(item.path);
-                    }
-                  }}
-                >
-                  {item.name}
-                </a>
-              </MenuItem>
-            ))}
-          </ul>
-        </MenuLinks>
-      </CustomNavBar>
-    </Container>
+    <>
+      <Container>
+        <CustomNavBar>
+          <LogoAndTitle onClick={handleLogoAndTitleClick}>
+            <Logo src={logoImage} alt="Smart Campus Logo" />
+            <Title>Smart Campus</Title>
+          </LogoAndTitle>
+          <MenuIcon onClick={handleMenuClick}>
+            <FaBars />
+          </MenuIcon>
+          <MenuLinks show={showMenu}>
+            <ul>
+              {menuItems.map((item) => (
+                <MenuItem key={item.name}>
+                  <a
+                    onClick={(e) => {
+                      if (item.onClick) {
+                        item.onClick(e);
+                      } else {
+                        navigate(item.path);
+                      }
+                      setShowMenu(false);
+                    }}
+                  >
+                    {item.name}
+                  </a>
+                </MenuItem>
+              ))}
+            </ul>
+          </MenuLinks>
+        </CustomNavBar>
+      </Container>
+      {isSuccess && (
+        <SuccessScreen
+          mainMessage="Logged out successfully!"
+          message="Redirecting to home page..."
+        />
+      )}
+    </>
   );
 };
 

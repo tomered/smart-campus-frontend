@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRegisterUserMutation } from "../../../redux/rtk/userData";
 import {
   Container,
@@ -15,6 +15,10 @@ import {
   SignInLink,
   ErrorMessage,
 } from "./SignUpPageStyles";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "../LoadingScreen";
+import SuccessScreen from "../SuccessScreen";
+import FailureScreen from "../FailureScreen";
 
 const SignUpPage = () => {
   const emailDomains = [
@@ -24,6 +28,8 @@ const SignUpPage = () => {
     "@yahoo.com",
   ];
   const phonePrefixes = ["050", "052", "053", "054", "055", "058"];
+
+  //SignUp form states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
@@ -36,8 +42,19 @@ const SignUpPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errors, setErrors] = useState({});
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isFailure, setIsFailure] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
   const [registerUser] = useRegisterUserMutation();
 
+  const handleClick = () => {
+    navigate("/login");
+  };
+
+  //Validations
   const validateForm = () => {
     const newErrors = {};
 
@@ -66,13 +83,13 @@ const SignUpPage = () => {
 
     if (!/[a-z]/.test(password)) {
       passwordErrors.push(
-        "Password must contain at least one lowercase letter",
+        "Password must contain at least one lowercase letter"
       );
     }
 
     if (!/[A-Z]/.test(password)) {
       passwordErrors.push(
-        "Password must contain at least one uppercase letter",
+        "Password must contain at least one uppercase letter"
       );
     }
 
@@ -103,14 +120,31 @@ const SignUpPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  //Backend may return some errors , print these errors to client seperatly
+  const getCleanErrorMessage = (error) => {
+    if (!error?.data?.driverError?.detail) {
+      return "An unexpected error occurred";
+    }
+    setIsFailure(false);
+    setErrorMessage("");
+    const errorDetail = error.data.driverError.detail;
+    console.log({ errorDetail });
+
+    // Multiple errors handling
+    const errors = [];
+    if (errorDetail.includes("email")) errors.push("Mail already exists");
+    if (errorDetail.includes("userId")) errors.push("ID already exists");
+    if (errorDetail.includes("userName")) errors.push("UserName alrady exists");
+
+    return errors.length > 0 ? errors.join(", ") : "Registration error";
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (validateForm()) {
       const email = emailUsername + emailDomain;
       const phone = phonePrefix + phoneNumber;
-      console.log(
-        `First Name: ${firstName}, Last Name: ${lastName}, UserName: ${userName}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}, Id: ${id}, Phone: ${phone}`,
-      );
+      setIsLoading(true);
       try {
         const newUser = {
           userName,
@@ -120,19 +154,35 @@ const SignUpPage = () => {
           phone,
           userId: id,
           email,
-        };
-        // Registering new user to database
+        }; // Registering new user to database
         const result = await registerUser(newUser);
-
-        console.log(result);
+        if (typeof result.data === "string") {
+          console.log("Registration message:", result.data);
+          setIsSuccess(true);
+        } else if (result.error) {
+          const errorDetail = getCleanErrorMessage(result.error);
+          setErrorMessage(errorDetail);
+          setIsFailure(true);
+        }
       } catch (error) {
-        console.error(`error registering user ${id}: ${error.message}`);
+        console.error(`Error registering user ${id}: ${error.message}`);
+        setErrorMessage(error.message);
+        setIsFailure(true);
       }
-
-      handleClear();
     }
   };
 
+  const userEmail = emailUsername + emailDomain;
+  useEffect(() => {
+    if (isSuccess) {
+      const timer = setTimeout(() => {
+        navigate("/validateToken", { state: { email: userEmail } });
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccess, navigate, userEmail]);
+
+  //Clear button
   const handleClear = () => {
     setFirstName("");
     setLastName("");
@@ -145,6 +195,11 @@ const SignUpPage = () => {
     setPhonePrefix("050");
     setPhoneNumber("");
     setErrors({});
+  };
+  const onErrorClose = () => {
+    setIsFailure(false);
+    setIsLoading(false);
+    setErrorMessage("");
   };
 
   return (
@@ -262,13 +317,31 @@ const SignUpPage = () => {
         )}
 
         <ButtonContainer>
-          <SubmitButton type="submit">Create Account</SubmitButton>
-          <ClearButton type="button" onClick={handleClear}>
+          <SubmitButton type="submit" disabled={isLoading}>
+            Create Account
+          </SubmitButton>
+          <ClearButton type="button" onClick={handleClear} disabled={isLoading}>
             Clear
           </ClearButton>
         </ButtonContainer>
-        <SignInLink href="/login">Already have an account? Sign In</SignInLink>
+        <SignInLink onClick={handleClick}>
+          Already have an account? Sign In
+        </SignInLink>
       </SignUpForm>
+      {isLoading && <LoadingScreen message="Registering..." />}
+      {isSuccess && (
+        <SuccessScreen
+          mainMessage="Registration Successful!"
+          message="Redirecting to token verification..."
+        />
+      )}
+      {isFailure && (
+        <FailureScreen
+          mainMessage="Registration Failed!"
+          bodyMessage={errorMessage}
+          onClose={onErrorClose}
+        />
+      )}
     </Container>
   );
 };
