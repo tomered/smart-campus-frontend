@@ -1,18 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
-
+import React from "react";
+import styled from "styled-components";
 
 const Footer = () => {
   return (
     <>
       <Container>
-      <Separator />
-      <br/>
-      <br/>
+        <Separator />
+        <br />
+        <br />
 
         <Quote>
           An innovative approach to optimal resource use and maximal comfort.
         </Quote>
+        <br />
+        <br />
         <Link href="https://www.hit.ac.il/">HIT College Site</Link>
         <p>&copy; 2023 Smart Campus Project</p>
       </Container>
@@ -33,7 +34,7 @@ const Container = styled.footer`
 `;
 
 const Quote = styled.p`
-  font-size: 20px;
+  font-size: 30px;
   text-align: center;
   margin-bottom: 24px;
 `;
