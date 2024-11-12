@@ -39,7 +39,7 @@ const MainHeader = () => {
       setIsSuccess(false);
       navigate("/");
     }, 2000);
-};
+  };
 
   const menuItems = [
     { name: role === 0 ? "Admin panel" : "", path: "/admin" },

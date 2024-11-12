@@ -17,6 +17,11 @@ import Login from "./components/screens/LoginRegisterPage/LoginPage.js";
 import Register from "./components/screens/LoginRegisterPage/SignUpPage.js";
 import AirDashboard from "./components/dashboard/AirDashboard.jsx";
 import PowerDashboard from "./components/dashboard/PowerDashboard.jsx";
+import WaterDashboard from "./components/dashboard/WaterDashboard.jsx";
+import CleanlinessDashboard from "./components/dashboard/CleanlinessDashboard.jsx";
+import RecyclingDashboard from "./components/dashboard/RecyclingDashboard.jsx";
+import MicroClimaticDashboard from "./components/dashboard/MicroClimaticDashboard.jsx";
+
 import AdminDashboard from "./components/screens/AdminPage/AdminDashboard";
 import AdminUsersTable from "./components/screens/AdminPage/AdminUsersTable";
 import AdminAlertCenter from "./components/screens/AdminPage/AdminAlertCenter";
@@ -24,11 +29,11 @@ import SensorStatistics from "./components/screens/AdminPage/SensorStatistics";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ValidTokenPage from "./components/screens/LoginRegisterPage/ValidTokenPage.js";
 import LoadingScreen from "./components/screens/LoadingScreen.js";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 const AdminRoute = ({ element }) => {
   const role = useSelector((state) => state.userData.role);
-  console.log("role is "+ role);
+  console.log("role is " + role);
 
   if (role !== 0) {
     //Redirect to login or unauthorized page if user is not an admin
@@ -39,8 +44,8 @@ const AdminRoute = ({ element }) => {
 
 const UserRoute = ({ element }) => {
   const role = useSelector((state) => state.userData.role);
-  console.log("role is "+ role);
-  
+  console.log("role is " + role);
+
   if (role === "") {
     //Redirect to login or unauthorized page if user is not logged in user
     return <Navigate to="/login" />;
@@ -77,12 +82,46 @@ const App = () => {
           <Route path="/news" element={<NewsPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<Register />} />
-          <Route path="/airDashboard" element={<UserRoute element={<AirDashboard />} />} />
-          <Route path="/powerDashboard" element={<UserRoute element={<PowerDashboard />} />} />
-          <Route path="/admin" element={<AdminRoute element={<AdminDashboard />} />} />
-          <Route path="/UsersTable" element={<AdminRoute element={<AdminUsersTable />} />} />
-          <Route path="/SensorStatistics" element={<AdminRoute element={<SensorStatistics />} />} />
-          <Route path="/AlertCenter" element={<AdminRoute element={<AdminAlertCenter />} />} />
+          <Route
+            path="/airDashboard"
+            element={<UserRoute element={<AirDashboard />} />}
+          />
+          <Route
+            path="/powerDashboard"
+            element={<UserRoute element={<PowerDashboard />} />}
+          />
+          <Route
+            path="/waterDashboard"
+            element={<UserRoute element={<WaterDashboard />} />}
+          />
+          <Route
+            path="/cleanlinessDashboard"
+            element={<UserRoute element={<CleanlinessDashboard />} />}
+          />
+          <Route
+            path="/MicroDashboard"
+            element={<UserRoute element={<MicroClimaticDashboard />} />}
+          />
+          <Route
+            path="/RecyclingGarbageEfficiencyDashboard"
+            element={<UserRoute element={<RecyclingDashboard />} />}
+          />
+          <Route
+            path="/admin"
+            element={<AdminRoute element={<AdminDashboard />} />}
+          />
+          <Route
+            path="/UsersTable"
+            element={<AdminRoute element={<AdminUsersTable />} />}
+          />
+          <Route
+            path="/SensorStatistics"
+            element={<AdminRoute element={<SensorStatistics />} />}
+          />
+          <Route
+            path="/AlertCenter"
+            element={<AdminRoute element={<AdminAlertCenter />} />}
+          />
           <Route path="/validateToken" element={<ValidTokenPage />} />
           <Route path="/loading" element={<LoadingScreen />} />
         </Routes>

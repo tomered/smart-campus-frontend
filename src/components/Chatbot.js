@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
-import Draggable from 'react-draggable';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import Draggable from "react-draggable";
+import styled from "styled-components";
 import { SiChatbot } from "react-icons/si";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 const Chatbot = ({ src, title, width, height, loading, ...props }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [showBubble, setShowBubble] = useState(true);
-  const [bounds, setBounds] = useState({ top: 0, left: 0, right: 0, bottom: 0 });
+  const [bounds, setBounds] = useState({
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  });
 
-  const botSrc = "https://web.powerva.microsoft.com/environments/Default-3c678821-7750-47a3-937f-2661439abb7a/bots/cr971_smartCampuscLOm6B/webchat?__version__=2";
+  const botSrc =
+    "https://web.powerva.microsoft.com/environments/Default-3c678821-7750-47a3-937f-2661439abb7a/bots/cr971_smartCampuscLOm6B/webchat?__version__=2";
 
   const chatWidth = 380;
   const chatHeight = 630;
@@ -22,13 +28,13 @@ const Chatbot = ({ src, title, width, height, loading, ...props }) => {
         top: -document.documentElement.clientHeight + chatHeight,
         left: -document.documentElement.clientWidth + chatWidth,
         right: 30,
-        bottom: 30
+        bottom: 30,
       });
     };
 
     updateBounds();
-    window.addEventListener('resize', updateBounds);
-    return () => window.removeEventListener('resize', updateBounds);
+    window.addEventListener("resize", updateBounds);
+    return () => window.removeEventListener("resize", updateBounds);
   }, [buttonSize]);
 
   const toggleVisibility = () => {
@@ -51,24 +57,31 @@ const Chatbot = ({ src, title, width, height, loading, ...props }) => {
   };
 
   return (
-    <Draggable onStart={handleStart} onDrag={handleDrag} 
-    bounds={{
-      top: bounds.top,
-      left: bounds.left,
-      right: bounds.right,
-      bottom: bounds.bottom
-    }}>
+    <Draggable
+      onStart={handleStart}
+      onDrag={handleDrag}
+      bounds={{
+        top: bounds.top,
+        left: bounds.left,
+        right: bounds.right,
+        bottom: bounds.bottom,
+      }}
+    >
       <ChatbotContainer>
         {showBubble && (
           <ChatBubble>
-            <BubbleText>Hello and welcome to Smart Campus!<br/>I'm your virtual assistant.</BubbleText>
+            <BubbleText>
+              Hello and welcome to Smart Campus!
+              <br />
+              I'm your virtual assistant.
+            </BubbleText>
             <CloseBubbleButton onClick={closeBubble}>×</CloseBubbleButton>
           </ChatBubble>
         )}
         <ToggleButton onClick={toggleVisibility}>
           <SiChatbot size={22} />
         </ToggleButton>
-        
+
         {isVisible && (
           <ChatbotDiv>
             <iframe
@@ -120,12 +133,12 @@ const ToggleButton = styled.button`
 
 const ChatbotDiv = styled.div`
   position: fixed;
-  bottom: 7rem; 
-  right: 1rem; 
-  width: 350px; 
-  height: 500px; 
+  bottom: 7rem;
+  right: 1rem;
+  width: 350px;
+  height: 500px;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background-color: rgba(255, 255, 255, 0.3); /* 70% transparent white */
   overflow: hidden;
 `;

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseUrl = "https://smart-campus-backend-4hd6.onrender.com";
 
 export const userDataApi = createApi({
-  baseQuery: fetchBaseQuery({ 
+  baseQuery: fetchBaseQuery({
     baseUrl,
     responseHandler: async (response) => {
       const contentType = response.headers.get("content-type");
@@ -36,7 +36,7 @@ export const userDataApi = createApi({
       query: ({ token, email }) => ({
         url: "/verify-email",
         method: "POST",
-        body: { token , email },
+        body: { token, email },
       }),
     }),
     getAllUsers: builder.query({
@@ -76,6 +76,15 @@ export const userDataApi = createApi({
         },
       }),
     }),
+    getSensors: builder.query({
+      query: (token) => ({
+        url: "api/sensorsData/all-data",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -87,4 +96,5 @@ export const {
   useGetNumberOfUsersQuery,
   useEditUserMutation,
   useDeleteUserMutation,
+  useGetSensorsQuery,
 } = userDataApi;

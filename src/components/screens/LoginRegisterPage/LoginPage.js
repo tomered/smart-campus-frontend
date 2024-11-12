@@ -1,8 +1,6 @@
-import React, { useState  } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import {
-  useLoginUserMutation,
-} from "../../../redux/rtk/userData";
+import { useLoginUserMutation } from "../../../redux/rtk/userData";
 import { useDispatch } from "react-redux";
 import {
   setToken,
@@ -23,7 +21,7 @@ const LoginPage = () => {
 
   const handleClick = () => {
     navigate("/sign-up");
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
@@ -75,7 +73,9 @@ const LoginPage = () => {
         />
 
         <button type="submit">Submit</button>
-        <SignUpLink onClick={handleClick}>Not registered yet? Sign Up</SignUpLink>
+        <SignUpLink onClick={handleClick}>
+          Not registered yet? Sign Up
+        </SignUpLink>
         {isFailure && (
           <FailureScreen
             mainMessage="Sign in Failed!"
