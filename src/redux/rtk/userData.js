@@ -76,6 +76,15 @@ export const userDataApi = createApi({
         },
       }),
     }),
+    getSensors: builder.query({
+      query: (token) => ({
+        url: "api/sensorsData/all-data",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -87,4 +96,5 @@ export const {
   useGetNumberOfUsersQuery,
   useEditUserMutation,
   useDeleteUserMutation,
+  useGetSensorsQuery,
 } = userDataApi;

@@ -17,6 +17,11 @@ import Login from "./components/screens/LoginRegisterPage/LoginPage.js";
 import Register from "./components/screens/LoginRegisterPage/SignUpPage.js";
 import AirDashboard from "./components/dashboard/AirDashboard.jsx";
 import PowerDashboard from "./components/dashboard/PowerDashboard.jsx";
+import WaterDashboard from "./components/dashboard/WaterDashboard.jsx";
+import CleanlinessDashboard from "./components/dashboard/CleanlinessDashboard.jsx";
+// import WaterDashboard from "./components/dashboard/WaterDashboard.jsx";
+// import CleanlinessDashboard from "./components/dashboard/CleanlinessDashboard.jsx";
+
 import AdminDashboard from "./components/screens/AdminPage/AdminDashboard";
 import AdminUsersTable from "./components/screens/AdminPage/AdminUsersTable";
 import AdminAlertCenter from "./components/screens/AdminPage/AdminAlertCenter";
@@ -85,6 +90,22 @@ const App = () => {
             path="/powerDashboard"
             element={<UserRoute element={<PowerDashboard />} />}
           />
+          <Route
+            path="/waterDashboard"
+            element={<UserRoute element={<WaterDashboard />} />}
+          />
+          <Route
+            path="/cleanlinessDashboard"
+            element={<UserRoute element={<CleanlinessDashboard />} />}
+          />
+          {/* <Route
+            path="/MicroDashboard"
+            element={<UserRoute element={<CleanlinessDashboard />} />}
+          />
+                    <Route
+            path="/cleanlinessDashboard"
+            element={<UserRoute element={<CleanlinessDashboard />} />}
+          /> */}
           <Route
             path="/admin"
             element={<AdminRoute element={<AdminDashboard />} />}
