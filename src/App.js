@@ -19,8 +19,8 @@ import AirDashboard from "./components/dashboard/AirDashboard.jsx";
 import PowerDashboard from "./components/dashboard/PowerDashboard.jsx";
 import WaterDashboard from "./components/dashboard/WaterDashboard.jsx";
 import CleanlinessDashboard from "./components/dashboard/CleanlinessDashboard.jsx";
-// import WaterDashboard from "./components/dashboard/WaterDashboard.jsx";
-// import CleanlinessDashboard from "./components/dashboard/CleanlinessDashboard.jsx";
+import RecyclingDashboard from "./components/dashboard/RecyclingDashboard.jsx";
+import MicroClimaticDashboard from "./components/dashboard/MicroClimaticDashboard.jsx";
 
 import AdminDashboard from "./components/screens/AdminPage/AdminDashboard";
 import AdminUsersTable from "./components/screens/AdminPage/AdminUsersTable";
@@ -98,14 +98,14 @@ const App = () => {
             path="/cleanlinessDashboard"
             element={<UserRoute element={<CleanlinessDashboard />} />}
           />
-          {/* <Route
+          <Route
             path="/MicroDashboard"
-            element={<UserRoute element={<CleanlinessDashboard />} />}
+            element={<UserRoute element={<MicroClimaticDashboard />} />}
           />
-                    <Route
-            path="/cleanlinessDashboard"
-            element={<UserRoute element={<CleanlinessDashboard />} />}
-          /> */}
+          <Route
+            path="/RecyclingGarbageEfficiencyDashboard"
+            element={<UserRoute element={<RecyclingDashboard />} />}
+          />
           <Route
             path="/admin"
             element={<AdminRoute element={<AdminDashboard />} />}

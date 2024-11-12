@@ -10,6 +10,7 @@ import {
   MenuItem,
   Tooltip,
   Paper,
+  Snackbar,
   Alert,
 } from "@mui/material";
 import { Scatter, Bar, Line, Pie, Radar, Doughnut } from "react-chartjs-2";
@@ -28,8 +29,7 @@ import {
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useGetSensorsQuery } from "../../redux/rtk/userData";
-//import CheckIcon from "@mui/icons-material/Check";
-// Register chart.js components
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -44,6 +44,8 @@ const AirDashboard = () => {
   const isMobile = window.innerWidth < 700;
   const token = useSelector((state) => state.userData.token);
   const { data } = useGetSensorsQuery(token);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -121,16 +123,15 @@ const AirDashboard = () => {
     );
 
     //console.log(selectedClassSensors);
-    if (selectedClassSensors.length == 0) {
-      alert(
-        `There is no sensors in the class- ${selectedClass}, please choose another one.`
+    if (selectedClassSensors.length === 0) {
+      setAlertMessage(
+        `There are no sensors in this class. Please choose another one.`
       );
-      // <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-      //   Here is a gentle confirmation that your action was successful.
-      // </Alert>;
+      setShowAlert(true);
       return;
     } else {
-      alert(`Data updated to ${selectedClass}`);
+      setAlertMessage(`Data updated`);
+      setShowAlert(true);
     }
 
     const tempSensors = selectedClassSensors.filter((sens) =>
@@ -512,7 +513,9 @@ const AirDashboard = () => {
       },
     },
   };
-
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
   return (
     <Box sx={{ padding: 4 }}>
       <Box
@@ -609,11 +612,42 @@ const AirDashboard = () => {
           </Tooltip>
         </Box>
       </Box>
-      {/* <Typography variant="h5">
+      <Snackbar
+        open={showAlert}
+        autoHideDuration={4000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }} // Bottom center position
+        sx={{ marginBottom: "500px" }} // Adjusts distance from the bottom
+      >
+        <Alert
+          onClose={handleCloseAlert}
+          severity="info"
+          sx={{ width: "100%", backgroundColor: "#2A3663", color: "white" }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
+
+      <Typography
+        variant="h5"
+        gutterBottom
+        sx={{
+          mt: 2,
+          color: "text.secondary",
+          padding: "10px 1px",
+          fontWeight: "medium",
+          background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          opacity: 0.8,
+          animation: "fadeIn 3s ease-in-out",
+        }}
+      >
         {menuState.selectedBuilding === "" ? "Please choose building " : null}
         <br></br>
         {menuState.selectedClass === "" ? "Please choose class" : null}
-      </Typography> */}
+      </Typography>
+
       <Grid container spacing={4} sx={{ width: "100%", mb: 4 }}>
         {cardData.map((card, index) => (
           <Grid item xs={12} md={4} key={index}>
