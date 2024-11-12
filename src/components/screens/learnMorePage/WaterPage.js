@@ -1,29 +1,39 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import DashboardHomeBtns from '../../dashboard/DashboardHomeBtns';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import DashboardHomeBtns from "../../dashboard/DashboardHomeBtns";
 
 const LearnMorePage = () => {
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
     window.scrollTo(0, 0);
   }, []);
+
   return (
     <Container>
       <Content>
-        <Title>Water</Title>
+        <h1
+          style={{
+            marginBottom: "5px", // Space below the headline
+            padding: "75px 1px",
+            fontWeight: "bold",
+            fontSize: "42px",
+            background: "linear-gradient(90deg, #3f51b5, #21CBF3)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "fadeIn 2s ease-in-out",
+          }}
+        >
+          Optimizing Water Consumption
+        </h1>
         <Text>
-          Water is a basic and necessary resource for human living conditions.
-          Throughout the campus, at any given moment, water is being used, even
-          if it is obviously above it. In everyday life, it is impossible to
-          have an activity without water around the campus, especially in the
-          hot summer months. It is extremely important to locate leaks, pipeline
-          explosions and unwise use (close to real time). In the first phase we
-          will alert the relevant officials and in a more advanced phase of a
-          project - we will stop the waste.
+          The goal here is to eliminate uncontrolled or wasteful water use. This
+          could include detecting leaks promptly, upgrading plumbing systems,
+          installing smart water meters, and educating the community about water
+          conservation. Efficient irrigation systems, low-flow fixtures, and
+          rainwater harvesting systems might also be introduced to reduce water
+          waste across the campus.
         </Text>
-        <DashboardHomeBtns
-          source="water"
-        />
+        <DashboardHomeBtns source="water" />
       </Content>
     </Container>
   );
@@ -49,13 +59,15 @@ const Content = styled.div`
 
 const Title = styled.h1`
   font-size: 36px;
-  margin: 22px 0px;
+  margin: 10px 0px;
 `;
 
 const Text = styled.p`
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.5;
   text-align: justify;
+  margin-top: 10px; // Added margin to increase space above the text
+  font-weight: 500; // Added this line to make the text bold
 `;
 
 export default LearnMorePage;
