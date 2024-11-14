@@ -28,7 +28,7 @@ import { useSelector } from "react-redux";
 
 const AdminUsersTable = () => {
   const token = useSelector((state) => state.userData.token); // storing the token of the users
-  const { data: initialUsers = [], error } = useGetAllUsersQuery(token); // getting all users from the backend
+  const { data: initialUsers = [], error, refetch } = useGetAllUsersQuery(token); // getting all users from the backend
   const [deleteUser] = useDeleteUserMutation(); // delete users mutation from backend
   const [editUserMutation] = useEditUserMutation(); // edit users mutation from backend
   const [users, setUsers] = useState(initialUsers); // state for the users
@@ -84,12 +84,7 @@ const AdminUsersTable = () => {
         },
         token,
       }).unwrap();
-
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === updatedUser.id ? updatedUser : user,
-        ),
-      );
+      await refetch();
       setIsEdit(true);
       setShowSuccess(true);
     } catch (error) {
@@ -103,9 +98,7 @@ const AdminUsersTable = () => {
       try {
         await deleteUser({ id: deleteConfirmation.id, token }).unwrap();
         setDeleteConfirmation(null);
-        setUsers((prevUsers) =>
-          prevUsers.filter((user) => user.id !== deleteConfirmation.id),
-        );
+        await refetch();
         setIsDelete(true);
         setShowSuccess(true);
       } catch (error) {
