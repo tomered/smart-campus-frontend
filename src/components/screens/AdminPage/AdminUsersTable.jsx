@@ -38,9 +38,9 @@ const AdminUsersTable = () => {
   const [searchBy, setSearchBy] = useState("name");
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");//Sort direction (asc or desc)
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [isEdit , setIsEdit] = useState(false);
-  const [isDelete , setIsDelete] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);//If delete or edit will success
+  const [isEdit , setIsEdit] = useState(false);//Success screen for edit  
+  const [isDelete , setIsDelete] = useState(false);//Success screen for delete
 
 
   //when there is any change in users list it will be update
@@ -48,6 +48,7 @@ const AdminUsersTable = () => {
     setUsers(initialUsers);
   }, [initialUsers]);
 
+  //When delete or edit user sucess , the sucess screen will show up for 2 seconds
   useEffect(() => {
     if (showSuccess) {
       setTimeout(() => {setShowSuccess(false); setIsDelete(false);setIsEdit(false)}, 2000);
@@ -61,7 +62,7 @@ const AdminUsersTable = () => {
     setSortField(field);
   };
 
-  //edit sprcific user
+  //edit specific user
   const handleEditClick = (user) => {
     setEditUser(user);
   };
