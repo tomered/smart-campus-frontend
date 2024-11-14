@@ -18,6 +18,7 @@ import Sidebar from "./Sidebar";
 import SearchBar from "./SearchBar";
 import EditUserDialog from "./Dialogs/EditUserDialog";
 import DeleteUserDialog from "./Dialogs/DeleteUserDialog";
+import SuccessScreen from "../SuccessScreen"
 import {
   useGetAllUsersQuery,
   useDeleteUserMutation,
@@ -27,7 +28,7 @@ import { useSelector } from "react-redux";
 
 const AdminUsersTable = () => {
   const token = useSelector((state) => state.userData.token); // storing the token of the users
-  const { data: initialUsers = [], error } = useGetAllUsersQuery(token); // getting all users from the backend
+  const { data: initialUsers = [], error, refetch } = useGetAllUsersQuery(token); // getting all users from the backend
   const [deleteUser] = useDeleteUserMutation(); // delete users mutation from backend
   const [editUserMutation] = useEditUserMutation(); // edit users mutation from backend
   const [users, setUsers] = useState(initialUsers); // state for the users
@@ -37,11 +38,22 @@ const AdminUsersTable = () => {
   const [searchBy, setSearchBy] = useState("name");
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");//Sort direction (asc or desc)
+  const [showSuccess, setShowSuccess] = useState(false);//If delete or edit will success
+  const [isEdit , setIsEdit] = useState(false);//Success screen for edit  
+  const [isDelete , setIsDelete] = useState(false);//Success screen for delete
+
 
   //when there is any change in users list it will be update
   useEffect(() => {
     setUsers(initialUsers);
   }, [initialUsers]);
+
+  //When delete or edit user sucess , the sucess screen will show up for 2 seconds
+  useEffect(() => {
+    if (showSuccess) {
+      setTimeout(() => {setShowSuccess(false); setIsDelete(false);setIsEdit(false)}, 2000);
+    }
+  }, [showSuccess]);
 
   //sort for each column , can sort ascending or desc
   const handleSort = (field) => {
@@ -50,7 +62,7 @@ const AdminUsersTable = () => {
     setSortField(field);
   };
 
-  //edit sprcific user
+  //edit specific user
   const handleEditClick = (user) => {
     setEditUser(user);
   };
@@ -72,12 +84,9 @@ const AdminUsersTable = () => {
         },
         token,
       }).unwrap();
-
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === updatedUser.id ? updatedUser : user,
-        ),
-      );
+      await refetch();
+      setIsEdit(true);
+      setShowSuccess(true);
     } catch (error) {
       console.error("Failed to edit user:", error);
     }
@@ -89,9 +98,9 @@ const AdminUsersTable = () => {
       try {
         await deleteUser({ id: deleteConfirmation.id, token }).unwrap();
         setDeleteConfirmation(null);
-        setUsers((prevUsers) =>
-          prevUsers.filter((user) => user.id !== deleteConfirmation.id),
-        );
+        await refetch();
+        setIsDelete(true);
+        setShowSuccess(true);
       } catch (error) {
         console.error("Failed to delete user:", error);
       }
@@ -148,7 +157,7 @@ const AdminUsersTable = () => {
       {/* Main content container */}
       <Container
         sx={{
-          mt: 4,
+          mt: "60px",
           ml: "150px",
           display: "flex",
           flexDirection: "column",
@@ -178,16 +187,14 @@ const AdminUsersTable = () => {
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            overflow: "hidden",
+            overflow: "auto",
           }}>
           <TableContainer
             component={Paper}
             sx={{
               borderRadius: 2,
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-              overflow: "auto",
+              overflowY: 'auto',
+              maxHeight: "400px",
             }}>
             <Table>
               <TableHead>
@@ -289,6 +296,18 @@ const AdminUsersTable = () => {
             open={Boolean(deleteConfirmation)}
             onClose={handleDeleteClose}
             onDelete={handleDeleteConfirm} />
+          {isEdit && showSuccess && (
+          <SuccessScreen
+            mainMessage="User Updated Successfully"
+            message={`The user details have been updated in the system`}
+          />
+        )}  
+        {isDelete && showSuccess && (
+          <SuccessScreen
+            mainMessage="User Deleted Successfully"
+            message={`The user have been deleted from the system`}
+          />
+        )}  
         </Box>
       </Container>
     </div>
