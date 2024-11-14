@@ -67,7 +67,7 @@ const SensorStatistics = () => {
       <Sidebar />
 
       {/* Main content container */}
-      <Container sx={{ mt: 4, ml: '150px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Container sx={{ mt: "60px", ml: '150px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {}
         <Typography
           variant="h4"
