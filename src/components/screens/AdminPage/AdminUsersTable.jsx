@@ -39,6 +39,9 @@ const AdminUsersTable = () => {
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");//Sort direction (asc or desc)
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isEdit , setIsEdit] = useState(false);
+  const [isDelete , setIsDelete] = useState(false);
+
 
   //when there is any change in users list it will be update
   useEffect(() => {
@@ -47,7 +50,7 @@ const AdminUsersTable = () => {
 
   useEffect(() => {
     if (showSuccess) {
-      setTimeout(() => setShowSuccess(false), 2000);
+      setTimeout(() => {setShowSuccess(false); setIsDelete(false);setIsEdit(false)}, 2000);
     }
   }, [showSuccess]);
 
@@ -86,6 +89,7 @@ const AdminUsersTable = () => {
           user.id === updatedUser.id ? updatedUser : user,
         ),
       );
+      setIsEdit(true);
       setShowSuccess(true);
     } catch (error) {
       console.error("Failed to edit user:", error);
@@ -101,6 +105,8 @@ const AdminUsersTable = () => {
         setUsers((prevUsers) =>
           prevUsers.filter((user) => user.id !== deleteConfirmation.id),
         );
+        setIsDelete(true);
+        setShowSuccess(true);
       } catch (error) {
         console.error("Failed to delete user:", error);
       }
@@ -298,10 +304,16 @@ const AdminUsersTable = () => {
             open={Boolean(deleteConfirmation)}
             onClose={handleDeleteClose}
             onDelete={handleDeleteConfirm} />
-          {showSuccess && (
+          {isEdit && showSuccess && (
           <SuccessScreen
             mainMessage="User Updated Successfully"
             message={`The user details have been updated in the system`}
+          />
+        )}  
+        {isDelete && showSuccess && (
+          <SuccessScreen
+            mainMessage="User Deleted Successfully"
+            message={`The user have been deleted from the system`}
           />
         )}  
         </Box>
