@@ -194,16 +194,14 @@ const AdminUsersTable = () => {
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            overflow: "hidden",
+            overflow: "auto",
           }}>
           <TableContainer
             component={Paper}
             sx={{
               borderRadius: 2,
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-              overflow: "auto",
+              overflowY: 'auto',
+              maxHeight: "400px",
             }}>
             <Table>
               <TableHead>
