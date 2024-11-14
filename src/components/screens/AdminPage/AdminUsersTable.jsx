@@ -18,6 +18,7 @@ import Sidebar from "./Sidebar";
 import SearchBar from "./SearchBar";
 import EditUserDialog from "./Dialogs/EditUserDialog";
 import DeleteUserDialog from "./Dialogs/DeleteUserDialog";
+import SuccessScreen from "../SuccessScreen"
 import {
   useGetAllUsersQuery,
   useDeleteUserMutation,
@@ -37,11 +38,18 @@ const AdminUsersTable = () => {
   const [searchBy, setSearchBy] = useState("name");
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");//Sort direction (asc or desc)
+  const [showSuccess, setShowSuccess] = useState(false);
 
   //when there is any change in users list it will be update
   useEffect(() => {
     setUsers(initialUsers);
   }, [initialUsers]);
+
+  useEffect(() => {
+    if (showSuccess) {
+      setTimeout(() => setShowSuccess(false), 2000);
+    }
+  }, [showSuccess]);
 
   //sort for each column , can sort ascending or desc
   const handleSort = (field) => {
@@ -78,6 +86,7 @@ const AdminUsersTable = () => {
           user.id === updatedUser.id ? updatedUser : user,
         ),
       );
+      setShowSuccess(true);
     } catch (error) {
       console.error("Failed to edit user:", error);
     }
@@ -289,6 +298,12 @@ const AdminUsersTable = () => {
             open={Boolean(deleteConfirmation)}
             onClose={handleDeleteClose}
             onDelete={handleDeleteConfirm} />
+          {showSuccess && (
+          <SuccessScreen
+            mainMessage="User Updated Successfully"
+            message={`The user details have been updated in the system`}
+          />
+        )}  
         </Box>
       </Container>
     </div>
