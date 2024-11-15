@@ -8,9 +8,11 @@ is an innovative approach to a common place based on optimal use of resources wh
 */
 const InfoSection = () => {
   return (
+        <div style={{ marginTop: -55}}>
     <MainContainer>
-      <ImageContainer>
-        <CustomImg src={campus} alt="Smart Campus scenery" />
+      <CustomImg src={campus} alt="Smart Campus scenery"/>
+
+
         <Caption>
           <h2>Smart Campus</h2>
           <p>
@@ -22,8 +24,8 @@ const InfoSection = () => {
             officials.
           </p>
         </Caption>
-      </ImageContainer>
     </MainContainer>
+        </div>
   );
 };
 
@@ -114,6 +116,5 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0;
   width: 100%;
 `;
