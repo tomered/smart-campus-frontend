@@ -58,7 +58,7 @@ const LoginPage = () => {
 
   if(isLoading){
     return(
-      <LoadingScreen/>
+      <LoadingScreen message={'Verifying...'}/>
     )
   }
 
