@@ -44,7 +44,8 @@ ChartJS.register(
 const PowerDashboard = () => {
   const isMobile = window.innerWidth < 700;
   const token = useSelector((state) => state.userData.token);
-  const { data } = useGetSensorsQuery(token);
+  const { data } = useGetSensorsQuery(token,{refetchOnMountOrArgChange: true,
+  });
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
@@ -140,79 +141,88 @@ const PowerDashboard = () => {
 
     // Update each card with a unique value based on the selected format
     const updatedCardData = cardData.map((card, index) => {
-      let newValData;
-      let newValDate;
-      let newValLoc;
+      let newValData = "N/A";  // Default value
+      let newValDate = "not updated";
+      let newValLoc = "N/A";
+
       switch (index) {
         case 0:
           if (LightSensors.length === 0) {
-            newValData = `There is no Light sensors in this class`;
+            newValData = `There are no Light sensors in this class`;
           } else {
-            LightSensors.forEach((sensor, index) => {
+            LightSensors.forEach((sensor) => {
               const LightIndex = sensor.type.indexOf("Light");
-              // Get the latest data entry (last element in sensors_data array)
-              const latestData =
-                sensor.sensors_data[sensor.sensors_data.length - 1];
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
               const LightValue = latestData.data[LightIndex];
 
               const date = new Date(latestData.last_update);
-              // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
-              const locatedAt = sensor.location.room[1];
-              console.log(sensor.sensors_data.id);
-              if (LightValue == "true") {
-                newValData = `ON`;
+              let formattedDate = '';
+              if (!(date instanceof Date) || isNaN(date.getTime())) {
+                console.error("Invalid date:", latestData.last_update);
               } else {
-                newValData = `OFF`;
+                date.setHours(date.getHours() - 2);
+                formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
               }
-              newValDate = `Last Update: ${formattedDate}`;
+
+
+              const locatedAt = sensor.location.room[1];
+              newValData = LightValue === "true" ? `ON` : `OFF`;
+              newValDate = `Last Update: ${formattedDate || 'not updated'}`;
               newValLoc = `Located at: ${locatedAt}`;
             });
           }
           break;
+
         case 1:
-          if (MovementSensors.length == 0) {
-            newValData = `There is no Movement sensors in this class`;
+          if (MovementSensors.length === 0) {
+            newValData = `There are no Movement sensors in this class`;
           } else {
-            MovementSensors.forEach((sensor, index) => {
+            MovementSensors.forEach((sensor) => {
               const MovementIndex = sensor.type.indexOf("Movement");
-              // Get the latest data entry (last element in sensors_data array)
-              const latestData =
-                sensor.sensors_data[sensor.sensors_data.length - 1];
-              const MovmentValue = latestData.data[MovementIndex];
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
+              const MovementValue = latestData.data[MovementIndex];
 
               const date = new Date(latestData.last_update);
-              // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
-              const locatedAt = sensor.location.room[1];
+              let formattedDate = '';
+              if (!(date instanceof Date) || isNaN(date.getTime())) {
+                console.error("Invalid date:", latestData.last_update);
+              } else {
+                date.setHours(date.getHours() - 2);
+                formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+              }
 
-              newValData = MovmentValue;
-              newValDate = `Last Update: ${formattedDate}`;
+
+              const locatedAt = sensor.location.room[1];
+              newValData = MovementValue;
+              newValDate = `Last Update: ${formattedDate || 'not updated'}`;
               newValLoc = `Located at: ${locatedAt}`;
             });
           }
           break;
+
         case 2:
-          if (ACSensors.length == 0) {
-            newValData = `There is no Air Condition sensors in this class`;
+          if (ACSensors.length === 0) {
+            newValData = `There are no Air Condition sensors in this class`;
           } else {
-            ACSensors.forEach((sensor, index) => {
-              const ACIndex = sensor.type.indexOf("Movement");
-              // Get the latest data entry (last element in sensors_data array)
-              const latestData =
-                sensor.sensors_data[sensor.sensors_data.length - 1];
+            ACSensors.forEach((sensor) => {
+              const ACIndex = sensor.type.indexOf("AC");
+              const latestData = sensor.sensors_data[sensor.sensors_data.length - 1];
               const ACValue = latestData.data[ACIndex];
 
               const date = new Date(latestData.last_update);
-              // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
-              const locatedAt = sensor.location.room[1];
-              if (ACValue == "true") {
-                newValData = `ON`;
+              let formattedDate = '';
+              if (!(date instanceof Date) || isNaN(date.getTime())) {
+                console.error("Invalid date:", latestData.last_update);
               } else {
-                newValData = `OFF`;
+                date.setHours(date.getHours() - 2);
+                formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
               }
-              newValDate = `Last Update: ${formattedDate}`;
+
+              console.log(formattedDate)
+
+              const locatedAt = sensor.location.room[1];
+              newValData = ACValue === "true" ? `ON` : `OFF`;
+              newValDate = `Last Update: ${formattedDate || 'not updated'}`;
               newValLoc = `Located at: ${locatedAt}`;
             });
           }
@@ -232,6 +242,8 @@ const PowerDashboard = () => {
 
     setCardData(updatedCardData);
   };
+
+
 
   const buildingsData = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const classesData = [

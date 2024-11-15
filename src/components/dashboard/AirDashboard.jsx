@@ -43,7 +43,8 @@ ChartJS.register(
 const AirDashboard = () => {
   const isMobile = window.innerWidth < 700;
   const token = useSelector((state) => state.userData.token);
-  const { data } = useGetSensorsQuery(token);
+  const { data } = useGetSensorsQuery(token,{refetchOnMountOrArgChange: true,
+  });
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
@@ -166,7 +167,13 @@ const AirDashboard = () => {
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+              let formattedDate = '';
+              if (!(date instanceof Date) || isNaN(date.getTime())) {
+                console.error("Invalid date:", latestData.last_update);
+              } else {
+                date.setHours(date.getHours() - 2);
+                formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+              }
               const locatedAt = sensor.location.room[1];
               newValData = `${temperatureValue}`;
               newValDate = `Last Update: ${formattedDate}`;
@@ -187,7 +194,13 @@ const AirDashboard = () => {
 
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+              let formattedDate = '';
+              if (!(date instanceof Date) || isNaN(date.getTime())) {
+                console.error("Invalid date:", latestData.last_update);
+              } else {
+                date.setHours(date.getHours() - 2);
+                formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+              }
               const locatedAt = sensor.location.room[1];
               newValData = `${humidityValue}`;
               newValDate = `Last Update: ${formattedDate}`;
@@ -207,8 +220,14 @@ const AirDashboard = () => {
               const co2Value = latestData.data[co2Index];
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
-              const locatedAt = sensor.location.room[1];
+              let formattedDate = '';
+              if (!(date instanceof Date) || isNaN(date.getTime())) {
+                console.error("Invalid date:", latestData.last_update);
+              } else {
+                date.setHours(date.getHours() - 2);
+                formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+              }             
+               const locatedAt = sensor.location.room[1];
               newValData = `${co2Value}`;
               newValDate = `Last Update: ${formattedDate}`;
               newValLoc = `Located at: ${locatedAt}`;
@@ -220,14 +239,20 @@ const AirDashboard = () => {
             newValData = `There is no humidity sensor in this class`;
           } else {
             pressurSensors.forEach((sensor, index) => {
-              const pressurIndex = sensor.type.indexOf("Pressur");
+              const pressurIndex = sensor.type.indexOf("Pressure");
               // Get the latest data entry (last element in sensors_data array)
               const latestData =
                 sensor.sensors_data[sensor.sensors_data.length - 1];
               const pressurValue = latestData.data[pressurIndex];
               const date = new Date(latestData.last_update);
               // Extract the parts and format them
-              const formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+              let formattedDate = '';
+              if (!(date instanceof Date) || isNaN(date.getTime())) {
+                console.error("Invalid date:", latestData.last_update);
+              } else {
+                date.setHours(date.getHours() - 2);
+                formattedDate = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}, ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+              }              
               const locatedAt = sensor.location.room[1];
               newValData = `${pressurValue}`;
               newValDate = `Last Update: ${formattedDate}`;

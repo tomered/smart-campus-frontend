@@ -9,11 +9,13 @@ import {
 } from "../../../redux/slices/userDataSlice";
 import { useNavigate } from "react-router-dom";
 import FailureScreen from "../FailureScreen";
+import LoadingScreen from "../LoadingScreen";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isFailure, setIsFailure] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const [loginUser] = useLoginUserMutation();
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ const LoginPage = () => {
     event.preventDefault(); // Prevent default form submission
 
     try {
+      setIsLoading(true)
       // Getting user from database
       const result = await loginUser({ userName: username, password });
 
@@ -44,12 +47,20 @@ const LoginPage = () => {
     } catch (error) {
       //If failed , the failure screen will show up
       setIsFailure(true);
+    }finally{
+      setIsLoading(false)
     }
   };
 
   const onErrorClose = () => {
     setIsFailure(false);
   };
+
+  if(isLoading){
+    return(
+      <LoadingScreen message={'Verifying...'}/>
+    )
+  }
 
   return (
     <Container>
