@@ -92,7 +92,7 @@ const Container = styled.div`
   max-width: 500px;
   margin: 0 auto;
   margin-top:40px;
-  padding: 40px;
+  padding: 60px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
