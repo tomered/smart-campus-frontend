@@ -131,7 +131,7 @@ const AdminDashboard = () => {
       <Sidebar />
       <Container
         sx={{
-          mt: "60px",
+          mt: 4,
           ml: "150px",
           display: "flex",
           flexDirection: "column",
