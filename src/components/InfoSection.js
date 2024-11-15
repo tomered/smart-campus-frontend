@@ -8,10 +8,8 @@ is an innovative approach to a common place based on optimal use of resources wh
 */
 const InfoSection = () => {
   return (
-        <div style={{backgroundColor: "blue", marginTop: -55}}>
+        <div style={{ marginTop: -55}}>
     <MainContainer>
-      {/* <ImageContainer> */}
-      {/* <img src={campus} alt="Smart Campus scenery" width={1000} height={1000}/> */}
       <CustomImg src={campus} alt="Smart Campus scenery"/>
 
 
@@ -26,7 +24,6 @@ const InfoSection = () => {
             officials.
           </p>
         </Caption>
-      {/* </ImageContainer> */}
     </MainContainer>
         </div>
   );
@@ -119,6 +116,5 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: -2;
   width: 100%;
 `;
