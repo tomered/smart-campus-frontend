@@ -35,7 +35,9 @@ Chart.register(
 
 const AdminDashboard = () => {
   const token = useSelector((state) => state.userData.token);
-  const { data = {}, error, isLoading } = useGetNumberOfUsersQuery(token);
+  const { data = {}, error, isLoading } = useGetNumberOfUsersQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
   const [totalUsers, setTotalUsers] = useState(0);
 
   useEffect(() => {
