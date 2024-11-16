@@ -56,6 +56,12 @@ const LoginPage = () => {
     setIsFailure(false);
   };
 
+  if(isLoading){
+    return(
+      <LoadingScreen message={'Verifying...'}/>
+    )
+  }
+
   return (
     <Container>
       <LoginForm onSubmit={handleSubmit}>

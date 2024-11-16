@@ -141,9 +141,9 @@ const PowerDashboard = () => {
 
     // Update each card with a unique value based on the selected format
     const updatedCardData = cardData.map((card, index) => {
-      let newValData = "N/A";  // Default value
-      let newValDate = "not updated";
-      let newValLoc = "N/A";
+      let newValData;
+      let newValDate;
+      let newValLoc ;
 
       switch (index) {
         case 0:
