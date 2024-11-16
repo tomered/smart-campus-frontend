@@ -95,6 +95,7 @@ const LoginPage = () => {
           />
         )}
       </LoginForm>
+      {isLoading&&<LoadingScreen message={'Verifying...'}/>}
     </Container>
   );
 };
