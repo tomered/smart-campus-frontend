@@ -156,7 +156,7 @@ const AirDashboard = () => {
       switch (index) {
         case 0:
           if (tempSensors.length === 0) {
-            newValData = `There is no temperature sensor in this class`;
+            newValData = `There are no temperature sensors in this class`;
           } else {
             tempSensors.forEach((sensor, index) => {
               const temperatureIndex = sensor.type.indexOf("Temperature");
@@ -183,7 +183,7 @@ const AirDashboard = () => {
           break;
         case 1:
           if (humiditySensors.length === 0) {
-            newValData = `There is no humidity sensor in this class`;
+            newValData = `There are no humidity sensors in this class`;
           } else {
             humiditySensors.forEach((sensor, index) => {
               const humidityIndex = sensor.type.indexOf("Humidity");
@@ -210,7 +210,7 @@ const AirDashboard = () => {
           break;
         case 2:
           if (co2Sensors.length === 0) {
-            newValData = `There is no humidity sensor in this class`;
+            newValData = `There are no CO2 sensors in this class`;
           } else {
             co2Sensors.forEach((sensor, index) => {
               const co2Index = sensor.type.indexOf("CO2");
@@ -236,7 +236,7 @@ const AirDashboard = () => {
           break;
         case 3:
           if (pressurSensors.length === 0) {
-            newValData = `There is no humidity sensor in this class`;
+            newValData = `There are no pressure sensors in this class`;
           } else {
             pressurSensors.forEach((sensor, index) => {
               const pressurIndex = sensor.type.indexOf("Pressure");
