@@ -24,7 +24,11 @@ const MainHeader = () => {
   const handleMapClick = (e, mapDivId) => {
     e.preventDefault();
     sessionStorage.setItem("mapDivId", mapDivId);
-    window.location.href = "/";
+    navigate("/");
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   const handleLogoAndTitleClick = () => {
